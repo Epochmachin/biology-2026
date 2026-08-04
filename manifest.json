@@ -1,0 +1,18 @@
+{
+  "name": "জীববিজ্ঞান স্টাডি সেন্টার",
+  "short_name": "জীববিজ্ঞান অ্যাপ",
+  "description": "জীববিজ্ঞান স্টাডি সেন্টারের ছাত্রছাত্রী, উপস্থিতি ও মেসেজিং ম্যানেজমেন্ট অ্যাপ",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#E5E7EB",
+  "theme_color": "#3B82F6",
+  "lang": "bn",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192-maskable.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
