@@ -1,50 +1,34 @@
-// জীববিজ্ঞান অ্যাপ — অফলাইন ক্যাশিং সার্ভিস ওয়ার্কার
-const CACHE_NAME = 'biology-app-cache-v4';
-const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png',
-  './icon-192-maskable.png',
-  './icon-512-maskable.png'
-];
+// জীববিজ্ঞান স্টাডি সেন্টার: অফলাইনে চালানোর জন্য ক্যাশ
+// নতুন ভার্সন আপলোড করলে CACHE নামের শেষের সংখ্যা বাড়িয়ে দিন।
+const CACHE = 'bsc-app-v2027-1';
+const CORE = ['./', './index.html', './manifest.json', './icon.png'];
 
-// ইনস্টল হওয়ার সময় সব ফাইল ক্যাশে রাখা হচ্ছে
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
-  );
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)));
   self.skipWaiting();
 });
 
-// পুরনো ক্যাশ মুছে ফেলা (নতুন ভার্সন এলে)
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
-      )
-    )
-  );
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))));
   self.clients.claim();
 });
 
-// cache-first কৌশল: আগে ক্যাশ থেকে দেখাবে, না পেলে নেট থেকে আনবে এবং ক্যাশে রাখবে
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request)
-        .then((response) => {
-          if (response && response.status === 200) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-          }
-          return response;
-        })
-        .catch(() => cached);
-    })
-  );
+self.addEventListener('fetch', e => {
+  const req = e.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  const isPage = req.mode === 'navigate' || url.pathname.endsWith('/index.html') || url.pathname.endsWith('/');
+  if (isPage && url.origin === location.origin) {
+    // অ্যাপের পাতা: আগে নেট থেকে নতুনটা, নেট না থাকলে ক্যাশ থেকে
+    e.respondWith(fetch(req).then(res => {
+      const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); return res;
+    }).catch(() => caches.match(req).then(r => r || caches.match('./index.html'))));
+    return;
+  }
+  // বাকি সব (ফন্ট, আইকন): আগে ক্যাশ, না পেলে নেট থেকে এনে ক্যাশে রাখা
+  if (url.origin !== location.origin && !url.hostname.endsWith('fonts.googleapis.com') && !url.hostname.endsWith('fonts.gstatic.com')) return;
+  e.respondWith(caches.match(req).then(hit => hit || fetch(req).then(res => {
+    if (res && (res.status === 200 || res.type === 'opaque')) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); }
+    return res;
+  })));
 });
