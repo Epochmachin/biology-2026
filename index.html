@@ -196,6 +196,7 @@ details summary{cursor:pointer;color:var(--soft);margin-top:12px;font-size:14px}
 /* ========== স্থির তথ্য ========== */
 const CENTER = 'জীববিজ্ঞান স্টাডি সেন্টার';
 const APP_YEAR = 2027;
+const APP_VERSION = '2027.2 (১৩ নভে ২০২৬)';
 const TEACHER_DEFAULT = 'মোঃ খাজা জহুরুল ইসলাম';
 const TEACHER_PHONE_DEFAULT = '01722647270';
 const SIG_IMG = 'data:image/png;base64,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';
@@ -582,12 +583,15 @@ function openReceipt(sid, items, note, on){
   sheet(`<div class="sh-head"><div class="sh-name">✅ সেভ হয়েছে · রশিদ</div><div class="sh-sub">অভিভাবককে পাঠাতে নিচের বোতাম চাপুন</div></div>
     <div class="rcpt"><div class="rcpt-h"><b>${CENTER}</b>${batchName(d.s.batch)}</div>
       <div class="rcpt-b">${esc(d.text)}</div><div class="rcpt-s"><img src="${SIG_IMG}" alt="স্বাক্ষর"></div></div>
-    <button class="btn big green" data-act="rWa">💬 WhatsApp-এ অভিভাবককে পাঠান</button>
+    <button class="btn big green" data-act="rChatImg">🧾 অভিভাবকের WhatsApp-এ রশিদের ছবি পাঠান</button>
+    <div class="hint">চাপলে রশিদের ছবি তৈরি হবে, আর অভিভাবকের চ্যাট খুলবে। চ্যাটে লেখার ঘরে <b>লম্বা চাপ দিয়ে Paste</b> করুন, অথবা 📎 → গ্যালারি থেকে ছবিটি দিন।</div>
+    <button class="btn big" data-act="rShare">📤 শেয়ার করে পাঠান (WhatsApp → অভিভাবক বাছুন)</button>
     <div class="two" style="margin-top:8px">
-      <button class="btn" data-act="rSms">✉️ SMS পাঠান</button>
-      <button class="btn" data-act="rImg">🖼️ ছবি-রশিদ</button>
+      <button class="btn" data-act="rWa">💬 শুধু লেখা</button>
+      <button class="btn" data-act="rSms">✉️ SMS</button>
     </div>
     <button class="btn ghost" data-act="close">বন্ধ করুন</button>`, 'receipt');
+  RC.blob = makeReceiptCanvas().then(c => new Promise(r => c.toBlob(r, 'image/png'))).catch(() => null);
 }
 async function fontsReady(){
   if (!document.fonts) return;
@@ -603,8 +607,7 @@ async function shareCanvas(c, name, text){
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
   toast('ছবি ডাউনলোড হয়েছে');
 }
-async function receiptImage(){
-  toast('ছবি তৈরি হচ্ছে…');
+async function makeReceiptCanvas(){
   await fontsReady();
   const d = receiptData(RC.sid, RC.items, RC.note, RC.on), b = B(d.s.batch);
   const W = 720, H = 615 + d.rows.length * 46;
@@ -632,7 +635,34 @@ async function receiptImage(){
   x.strokeStyle = '#94A3B8'; x.beginPath(); x.moveTo(W - 260, sy + 112); x.lineTo(W - 40, sy + 112); x.stroke();
   x.fillStyle = '#64748B'; x.font = F(400, 15); x.textAlign = 'center'; x.fillText('শিক্ষকের স্বাক্ষর', W - 150, sy + 136);
   x.textAlign = 'left'; x.fillText('ধন্যবাদ।', 40, sy + 136);
-  await shareCanvas(c, 'receipt-' + d.code + '.png', d.text);
+  return c;
+}
+function saveBlob(blob, name){ const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
+async function receiptBlob(){
+  let blob = RC.blob ? await RC.blob : null;
+  if (!blob) { const c = await makeReceiptCanvas(); blob = await new Promise(r => c.toBlob(r, 'image/png')); }
+  const d = receiptData(RC.sid, RC.items, RC.note, RC.on);
+  return {blob, d, name:'receipt-' + d.code + '.png'};
+}
+async function receiptShare(){
+  const {blob, d, name} = await receiptBlob();
+  const file = new File([blob], name, {type:'image/png'});
+  if (navigator.canShare && navigator.canShare({files:[file]})) {
+    try { await navigator.share({files:[file], text:d.text}); return; }
+    catch(e){ if (e.name === 'AbortError') return; }
+  }
+  saveBlob(blob, name);
+  toast('ছবি ডাউনলোড ফোল্ডারে সেভ হয়েছে, WhatsApp-এ 📎 দিয়ে পাঠান');
+}
+async function receiptToChat(){
+  const {blob, d, name} = await receiptBlob();
+  if (!validPhone(d.s.guardianPhone)) { toast('অভিভাবকের নম্বর ঠিক নেই'); return; }
+  let copied = false;
+  try { if (navigator.clipboard && window.ClipboardItem) { await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]); copied = true; } } catch(e){}
+  if (!copied) saveBlob(blob, name);
+  const url = 'https://wa.me/' + waNum(d.s.guardianPhone) + '?text=' + encodeURIComponent('প্রিয় অভিভাবক, আসসালামু আলাইকুম। ' + d.s.name + '-এর টাকা প্রাপ্তির রশিদ (কোড ' + d.code + ') পাঠালাম।');
+  toast(copied ? 'রশিদ কপি হয়েছে: চ্যাটে লম্বা চাপ দিয়ে Paste করুন' : 'রশিদ ডাউনলোড হয়েছে: চ্যাটে 📎 → গ্যালারি থেকে দিন');
+  setTimeout(() => { const w = window.open(url, '_blank'); if (!w) location.href = url; }, 700);
 }
 
 /* ========== হাজিরা ========== */
@@ -874,7 +904,7 @@ function openMore(){
       <button data-act="archive"><span>🗄️</span>২০২৬ আর্কাইভ দেখুন</button>
       <button data-act="settings"><span>⚙️</span>সেটিংস (বেতন, তারিখ, গ্রুপ, SMS)</button>
     </div>
-    <div class="hint" style="margin-top:10px">শেষ ব্যাকআপ: ${lastBackup()}। সপ্তাহে অন্তত একবার ব্যাকআপ নিয়ে Google Drive-এ রাখুন।</div>
+    <div class="hint" style="margin-top:10px">অ্যাপ ভার্সন: ${APP_VERSION}। ইন্টারনেট চালু রেখে খুললে নতুন আপডেট নিজে থেকে আসে।<br>শেষ ব্যাকআপ: ${lastBackup()}। সপ্তাহে অন্তত একবার ব্যাকআপ নিয়ে Google Drive-এ রাখুন।</div>
     <button class="btn ghost" data-act="close">বন্ধ করুন</button>`);
 }
 function lastBackup(){ try { const d = localStorage.getItem('bsc-last-backup'); return d ? bnDate(d) : 'কখনো নেওয়া হয়নি'; } catch(e){ return '—'; } }
@@ -1018,7 +1048,8 @@ const ACT = {
   nfReceipt: d => openReceipt(d.sid, [], true, S.noteFees[d.sid][S.year].on),
   rWa: () => { const d = receiptData(RC.sid, RC.items, RC.note, RC.on); sendMsg(d.s.guardianPhone, d.text, 'wa'); },
   rSms: () => { const d = receiptData(RC.sid, RC.items, RC.note, RC.on); sendMsg(d.s.guardianPhone, d.text, 'sms'); },
-  rImg: () => receiptImage(),
+  rShare: () => receiptShare(),
+  rChatImg: () => receiptToChat(),
   qch: d => { Q.channel = d.c; renderQueue(); },
   qone: d => qOne(d.sid),
   qall: () => qAll(),
@@ -1085,8 +1116,20 @@ $('#restoreInput').addEventListener('change', e => {
 document.addEventListener('visibilitychange', () => { if (!document.hidden && SHEET_KIND === 'queue') renderQueue(); });
 
 renderAll();
+/* ---- আপডেট: নতুন ভার্সন এলে নিজে থেকে চালু হবে ---- */
+try { const pv = localStorage.getItem('bsc-version'); if (pv && pv !== APP_VERSION) setTimeout(() => toast('✅ অ্যাপ আপডেট হয়েছে: ' + APP_VERSION), 600); localStorage.setItem('bsc-version', APP_VERSION); } catch(e){}
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {}));
+  const hadController = !!navigator.serviceWorker.controller;
+  let reloading = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController || reloading) return;
+    if ($('#sheet')) { toast('নতুন আপডেট এসেছে: অ্যাপ বন্ধ করে আবার খুলুন'); return; }
+    reloading = true; location.reload();
+  });
+  window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').then(reg => {
+    reg.update().catch(() => {});
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) reg.update().catch(() => {}); });
+  }).catch(() => {}));
 }
 </script>
 </body>
