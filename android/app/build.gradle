@@ -1,0 +1,37 @@
+plugins { id 'com.android.application' }
+
+def vCode = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger() + 10
+
+android {
+    namespace 'com.epochmaking.biologycentre'
+    compileSdk 34
+    defaultConfig {
+        applicationId 'com.epochmaking.biologycentre'
+        minSdk 24
+        targetSdk 34
+        versionCode vCode
+        versionName "2027." + vCode
+    }
+    signingConfigs {
+        release {
+            storeFile file(System.getenv("KEYSTORE_FILE") ?: "missing.keystore")
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS") ?: "my-key-alias"
+            keyPassword System.getenv("KEY_PASSWORD") ?: System.getenv("KEYSTORE_PASSWORD")
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core:1.13.1'
+}
