@@ -1,7 +1,7 @@
 // জীববিজ্ঞান স্টাডি সেন্টার: অফলাইনে চালানোর জন্য ক্যাশ
 // নতুন ভার্সন আপলোড করলে CACHE নামের শেষের সংখ্যা বাড়িয়ে দিন।
-const CACHE = 'bsc-app-v2027-2';
-const CORE = ['./', './index.html', './manifest.json', './icon.png'];
+const CACHE = 'bsc-app-v2027-3';
+const CORE = ['./', './index.html', './manifest.json', './icon.png', './icon-192.png', './icon-512.png', './icon-maskable-192.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)));

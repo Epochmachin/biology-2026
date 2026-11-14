@@ -6,8 +6,13 @@
 <title>জীববিজ্ঞান স্টাডি সেন্টার</title>
 <meta name="theme-color" content="#1E3A8A">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="জীববিজ্ঞান">
+<meta name="format-detection" content="telephone=no">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -152,6 +157,21 @@ table.t th{color:var(--soft);font-weight:600}
 .ok-t{color:var(--ok);font-weight:700}.bad-t{color:var(--bad);font-weight:700}
 .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#0F172A;color:#fff;padding:10px 18px;border-radius:999px;font-size:15px;z-index:99;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
+/* ইনস্টল ব্যানার */
+.inst{position:fixed;left:10px;right:10px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:30;background:#0F172A;color:#fff;border-radius:16px;padding:12px 14px;display:none;align-items:center;gap:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:620px;margin:0 auto}
+.inst.show{display:flex}
+.inst img{width:42px;height:42px;border-radius:10px}
+.inst div{flex:1;font-size:14px;line-height:1.35}
+.inst b{display:block;font-size:15px}
+.inst .go{background:#2563EB;color:#fff;border:0;border-radius:10px;padding:9px 14px;font-weight:600}
+.inst .x{background:none;border:0;color:#94A3B8;font-size:20px;padding:0 4px}
+/* অ্যাপ মোডে: লেখা সিলেক্ট/টেনে রিফ্রেশ বন্ধ, অ্যাপের মতো অনুভূতি */
+@media (display-mode: standalone){
+  html,body{overscroll-behavior-y:none}
+  body{-webkit-user-select:none;user-select:none}
+  input,textarea{-webkit-user-select:text;user-select:text}
+  .bar{padding-top:calc(8px + env(safe-area-inset-top))}
+}
 .mk{width:80px;border:1px solid #CBD5E1;border-radius:8px;padding:8px;font-size:16px;text-align:center}
 details summary{cursor:pointer;color:var(--soft);margin-top:12px;font-size:14px}
 @media (max-width:380px){.stat b{font-size:16px}.stat span{font-size:11px}.btn.icon{width:42px}}
@@ -190,13 +210,19 @@ details summary{cursor:pointer;color:var(--soft);margin-top:12px;font-size:14px}
 
 <input type="file" id="restoreInput" accept=".json,application/json" hidden>
 <div class="toast" id="toast"></div>
+<div class="inst" id="inst">
+  <img src="icon-192.png" alt="">
+  <div><b>অ্যাপ হিসেবে ইনস্টল করুন</b><span id="instMsg">হোম স্ক্রিনে আইকন, ব্রাউজারের বার ছাড়া পুরো স্ক্রিনে চলবে</span></div>
+  <button class="go" id="instGo">ইনস্টল</button>
+  <button class="x" id="instX" aria-label="বন্ধ">✕</button>
+</div>
 
 <script>
 'use strict';
 /* ========== স্থির তথ্য ========== */
 const CENTER = 'জীববিজ্ঞান স্টাডি সেন্টার';
 const APP_YEAR = 2027;
-const APP_VERSION = '2027.2 (১৩ নভে ২০২৬)';
+const APP_VERSION = '2027.3 (১৪ নভে ২০২৬)';
 const TEACHER_DEFAULT = 'মোঃ খাজা জহুরুল ইসলাম';
 const TEACHER_PHONE_DEFAULT = '01722647270';
 const SIG_IMG = 'data:image/png;base64,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';
@@ -1116,6 +1142,43 @@ $('#restoreInput').addEventListener('change', e => {
 document.addEventListener('visibilitychange', () => { if (!document.hidden && SHEET_KIND === 'queue') renderQueue(); });
 
 renderAll();
+
+/* ---- ডেটা সুরক্ষা: ফোন যেন জায়গা খালি করতে ডেটা না মোছে + সাপ্তাহিক ব্যাকআপ মনে করানো ---- */
+try { if (navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p => p || navigator.storage.persist()); } catch(e){}
+try {
+  const lb = localStorage.getItem('bsc-last-backup');
+  const days = lb ? (Date.now() - new Date(lb).getTime()) / 864e5 : 999;
+  const hasData = Object.keys(localStorage).some(k => k.startsWith('bsc') && (localStorage.getItem(k) || '').length > 500);
+  if (hasData && days > 7) setTimeout(() => toast('💾 ৭ দিনের বেশি ব্যাকআপ নেই: ☰ আরও → ব্যাকআপ ডাউনলোড'), 3500);
+} catch(e){}
+/* ---- অ্যাপ ইনস্টল ---- */
+(function(){
+  const isApp = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  const box = $('#inst'), go = $('#instGo'), msg = $('#instMsg');
+  let deferred = null;
+  const snoozed = () => { try { return Date.now() < Number(localStorage.getItem('bsc-inst-snooze') || 0); } catch(e){ return false; } };
+  $('#instX').onclick = () => { box.classList.remove('show'); try { localStorage.setItem('bsc-inst-snooze', Date.now() + 3*864e5); } catch(e){} };
+  if (isApp) return;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault(); deferred = e;
+    if (!snoozed()) box.classList.add('show');
+  });
+  go.onclick = async () => {
+    if (deferred) { deferred.prompt(); const r = await deferred.userChoice; deferred = null; if (r.outcome === 'accepted') box.classList.remove('show'); return; }
+    box.classList.remove('show');
+  };
+  window.addEventListener('appinstalled', () => { box.classList.remove('show'); toast('✅ অ্যাপ ইনস্টল হয়েছে: হোম স্ক্রিন থেকে খুলুন'); });
+  const ua = navigator.userAgent;
+  const inApp = /FBAN|FBAV|Instagram|WhatsApp|Line\/|wv\)/i.test(ua);
+  const ios = /iPhone|iPad|iPod/i.test(ua);
+  setTimeout(() => {
+    if (deferred || snoozed()) return;
+    if (inApp) { msg.textContent = 'এখানে ইনস্টল হয় না। ⋮ মেনু থেকে "Chrome-এ খুলুন" চাপুন, তারপর ইনস্টল করুন'; go.style.display = 'none'; box.classList.add('show'); }
+    else if (ios) { msg.textContent = 'Safari-তে নিচের Share (⬆️) চাপুন → "Add to Home Screen"'; go.style.display = 'none'; box.classList.add('show'); }
+  }, 2500);
+})();
+/* হোম স্ক্রিন আইকনে চেপে ধরে শর্টকাট (হাজিরা/বকেয়া/মেসেজ) */
+try { const g = new URLSearchParams(location.search).get('go'); if (g && ACT[g]) { history.replaceState(null, '', location.pathname); setTimeout(() => ACT[g]({}, null), 300); } } catch(e){}
 /* ---- আপডেট: নতুন ভার্সন এলে নিজে থেকে চালু হবে ---- */
 try { const pv = localStorage.getItem('bsc-version'); if (pv && pv !== APP_VERSION) setTimeout(() => toast('✅ অ্যাপ আপডেট হয়েছে: ' + APP_VERSION), 600); localStorage.setItem('bsc-version', APP_VERSION); } catch(e){}
 if ('serviceWorker' in navigator && location.protocol === 'https:') {

@@ -1,15 +1,30 @@
 {
+  "id": "/biology-2026/",
   "name": "জীববিজ্ঞান স্টাডি সেন্টার",
   "short_name": "জীববিজ্ঞান",
   "description": "জীববিজ্ঞান স্টাডি সেন্টারের বেতন, হাজিরা, পরীক্ষা ও মেসেজ অ্যাপ",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
-  "background_color": "#EEF2F7",
+  "background_color": "#1E3A8A",
   "theme_color": "#1E3A8A",
   "lang": "bn",
+  "dir": "ltr",
+  "categories": ["education", "productivity"],
   "icons": [
-    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
+    { "src": "screenshot-1.png", "sizes": "824x1784", "type": "image/png", "form_factor": "narrow", "label": "শিক্ষার্থী তালিকা ও বকেয়া" }
+  ],
+  "shortcuts": [
+    { "name": "হাজিরা", "url": "./?go=attendance", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "বকেয়া", "url": "./?go=dueTab", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "মেসেজ", "url": "./?go=messages", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
   ]
 }
