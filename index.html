@@ -21,124 +21,159 @@
 @font-face{font-family:'Baloo Da 2';font-weight:700;font-display:swap;src:url(fonts/baloo-da-2-bengali-700-normal.woff2) format('woff2')}
 @font-face{font-family:'Hind Siliguri';font-weight:400;font-display:swap;src:url(fonts/hind-siliguri-bengali-400-normal.woff2) format('woff2')}
 @font-face{font-family:'Hind Siliguri';font-weight:500;font-display:swap;src:url(fonts/hind-siliguri-bengali-500-normal.woff2) format('woff2')}
+/* অ্যাপের নিজস্ব ফন্ট: সাধারণ লেখা Hind Siliguri, মোটা লেখা ও শিরোনাম Baloo Da 2 (অফলাইনেও চলে) */
+/* বাংলা সংখ্যা সবসময় স্পষ্ট Baloo ফন্টে */
+@font-face{font-family:'BSCnum';font-weight:400;font-display:swap;unicode-range:U+09E6-09EF;src:url(fonts/baloo-da-2-bengali-600-normal.woff2) format('woff2')}
+@font-face{font-family:'BSCnum';font-weight:700;font-display:swap;unicode-range:U+09E6-09EF;src:url(fonts/baloo-da-2-bengali-700-normal.woff2) format('woff2')}
+@font-face{font-family:'BSC';font-weight:400;font-display:swap;src:url(fonts/hind-siliguri-bengali-400-normal.woff2) format('woff2')}
+@font-face{font-family:'BSC';font-weight:500;font-display:swap;src:url(fonts/hind-siliguri-bengali-500-normal.woff2) format('woff2')}
+@font-face{font-family:'BSC';font-weight:600;font-display:swap;src:url(fonts/baloo-da-2-bengali-600-normal.woff2) format('woff2')}
+@font-face{font-family:'BSC';font-weight:700;font-display:swap;src:url(fonts/baloo-da-2-bengali-700-normal.woff2) format('woff2')}
 </style>
 <style>
 :root{
-  --bg:#EEF2F7; --card:#FFFFFF; --ink:#0F172A; --soft:#64748B; --line:#E2E8F0;
-  --ok:#047857; --okbg:#D1FAE5; --bad:#B91C1C; --badbg:#FEE2E2; --warn:#B45309; --warnbg:#FEF3C7;
-  --accent:#2563EB; --radius:14px;
+  --bg:#F1F5F9; --card:#FFFFFF; --ink:#0F172A; --soft:#64748B; --line:#E4E9F0;
+  --ok:#047857; --okbg:#D9F7E8; --bad:#B91C1C; --badbg:#FEE4E2; --warn:#B45309; --warnbg:#FEF3C7;
+  --accent:#2563EB; --accent-d:#1E3A8A; --accent-soft:#EEF2FF; --radius:18px;
+  --shadow:0 1px 2px rgba(15,23,42,.05),0 6px 18px rgba(15,23,42,.06);
+}
+@supports (color:color-mix(in srgb,red,blue)){
+  :root{--accent-d:color-mix(in srgb,var(--accent) 58%,#050B2B);--accent-soft:color-mix(in srgb,var(--accent) 11%,#fff)}
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font-family:'Noto Sans Bengali',system-ui,sans-serif;font-size:16px;line-height:1.45;padding-bottom:84px}
+body{background:var(--bg);color:var(--ink);font-family:'BSCnum','BSC','Noto Sans Bengali',system-ui,sans-serif;font-size:16px;line-height:1.5;padding-bottom:92px}
 body.noscroll{overflow:hidden}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
+button,.btn{transition:transform .08s ease,box-shadow .15s ease,background-color .15s ease}
+button:active,.btn:active{transform:scale(.96)}
 .wrap{max-width:640px;margin:0 auto;padding:0 12px}
 
 /* header */
-.bar{background:linear-gradient(135deg,#1E3A8A,var(--accent));color:#fff;padding:8px 0 10px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
-.brand{display:flex;align-items:center;gap:10px}
-.brand img{width:34px;height:34px;border-radius:9px}
-.brand h1{font-size:19px;margin:0;font-weight:700;line-height:1.2}
-.brand small{display:block;font-size:13px;opacity:.9;font-weight:500}
-.seg{display:flex;gap:4px;background:rgba(255,255,255,.16);padding:3px;border-radius:11px;margin-top:8px}
-.seg-btn{flex:1;border:0;background:transparent;color:#fff;padding:7px 6px;border-radius:9px;font-weight:600;font-size:15px}
-.seg-btn.on{background:#fff;color:var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.bar{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;padding:12px 0 14px;border-radius:0 0 24px 24px;box-shadow:0 8px 24px -8px var(--accent)}
+.bar::before,.bar::after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.09);pointer-events:none}
+.bar::before{width:190px;height:190px;right:-60px;top:-90px}
+.bar::after{width:120px;height:120px;right:70px;top:-70px;background:rgba(255,255,255,.06)}
+.bar .wrap{position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:11px}
+.brand img{width:42px;height:42px;border-radius:13px;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.2)}
+.brand h1{font-size:21px;margin:0;font-weight:700;line-height:1.2;letter-spacing:.2px}
+.brand small{display:block;font-size:13.5px;opacity:.92;font-weight:500}
+.seg{display:flex;gap:4px;background:rgba(255,255,255,.16);padding:4px;border-radius:14px;margin-top:9px}
+.seg-btn{flex:1;border:0;background:transparent;color:#fff;padding:8px 6px;border-radius:11px;font-weight:600;font-size:15px}
+.seg-btn.on{background:#fff;color:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.18)}
 .seg-note{flex:1;text-align:center;padding:6px;font-size:14px;opacity:.95}
-.light .seg{background:#E2E8F0}
+.light .seg{background:#E8EDF3}
 .light .seg-btn{color:var(--ink)}
 .light .seg-btn.on{color:var(--accent)}
 
 /* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 8px}
-.stat{background:var(--card);border-radius:12px;padding:9px 6px;text-align:center;border:1px solid var(--line)}
-.stat b{display:block;font-size:18px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0 8px}
+.stat{background:var(--card);border-radius:16px;padding:9px 4px 8px;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:var(--accent)}
+.stat i{display:block;font-style:normal;font-size:17px;line-height:1.3}
+.stat b{display:block;font-size:20px;font-weight:700;line-height:1.25}
 .stat span{font-size:12px;color:var(--soft)}
 .stat.ok b{color:var(--ok)} .stat.bad b{color:var(--bad)} .stat.warn b{color:var(--warn)}
+.stat.ok::before{background:#10B981} .stat.bad::before{background:#EF4444} .stat.warn::before{background:#F59E0B}
 .stat.bad{cursor:pointer}
-.alert{display:block;width:100%;text-align:left;border:1px solid #FCD34D;background:var(--warnbg);color:var(--warn);border-radius:12px;padding:10px 12px;font-weight:600;margin-bottom:8px}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 10px}
+.quick button{border:0;background:var(--card);border-radius:16px;padding:10px 2px 8px;font-size:12.5px;font-weight:600;color:var(--ink);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0}
+.quick button span{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:21px;background:var(--accent-soft)}
+.alert{display:block;width:100%;text-align:left;border:1px solid #FCD34D;background:var(--warnbg);color:var(--warn);border-radius:14px;padding:11px 13px;font-weight:600;margin-bottom:8px}
 .tools{display:flex;gap:8px;align-items:center;margin:6px 0 10px}
-.search{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 12px;min-width:0}
-.add{border:0;background:var(--accent);color:#fff;border-radius:12px;padding:11px 14px;font-weight:700;white-space:nowrap}
+.search{flex:1;border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:11px 13px;min-width:0;outline:0}
+.search:focus,label.f input:focus,label.f select:focus,label.f textarea:focus,.inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);outline:0}
+.add{border:0;background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;border-radius:14px;padding:12px 14px;font-weight:700;white-space:nowrap;box-shadow:0 4px 12px -4px var(--accent)}
 .chips{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
-.fchip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:14px}
+.fchip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;font-size:14px;font-weight:500}
 .fchip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 
 /* card */
-.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);border-left:5px solid var(--accent);padding:12px;margin-bottom:10px}
-.c-top{display:flex;align-items:flex-start;gap:8px;justify-content:space-between}
-.c-name{font-size:18px;font-weight:700;cursor:pointer}
+.card{background:var(--card);border-radius:var(--radius);border-left:5px solid #CBD5E1;padding:13px 13px 13px 12px;margin-bottom:10px;box-shadow:var(--shadow)}
+.card.st-paid{border-left-color:#10B981}.card.st-due{border-left-color:#EF4444}.card.st-wait{border-left-color:#F59E0B}
+#list.in .card{animation:rise .32s ease-out both}
+#list.in .card:nth-child(2){animation-delay:.04s}#list.in .card:nth-child(3){animation-delay:.08s}#list.in .card:nth-child(4){animation-delay:.12s}#list.in .card:nth-child(n+5){animation-delay:.16s}
+@keyframes rise{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+.c-top{display:flex;align-items:center;gap:10px}
+.av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:20px;background:hsl(var(--h,220) 75% 92%);color:hsl(var(--h,220) 60% 30%);cursor:pointer}
+.c-name{flex:1;min-width:0;font-size:18px;font-weight:700;cursor:pointer;line-height:1.3}
 .chip{font-size:13px;font-weight:600;border-radius:999px;padding:3px 10px;white-space:nowrap}
 .chip.ok{background:var(--okbg);color:var(--ok)} .chip.bad{background:var(--badbg);color:var(--bad)}
 .chip.warn{background:var(--warnbg);color:var(--warn)} .chip.soft{background:#F1F5F9;color:var(--soft)}
-.c-phone{font-size:14px;color:var(--soft);margin-top:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.c-phone{font-size:14.5px;font-weight:600;color:var(--soft);margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .c-phone.bad{color:var(--bad);font-weight:600}
 .wa-ok{color:var(--ok);font-weight:600}
-.c-due{margin-top:6px;font-size:14px;color:var(--bad);font-weight:600}
+.c-due{margin-top:6px;font-size:14px;color:var(--bad);font-weight:600;background:var(--badbg);border-radius:10px;padding:5px 10px;display:inline-block}
 .c-note{margin-top:4px;font-size:13px;color:var(--warn)}
 .c-actions{display:flex;gap:8px;margin-top:10px}
-.btn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 14px;font-weight:600;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:6px}
-.btn.pay{flex:1;background:var(--accent);color:#fff;border-color:var(--accent);font-size:16px}
+.btn{border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:11px 14px;font-weight:600;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.pay{flex:1;background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;border-color:transparent;font-size:16px;box-shadow:0 5px 14px -6px var(--accent)}
 .btn.icon{width:48px;padding:11px 0;font-size:18px}
 .btn.big{width:100%;padding:15px;font-size:17px;margin-top:12px}
-.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-.btn.green{background:#16A34A;color:#fff;border-color:#16A34A}
+.btn.primary{background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;border-color:transparent}
+.btn.green{background:linear-gradient(135deg,#15803D,#22C55E);color:#fff;border-color:transparent;box-shadow:0 6px 16px -6px #16A34A}
+.btn.gold{background:linear-gradient(135deg,#B7791F,#EAB308);color:#fff;border-color:transparent;box-shadow:0 6px 16px -6px #CA8A04}
 .btn.ghost{width:100%;margin-top:10px;background:#F8FAFC;color:var(--soft)}
 .btn:disabled{opacity:.45}
-.mini{border:1px solid var(--line);background:#F8FAFC;border-radius:8px;padding:4px 10px;font-size:13px;font-weight:600}
+.mini{border:1px solid var(--line);background:#F8FAFC;border-radius:9px;padding:5px 11px;font-size:13px;font-weight:600}
 .mini.wa{background:#DCFCE7;color:#166534;border-color:#86EFAC}
 .mini.danger{color:var(--bad);background:var(--badbg);border-color:#FCA5A5}
-.exp{margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+.exp{margin-top:10px;border-top:1px dashed var(--line);padding-top:10px;animation:rise .2s ease-out}
 .strip{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
-.strip div{font-size:12px;text-align:center;border-radius:6px;padding:4px 0;background:#F1F5F9;color:var(--soft)}
+.strip div{font-size:12px;text-align:center;border-radius:8px;padding:5px 0;background:#F1F5F9;color:var(--soft)}
 .strip .p{background:var(--okbg);color:var(--ok);font-weight:700}
 .strip .d{background:var(--badbg);color:var(--bad);font-weight:700}
 .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.empty{text-align:center;color:var(--soft);padding:30px 10px;background:#fff;border-radius:var(--radius);border:1px dashed #CBD5E1}
+.empty{text-align:center;color:var(--soft);padding:30px 10px;background:#fff;border-radius:var(--radius);border:1.5px dashed #CBD5E1}
 
 /* bottom nav */
-.nav{position:fixed;left:0;right:0;bottom:0;z-index:25;background:#fff;border-top:1px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
-.nav button{flex:1;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:12px;color:var(--soft);padding:4px 0;font-weight:600}
-.nav button span{font-size:21px;line-height:1.1}
-.nav button.on{color:var(--accent)}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:25;background:rgba(255,255,255,.97);border-radius:20px 20px 0 0;box-shadow:0 -6px 24px rgba(15,23,42,.1);display:flex;padding:7px 6px calc(7px + env(safe-area-inset-bottom))}
+.nav button{flex:1;min-width:0;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:12px;color:var(--soft);padding:5px 0;font-weight:600;border-radius:14px}
+.nav button span{font-size:21px;line-height:1.15}
+.nav button.on{color:var(--accent);background:var(--accent-soft)}
 
 /* sheet */
-.backdrop{position:fixed;inset:0;z-index:50;background:rgba(15,23,42,.5);display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:#fff;width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:8px 16px calc(18px + env(safe-area-inset-bottom));animation:up .18s ease-out}
-@keyframes up{from{transform:translateY(40px);opacity:.6}to{transform:none;opacity:1}}
-.grab{width:44px;height:5px;border-radius:3px;background:#CBD5E1;margin:4px auto 10px}
-.sh-head{border-left:5px solid var(--accent);padding-left:10px;margin-bottom:10px}
-.sh-name{font-size:21px;font-weight:700}
+.backdrop{position:fixed;inset:0;z-index:50;background:rgba(15,23,42,.55);display:flex;align-items:flex-end;justify-content:center;animation:fade .18s ease-out}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet{background:#fff;width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:26px 26px 0 0;padding:8px 16px calc(18px + env(safe-area-inset-bottom));animation:up .22s cubic-bezier(.2,.9,.3,1)}
+@keyframes up{from{transform:translateY(60px);opacity:.5}to{transform:none;opacity:1}}
+.grab{width:44px;height:5px;border-radius:3px;background:#CBD5E1;margin:4px auto 12px}
+.sh-head{border-left:5px solid var(--accent);padding-left:11px;margin-bottom:10px;border-radius:3px}
+.sh-name{font-size:21px;font-weight:700;line-height:1.3}
 .sh-sub{color:var(--soft);font-size:14px}
 label.f{display:block;font-size:14px;color:var(--soft);margin-top:10px;font-weight:600}
-label.f input,label.f select,label.f textarea,.inp{display:block;width:100%;margin-top:4px;border:1px solid #CBD5E1;border-radius:10px;padding:11px 12px;background:#fff;font-size:16px;color:var(--ink)}
+label.f input,label.f select,label.f textarea,.inp{display:block;width:100%;margin-top:4px;border:1.5px solid #CBD5E1;border-radius:12px;padding:11px 12px;background:#fff;font-size:16px;font-weight:400;color:var(--ink)}
 .inp.err,label.f input.err{border-color:var(--bad);background:#FFF5F5}
 .hint{font-size:13px;color:var(--soft);margin-top:4px}
 .hint.err{color:var(--bad);font-weight:600}
 textarea{resize:vertical}
 .mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.mcell{border:2px solid var(--line);background:#fff;border-radius:12px;min-height:64px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.mcell{border:2px solid var(--line);background:#fff;border-radius:14px;min-height:64px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 .mcell b{font-size:16px}
 .mcell small{font-size:12px;color:var(--soft);min-height:16px}
 .mcell.cur{border-color:#93C5FD}
 .mcell.due{border-color:#FCA5A5;background:#FFF7F7}
 .mcell.due small{color:var(--bad);font-weight:600}
-.mcell.sel{border-color:var(--accent);background:var(--accent);color:#fff}
+.mcell.sel{border-color:var(--accent);background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;box-shadow:0 5px 14px -6px var(--accent);animation:pop .18s ease-out}
 .mcell.sel small{color:#fff}
 .mcell.paid{background:var(--okbg);border-color:#6EE7B7;color:var(--ok)}
 .mcell.paid small{color:var(--ok)}
-.tile{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:12px;padding:12px;margin-top:10px;font-weight:600}
+@keyframes pop{0%{transform:scale(.9)}70%{transform:scale(1.05)}100%{transform:none}}
+.tile{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:14px;padding:12px;margin-top:10px;font-weight:600}
 .tile.on{border-color:var(--warn);background:var(--warnbg)}
 .tile.done{background:var(--okbg);border-color:#6EE7B7;color:var(--ok);justify-content:space-between}
-.tile input{width:22px;height:22px}
+.tile input{width:22px;height:22px;accent-color:var(--accent)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .plist{margin-top:14px;border-top:1px solid var(--line);padding-top:8px}
 .plist h4,.sec h4{margin:6px 0;font-size:15px}
 .pl-row{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid #F1F5F9;font-size:14px}
 .pl-row span{flex:1}
 .rcpt{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:6px}
-.rcimg{display:block;width:100%;min-height:220px;margin:6px 0 10px;border-radius:14px;border:1px solid var(--line);background:#F1F5F9}
+.rcimg{display:block;width:100%;min-height:220px;margin:8px 0 10px;border-radius:18px;background:linear-gradient(110deg,#EEF2F6 30%,#F8FAFC 50%,#EEF2F6 70%);background-size:200% 100%;animation:shim 1.2s linear infinite;box-shadow:var(--shadow);cursor:zoom-in}
+.rcimg[src]{animation:pop .25s ease-out;background:#fff}
+@keyframes shim{to{background-position:-200% 0}}
 .rcpt-h{background:var(--accent);color:#fff;text-align:center;padding:12px}
 .rcpt-h b{display:block;font-size:19px}
 .rcpt-b{padding:12px 14px;white-space:pre-wrap;font-size:15px}
@@ -147,25 +182,25 @@ textarea{resize:vertical}
 .q-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #F1F5F9}
 .q-row span{flex:1}
 .q-row.sent span{color:var(--ok)}
-.donebox{background:var(--okbg);color:var(--ok);font-weight:700;text-align:center;border-radius:12px;padding:14px;margin-top:12px}
-.pre{white-space:pre-wrap;background:#F8FAFC;border-radius:10px;padding:10px;font-size:14px;font-family:inherit}
+.donebox{background:var(--okbg);color:var(--ok);font-weight:700;text-align:center;border-radius:14px;padding:14px;margin-top:12px}
+.pre{white-space:pre-wrap;background:#F8FAFC;border-radius:12px;padding:10px;font-size:14px;font-family:inherit}
 .att-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #F1F5F9}
 .att-row .nm{flex:1;font-weight:600}
-.pbtn{border:0;border-radius:10px;padding:9px 12px;font-weight:700;min-width:96px;background:var(--okbg);color:var(--ok)}
+.pbtn{border:0;border-radius:12px;padding:9px 12px;font-weight:700;min-width:96px;background:var(--okbg);color:var(--ok)}
 .pbtn.ab{background:var(--badbg);color:var(--bad)}
 .lbtn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font-size:13px;font-weight:600}
 .lbtn.on{background:var(--warnbg);color:var(--warn);border-color:#FCD34D}
 .lmin{width:62px;border:1px solid #CBD5E1;border-radius:8px;padding:7px;font-size:15px}
-.menu button{display:flex;width:100%;align-items:center;gap:12px;border:0;border-bottom:1px solid #F1F5F9;background:#fff;padding:14px 4px;font-size:16px;font-weight:600;text-align:left}
-.menu button span{font-size:20px;width:28px;text-align:center}
+.menu button{display:flex;width:100%;align-items:center;gap:12px;border:0;border-bottom:1px solid #F1F5F9;background:#fff;padding:11px 4px;font-size:16px;font-weight:600;text-align:left}
+.menu button span{font-size:20px;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);flex:none}
 table.t{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
 table.t td,table.t th{border-bottom:1px solid #F1F5F9;padding:7px 4px;text-align:left;vertical-align:top}
 table.t th{color:var(--soft);font-weight:600}
 .ok-t{color:var(--ok);font-weight:700}.bad-t{color:var(--bad);font-weight:700}
-.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#0F172A;color:#fff;padding:10px 18px;border-radius:999px;font-size:15px;z-index:99;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;text-align:center}
-.toast.show{opacity:1}
+.toast{position:fixed;left:50%;bottom:104px;transform:translate(-50%,12px);background:#0F172A;color:#fff;padding:11px 20px;border-radius:999px;font-size:15px;font-weight:500;z-index:99;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;max-width:90vw;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
 /* ইনস্টল ব্যানার */
-.inst{position:fixed;left:10px;right:10px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:30;background:#0F172A;color:#fff;border-radius:16px;padding:12px 14px;display:none;align-items:center;gap:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:620px;margin:0 auto}
+.inst{position:fixed;left:10px;right:10px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:30;background:#0F172A;color:#fff;border-radius:18px;padding:12px 14px;display:none;align-items:center;gap:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:620px;margin:0 auto}
 .inst.show{display:flex}
 .inst img{width:42px;height:42px;border-radius:10px}
 .inst div{flex:1;font-size:14px;line-height:1.35}
@@ -177,16 +212,46 @@ table.t th{color:var(--soft);font-weight:600}
   html,body{overscroll-behavior-y:none}
   body{-webkit-user-select:none;user-select:none}
   input,textarea{-webkit-user-select:text;user-select:text}
-  .bar{padding-top:calc(8px + env(safe-area-inset-top))}
+  .bar{padding-top:calc(12px + env(safe-area-inset-top))}
 }
-.mk{width:80px;border:1px solid #CBD5E1;border-radius:8px;padding:8px;font-size:16px;text-align:center}
+.mk{width:80px;border:1.5px solid #CBD5E1;border-radius:10px;padding:8px;font-size:16px;text-align:center}
 .mk.err{border-color:var(--bad);background:#FFF5F5}
 details summary{cursor:pointer;color:var(--soft);margin-top:12px;font-size:14px}
 .alert.ev{background:#EFF6FF;border-color:#93C5FD;color:#1E3A8A}
 .alert.ev small{font-weight:500;opacity:.85}
-.nav button{min-width:0}
 .evtype{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
-@media (max-width:380px){.stat b{font-size:16px}.stat span{font-size:11px}.btn.icon{width:42px}}
+/* ছবি বড় করে দেখা */
+.zoom{position:fixed;inset:0;z-index:150;background:rgba(2,6,23,.92);overflow:auto;padding:14px 10px 40px;animation:fade .18s ease-out;cursor:zoom-out}
+.zoom img{display:block;width:100%;max-width:720px;margin:0 auto;border-radius:14px}
+.zoom button{position:fixed;top:12px;right:12px;width:42px;height:42px;border-radius:50%;border:0;background:#fff;font-size:18px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+/* ড্যাশবোর্ড */
+.db{background:#F8FAFC;border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:10px}
+.db h4{margin:0 0 8px;font-size:15px;font-weight:700}
+.db-prog{height:14px;border-radius:7px;background:#E2E8F0;overflow:hidden}
+.db-prog i{display:block;height:100%;border-radius:7px;background:linear-gradient(90deg,#10B981,#22C55E);animation:grow .7s ease-out both;transform-origin:left}
+@keyframes grow{from{transform:scaleX(0)}to{transform:none}}
+.db-bars{display:flex;align-items:flex-end;gap:4px;height:100px}
+.db-bar{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;min-width:0}
+.db-bar i{display:block;width:100%;max-width:26px;border-radius:6px 6px 2px 2px;animation:growY .6s ease-out both;transform-origin:bottom}
+.db-bar small{font-size:10.5px;color:var(--soft);white-space:nowrap;line-height:1.2}
+@keyframes growY{from{transform:scaleY(0)}to{transform:none}}
+.db-row{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid #EEF2F6;font-size:15px}
+.db-row:last-child{border-bottom:0}
+.db-row .nm{flex:1;min-width:0;font-weight:600}
+.db-row .nm small{display:block;font-weight:400;color:var(--soft);font-size:12.5px}
+.db-row .md{font-size:22px;width:30px;text-align:center}
+.db-ch{display:grid;grid-template-columns:minmax(0,1fr) 92px 44px;gap:8px;align-items:center;font-size:14px;padding:4px 0}
+.db-ch span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-ch b{text-align:right}
+/* লটারি */
+.pick{text-align:center;padding:18px 10px;border-radius:20px;background:var(--accent-soft);margin-top:6px}
+.pick-av{width:92px;height:92px;border-radius:50%;margin:0 auto 8px;display:grid;place-items:center;font-size:44px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--accent-d),var(--accent));box-shadow:0 8px 20px -8px var(--accent)}
+.pick-nm{font-size:26px;font-weight:700;min-height:40px;line-height:1.3}
+.pick.done{background:linear-gradient(135deg,#FEF9C3,#FDE68A)}
+.pick.done .pick-av{background:linear-gradient(135deg,#B7791F,#F59E0B);animation:pop .4s ease-out}
+.pick.done .pick-nm{animation:pop .4s ease-out}
+@media (max-width:380px){.stat b{font-size:17px}.stat span{font-size:11px}.btn.icon{width:42px}.quick button{font-size:11.5px}.av{width:38px;height:38px;font-size:18px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -203,6 +268,12 @@ details summary{cursor:pointer;color:var(--soft);margin-top:12px;font-size:14px}
 
 <main class="wrap">
   <div class="stats" id="stats"></div>
+  <div class="quick">
+    <button data-act="dash"><span>📊</span>ড্যাশবোর্ড</button>
+    <button data-act="picker"><span>🎲</span>কে উত্তর দেবে</button>
+    <button data-act="honor"><span>🏆</span>সেরা শিক্ষার্থী</button>
+    <button data-act="rpAll"><span>📄</span>রিপোর্ট কার্ড</button>
+  </div>
   <div id="alerts"></div>
   <div class="tools">
     <input class="search" id="search" type="search" placeholder="🔍 নাম বা নম্বর দিয়ে খুঁজুন">
@@ -235,7 +306,7 @@ details summary{cursor:pointer;color:var(--soft);margin-top:12px;font-size:14px}
 /* ========== স্থির তথ্য ========== */
 const CENTER = 'জীববিজ্ঞান স্টাডি সেন্টার';
 const APP_YEAR = 2027;
-const APP_VERSION = '2027.14 (১৫ নভে ২০২৬)';
+const APP_VERSION = '2027.15 (১৫ নভে ২০২৬)';
 const TEACHER_DEFAULT = 'মোঃ খাজা জহুরুল ইসলাম';
 const TEACHER_PHONE_DEFAULT = '01722647270';
 const SIG_IMG = 'data:image/png;base64,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';
@@ -396,7 +467,9 @@ let IGNORE_POP = false;
 window.addEventListener('popstate', () => { if (IGNORE_POP) { IGNORE_POP = false; return; } if ($('#sheet')) closeSheet(true); });
 
 /* ========== মূল স্ক্রিন ========== */
-function renderAll(){ renderHeader(); renderStats(); renderList(); }
+let LIST_T;
+function renderAll(){ renderHeader(); renderStats(); renderList();
+  const l = $('#list'); l.classList.add('in'); clearTimeout(LIST_T); LIST_T = setTimeout(() => l.classList.remove('in'), 700); }
 function renderHeader(){
   const b = B(ACTIVE);
   document.documentElement.style.setProperty('--accent', b.color);
@@ -415,10 +488,10 @@ function renderStats(){
   const dueAmt = L.reduce((a, s) => a + dueList(s).length * Number(B(s.batch).fee), 0);
   const noteDue = L.filter(s => !noteFeePaid(s)).length;
   $('#stats').innerHTML = `
-    <div class="stat"><b>${toBn(L.length)}</b><span>শিক্ষার্থী</span></div>
-    <div class="stat ok"><b>${toBn(paidN)}</b><span>${MS[TODAY.getMonth()]} দিয়েছে</span></div>
-    <div class="stat bad" data-act="filter" data-m="due"><b>৳${toBn(dueAmt)}</b><span>বকেয়া ${toBn(dueS.length)} জন</span></div>
-    <div class="stat warn"><b>${toBn(noteDue)}</b><span>নোট ফি বাকি</span></div>`;
+    <div class="stat"><i>👥</i><b>${toBn(L.length)}</b><span>শিক্ষার্থী</span></div>
+    <div class="stat ok"><i>✅</i><b>${toBn(paidN)}</b><span>${MS[TODAY.getMonth()]} দিয়েছে</span></div>
+    <div class="stat bad" data-act="filter" data-m="due"><i>💰</i><b>৳${toBn(dueAmt)}</b><span>বকেয়া ${toBn(dueS.length)} জন</span></div>
+    <div class="stat warn"><i>📒</i><b>${toBn(noteDue)}</b><span>নোট ফি বাকি</span></div>`;
   const wp = L.filter(waPending).length;
   $('#alerts').innerHTML = (wp ? `<button class="alert" data-act="filter" data-m="wa">⚠️ ${toBn(wp)} জনের WhatsApp নম্বর নিশ্চিত হয়নি, এখানে চাপুন</button>` : '') + soonEventsHTML();
 }
@@ -449,8 +522,8 @@ function cardHTML(s){
   const mName = MS[TODAY.getMonth()];
   const chip = {paid:['ok', '✓ ' + mName + ' দিয়েছে'], due:['bad', mName + ' বাকি'], wait:['warn', toBn(b.dueDay) + ' তারিখের মধ্যে দেবে'],
     later:['soft', 'মাস শেষে দেবে'], na:['soft', 'সেশন শুরু ' + ymLabel(b.start)]}[st];
-  return `<div class="card" id="c_${s.id}">
-    <div class="c-top"><div class="c-name" data-act="profile" data-sid="${s.id}">${esc(s.name)}</div><span class="chip ${chip[0]}">${chip[1]}</span></div>
+  return `<div class="card st-${st}" id="c_${s.id}">
+    <div class="c-top"><span class="av" style="--h:${hueOf(s.id)}" data-act="profile" data-sid="${s.id}">${esc(initial(s.name))}</span><div class="c-name" data-act="profile" data-sid="${s.id}">${esc(s.name)}</div><span class="chip ${chip[0]}">${chip[1]}</span></div>
     <div class="c-phone ${ok ? '' : 'bad'}">👪 ${ok ? toBn(normPhone(s.guardianPhone)) : 'অভিভাবকের নম্বর ঠিক নেই'}
       ${ok ? (s.waVerified ? '<span class="wa-ok">WhatsApp ✓</span>' : `<button class="mini wa" data-act="waVerify" data-sid="${s.id}">WhatsApp যাচাই</button>`)
            : `<button class="mini" data-act="edit" data-sid="${s.id}">ঠিক করুন</button>`}</div>
@@ -608,7 +681,7 @@ function paySave(){
   if (!save()) return;
   updateCard(s.id);
   openReceipt(s.id, items, PAY.note, PAY.on);
-  toast('সেভ হয়েছে ✓');
+  toast('সেভ হয়েছে ✓'); celebrate();
 }
 
 /* ========== রশিদ ========== */
@@ -627,7 +700,7 @@ function receiptData(sid, items, note, on){
 function openReceipt(sid, items, note, on){
   RC = {sid, items, note, on};
   const d = receiptData(sid, items, note, on);
-  sheet(`<div class="sh-head"><div class="sh-name">✅ সেভ হয়েছে · রশিদ</div><div class="sh-sub">অভিভাবককে পাঠাতে নিচের বোতাম চাপুন</div></div>
+  sheet(`<div class="sh-head"><div class="sh-name">✅ সেভ হয়েছে · রশিদ</div><div class="sh-sub">অভিভাবককে পাঠাতে নিচের বোতাম চাপুন · ছবিতে চাপলে বড় হবে</div></div>
     <img id="rcImg" class="rcimg" alt="রশিদ তৈরি হচ্ছে…">
     <button class="btn big green" data-act="rChatImg">🧾 রশিদের ছবি WhatsApp-এ পাঠান</button>
     <div class="hint">চাপলে শুধু রশিদের ছবি যাবে, কোনো লেখা যাবে না। তালিকা থেকে <b>WhatsApp</b> বাছুন → অভিভাবককে বাছুন (নম্বর কপি করা আছে, সার্চে <b>Paste</b> করলেই পাবেন) → পাঠান।</div>
@@ -643,7 +716,7 @@ function openReceipt(sid, items, note, on){
 let FONTS_P = null;
 function fontsReady(){   /* একবারই লোড, পরে সাথে সাথে */
   if (!document.fonts) return Promise.resolve();
-  if (!FONTS_P) FONTS_P = Promise.race([Promise.all(['600 24px "Baloo Da 2"', '700 24px "Baloo Da 2"', '400 18px "Hind Siliguri"', '500 18px "Hind Siliguri"'].map(f => document.fonts.load(f, 'অআ১২৳'))), new Promise(r => setTimeout(r, 2500))]);
+  if (!FONTS_P) FONTS_P = Promise.race([Promise.all(['600 24px "Baloo Da 2"', '700 24px "Baloo Da 2"', '400 18px "Hind Siliguri"', '500 18px "Hind Siliguri"', '400 18px "BSCnum"'].map(f => document.fonts.load(f, 'অআ১২৳'))), new Promise(r => setTimeout(r, 2500))]);
   return FONTS_P;
 }
 const IMG_C = {};
@@ -692,124 +765,112 @@ const bnOrd = n => toBn(n) + ({1:'ম',2:'য়',3:'য়',4:'র্থ',6:'�
 const scoreColor = p => p >= 75 ? '#15803D' : p >= 50 ? '#B45309' : '#B91C1C';
 function rrect(x, X, Y, W, H, R){ x.beginPath(); x.moveTo(X + R, Y); x.arcTo(X + W, Y, X + W, Y + H, R); x.arcTo(X + W, Y + H, X, Y + H, R); x.arcTo(X, Y + H, X, Y, R); x.arcTo(X, Y, X + W, Y, R); x.closePath(); }
 async function makeReceiptCanvas(){
-  await fontsReady();
-  const d = receiptData(RC.sid, RC.items, RC.note, RC.on);
-  const G = '#14532D', G2 = '#1F7A45', GL = '#ECF7EF', GOLD = '#C79A3E', INK = '#0F172A', SOFT = '#64748B';
-  const P = progressData(d.s, d.on), progH = (P.att || P.ex.length ? 90 : 0) + (P.att ? 250 : 0) + P.ex.length * 132;
-  const W = 1080, rowH = 62, H = 1270 + progH + d.rows.length * rowH, tk = n => '৳' + toBn(Number(n).toLocaleString('en-IN'));
-  const c = document.createElement('canvas'); c.width = W; c.height = H;
-  const x = c.getContext('2d'), F = (w, s) => w >= 600 ? `${w} ${s}px "Baloo Da 2", "Noto Sans Bengali", sans-serif` : `${w} ${s}px "Hind Siliguri", "Noto Sans Bengali", sans-serif`;
-  const [logo, sig] = await Promise.all([loadImg('logo.png'), loadImg(SIG_IMG)]);
-  /* পটভূমি ও কার্ড */
-  x.fillStyle = '#EEF5F0'; x.fillRect(0, 0, W, H);
-  x.fillStyle = '#fff'; rrect(x, 28, 28, W - 56, H - 56, 28); x.fill();
-  x.strokeStyle = '#D5E7DA'; x.lineWidth = 2; x.stroke();
-  x.save(); rrect(x, 28, 28, W - 56, H - 56, 28); x.clip(); x.fillStyle = G; x.fillRect(28, 28, W - 56, 14); x.restore();
-  if (logo) { x.globalAlpha = .05; x.drawImage(logo, W / 2 - 300, H / 2 - 260, 600, 600); x.globalAlpha = 1; }
-  /* হেডার: লোগো + নাম */
-  if (logo) x.drawImage(logo, 60, 62, 190, 190);
-  x.textAlign = 'left'; x.fillStyle = G; x.font = F(700, 44); x.fillText(CENTER, 270, 128);
-  x.fillStyle = SOFT; x.font = F(500, 24); x.fillText('পরিচালনায়: ' + S.settings.teacher, 272, 172);
-  x.fillText('মোবাইল: ' + toBn(S.settings.phone), 272, 208);
-  x.strokeStyle = GOLD; x.lineWidth = 3; x.beginPath(); x.moveTo(60, 278); x.lineTo(W - 60, 278); x.stroke();
-  /* শিরোনাম */
-  x.fillStyle = INK; x.font = F(700, 34); x.fillText('টাকা প্রাপ্তির রশিদ', 60, 336);
-  x.textAlign = 'right'; x.fillStyle = SOFT; x.font = F(500, 24); x.fillText('রশিদ নং: ' + d.code, W - 60, 334);
-  /* বড় অঙ্ক: এক নজরে */
-  let y = 368;
-  x.fillStyle = GL; rrect(x, 60, y, W - 120, 170, 22); x.fill();
-  x.textAlign = 'left'; x.fillStyle = G2; x.font = F(600, 26); x.fillText('মোট পরিশোধ', 96, y + 56);
-  x.fillStyle = G; x.font = F(700, 78); x.fillText(tk(d.total), 92, y + 140);
-  /* "পরিশোধিত" সিল */
-  x.save(); x.translate(W - 210, y + 86); x.rotate(-0.16);
-  x.strokeStyle = G2; x.lineWidth = 5; x.beginPath(); x.arc(0, 0, 70, 0, Math.PI * 2); x.stroke();
-  x.lineWidth = 2; x.beginPath(); x.arc(0, 0, 60, 0, Math.PI * 2); x.stroke();
-  x.fillStyle = G2; x.textAlign = 'center'; x.font = F(700, 26); x.fillText('পরিশোধিত', 0, -2); x.font = F(700, 34); x.fillText('✓', 0, 36);
-  x.restore();
-  /* তথ্য: ২×২ ঘর */
-  y += 200;
-  const months = d.rows.filter(r => r[0].includes('মাসের বেতন')).map(r => r[0].replace(' মাসের বেতন', '')).join(', ') || 'নোট ফি';
-  const info = [['শিক্ষার্থী', d.s.name], ['ব্যাচ', batchName(d.s.batch)], ['টাকা পাওয়ার তারিখ', bnDate(d.on)], ['যে মাসের', months]];
-  info.forEach((r, i) => {
-    const cx = 60 + (i % 2) * ((W - 120) / 2 + 10), cy = y + Math.floor(i / 2) * 104, cw = (W - 120) / 2 - 10;
-    x.fillStyle = '#F8FAFC'; rrect(x, cx, cy, cw, 90, 16); x.fill();
-    x.textAlign = 'left'; x.fillStyle = SOFT; x.font = F(500, 21); x.fillText(r[0], cx + 22, cy + 34);
-    x.fillStyle = INK; x.font = F(700, 27);
-    let v = String(r[1]); while (x.measureText(v).width > cw - 44 && v.length > 4) v = v.slice(0, -2);
-    if (v !== String(r[1])) v += '…';
-    x.fillText(v, cx + 22, cy + 72);
-  });
-  /* মাসিক অগ্রগতি: হাজিরা ও পরীক্ষা */
-  y += 228;
-  if (P.att || P.ex.length) {
-    x.textAlign = 'left'; x.fillStyle = G; x.font = F(700, 30); x.fillText('📊 মাসিক অগ্রগতি', 60, y + 34);
-    x.strokeStyle = '#E2E8F0'; x.lineWidth = 2; x.beginPath(); x.moveTo(330, y + 24); x.lineTo(W - 60, y + 24); x.stroke();
-    y += 70;
-  }
-  if (P.att) {
-    const a = P.att, col = scoreColor(a.pct);
-    x.fillStyle = '#F8FAFC'; rrect(x, 60, y, W - 120, 226, 20); x.fill();
-    /* বৃত্তে হাজিরার হার */
-    const cx = 170, cy = y + 113;
-    x.lineCap = 'round'; x.lineWidth = 20; x.strokeStyle = '#E2E8F0'; x.beginPath(); x.arc(cx, cy, 76, 0, Math.PI * 2); x.stroke();
-    x.strokeStyle = col; x.beginPath(); x.arc(cx, cy, 76, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * a.pct / 100); x.stroke(); x.lineCap = 'butt';
-    x.textAlign = 'center'; x.fillStyle = col; x.font = F(700, 40); x.fillText(toBn(a.pct) + '%', cx, cy + 10);
-    x.fillStyle = SOFT; x.font = F(500, 18); x.fillText('উপস্থিতি', cx, cy + 40);
-    x.textAlign = 'left'; x.fillStyle = INK; x.font = F(700, 28); x.fillText(a.label + '-এর হাজিরা', 290, y + 52);
-    x.fillStyle = SOFT; x.font = F(500, 23);
-    x.fillText(toBn(a.total) + ' দিন ক্লাসের মধ্যে এসেছে ' + toBn(a.pres) + ' দিন' + (a.late ? ' (দেরিতে ' + toBn(a.late) + ')' : ''), 290, y + 92);
-    /* প্রতিদিনের ঘর */
-    const n = a.marks.length, gap = 6, bw = Math.min(34, (W - 120 - 230 - 30 - gap * (n - 1)) / n);
-    a.marks.forEach((c, i) => { x.fillStyle = c === 'P' ? '#22C55E' : c === 'L' ? '#F59E0B' : '#EF4444'; rrect(x, 290 + i * (bw + gap), y + 116, bw, 34, 7); x.fill(); });
-    x.fillStyle = col; x.font = F(700, 25); x.fillText('● ' + attWord(a.pct), 290, y + 196);
-    x.fillStyle = SOFT; x.font = F(400, 18); x.textAlign = 'right'; x.fillText('সবুজ: উপস্থিত · হলুদ: দেরি · লাল: অনুপস্থিত', W - 84, y + 196);
-    y += 250;
-  }
-  P.ex.forEach(e => {
-    x.fillStyle = '#F8FAFC'; rrect(x, 60, y, W - 120, 116, 20); x.fill();
-    x.textAlign = 'left'; x.fillStyle = INK; x.font = F(700, 26);
-    let t = '📝 ' + e.title; while (x.measureText(t).width > 560 && t.length > 6) t = t.slice(0, -2);
-    x.fillText(t, 88, y + 44);
-    x.fillStyle = SOFT; x.font = F(500, 20); x.fillText(bnDate(e.date), 88, y + 76);
-    if (e.absent) {
-      x.textAlign = 'right'; x.fillStyle = '#B91C1C'; x.font = F(700, 28); x.fillText('অনুপস্থিত ছিল', W - 88, y + 66);
-    } else {
-      const col = scoreColor(e.pct);
-      x.textAlign = 'right'; x.fillStyle = col; x.font = F(700, 38); x.fillText(toBn(e.got) + '/' + toBn(e.tot), W - 88, y + 50);
-      x.font = F(600, 21); x.fillText(exWord(e.pct) + ' · ' + toBn(e.pct) + '%' + (e.n > 1 ? ' · ' + toBn(e.n) + ' জনে ' + bnOrd(e.rank) : ''), W - 88, y + 82);
-      x.fillStyle = '#E2E8F0'; rrect(x, 88, y + 92, W - 176, 10, 5); x.fill();
-      x.fillStyle = col; rrect(x, 88, y + 92, Math.max(10, (W - 176) * e.pct / 100), 10, 5); x.fill();
+  const d = receiptData(RC.sid, RC.items, RC.note, RC.on), P = progressData(d.s, d.on), now = new Set(RC.items);
+  const {G, G2, GL, GOLD, INK, SOFT, BOX, LINE} = CC, F = cardFont, tk = n => '৳' + toBn(Number(n).toLocaleString('en-IN'));
+  return finishCard((x, W, logo, sig) => {
+    cardHeader(x, W, logo, G);
+    cTitle(x, W, 'টাকা প্রাপ্তির রশিদ', 'রশিদ নং: ' + d.code);
+    /* বড় অঙ্ক: এক নজরে */
+    let y = 372;
+    x.save(); rrect(x, 60, y, W - 120, 196, 28); x.clip();
+    x.fillStyle = grad(x, 60, y, W - 60, y + 196, shade(G, -.15), shade(G2, .1)); x.fillRect(60, y, W - 120, 196);
+    x.fillStyle = '#fff'; x.globalAlpha = .07; x.beginPath(); x.arc(W - 200, y + 98, 170, 0, Math.PI * 2); x.fill(); x.beginPath(); x.arc(120, y + 220, 120, 0, Math.PI * 2); x.fill();
+    x.restore();
+    x.textAlign = 'left'; x.fillStyle = 'rgba(255,255,255,.88)'; x.font = F(600, 26); x.fillText('মোট পরিশোধ', 96, y + 52);
+    x.fillStyle = '#fff'; x.font = F(700, 84); x.fillText(tk(d.total), 92, y + 136);
+    x.fillStyle = 'rgba(255,255,255,.88)'; x.font = F(500, 23); x.fillText('তারিখ: ' + bnDate(d.on), 96, y + 174);
+    /* "পরিশোধিত" সিল */
+    x.save(); x.translate(W - 196, y + 98); x.rotate(-0.16);
+    x.fillStyle = '#fff'; x.beginPath(); x.arc(0, 0, 78, 0, Math.PI * 2); x.fill();
+    x.strokeStyle = GOLD; x.lineWidth = 6; x.beginPath(); x.arc(0, 0, 75, 0, Math.PI * 2); x.stroke();
+    x.strokeStyle = G2; x.lineWidth = 2; x.setLineDash([6, 5]); x.beginPath(); x.arc(0, 0, 62, 0, Math.PI * 2); x.stroke(); x.setLineDash([]);
+    x.fillStyle = G; x.textAlign = 'center'; x.font = F(700, 25); x.fillText('পরিশোধিত', 0, -6);
+    x.strokeStyle = G2; x.lineWidth = 8; x.lineCap = 'round'; x.lineJoin = 'round'; x.beginPath(); x.moveTo(-18, 26); x.lineTo(-5, 39); x.lineTo(20, 12); x.stroke();
+    x.restore(); x.lineCap = 'butt'; x.lineJoin = 'miter';
+    /* টিকিটের মতো ছেঁড়ার দাগ */
+    y += 196 + 32;
+    x.fillStyle = CC.BG; x.beginPath(); x.arc(28, y, 20, 0, Math.PI * 2); x.fill(); x.beginPath(); x.arc(W - 28, y, 20, 0, Math.PI * 2); x.fill();
+    x.strokeStyle = '#CBD5E1'; x.lineWidth = 3; x.setLineDash([12, 10]); x.beginPath(); x.moveTo(64, y); x.lineTo(W - 64, y); x.stroke(); x.setLineDash([]);
+    y += 32;
+    /* তথ্য: ২×২ ঘর */
+    const months = d.rows.filter(r => r[0].includes('মাসের বেতন')).map(r => r[0].replace(' মাসের বেতন', '')).join(', ') || 'নোট ফি';
+    y = cInfo(x, W, y, [['শিক্ষার্থী', d.s.name], ['ব্যাচ', batchName(d.s.batch)], ['টাকা পাওয়ার তারিখ', bnDate(d.on)], ['যে মাসের', months]]) + 20;
+    /* সারা বছরের বেতনের হিসাব: কোন মাস দেওয়া, কোনটা বাকি */
+    y = cSec(x, W, y, '🗓️ ' + toBn(S.year) + ' সালের বেতনের হিসাব');
+    const due = dueList(d.s), dueSet = new Set(due), cw = (W - 120 - 5 * 12) / 6;
+    for (let m = 0; m < 12; m++) {
+      const k = ym(S.year, m), cx = 60 + (m % 6) * (cw + 12), cy = y + Math.floor(m / 6) * 78;
+      const kind = now.has(k) ? 'now' : paid(d.s.id, k) ? 'paid' : dueSet.has(k) ? 'due' : 'none';
+      x.fillStyle = {now:G2, paid:GL, due:'#FEE2E2', none:BOX}[kind]; rrect(x, cx, cy, cw, 66, 16); x.fill();
+      if (kind === 'now') { x.strokeStyle = GOLD; x.lineWidth = 4; rrect(x, cx + 2, cy + 2, cw - 4, 62, 14); x.stroke(); }
+      x.textAlign = 'center'; x.fillStyle = {now:'#fff', paid:G, due:'#B91C1C', none:'#94A3B8'}[kind]; x.font = F(kind === 'none' ? 500 : 700, 23);
+      x.fillText(MS[m] + (kind === 'now' || kind === 'paid' ? ' ✓' : ''), cx + cw / 2, cy + (kind === 'due' ? 30 : 42));
+      if (kind === 'due') { x.font = F(600, 17); x.fillText('বাকি', cx + cw / 2, cy + 54); }
     }
-    y += 132;
-  });
-  /* বিবরণ টেবিল */
-  x.fillStyle = G; rrect(x, 60, y, W - 120, 56, 14); x.fill();
-  x.fillStyle = '#fff'; x.font = F(700, 23); x.textAlign = 'left'; x.fillText('বিবরণ', 90, y + 37);
-  x.textAlign = 'right'; x.fillText('টাকা', W - 90, y + 37);
-  y += 56;
-  d.rows.forEach((r, i) => {
-    if (i % 2) { x.fillStyle = '#F6FAF7'; x.fillRect(60, y, W - 120, rowH); }
-    x.fillStyle = INK; x.font = F(500, 25); x.textAlign = 'left'; x.fillText(r[0], 90, y + 40);
-    x.textAlign = 'right'; x.font = F(600, 25); x.fillText(tk(r[1]), W - 90, y + 40);
-    y += rowH;
-  });
-  x.strokeStyle = '#D5E7DA'; x.lineWidth = 2; x.beginPath(); x.moveTo(60, y); x.lineTo(W - 60, y); x.stroke();
-  /* মোট বার */
-  y += 18;
-  x.fillStyle = G2; rrect(x, 60, y, W - 120, 70, 16); x.fill();
-  x.fillStyle = '#fff'; x.font = F(700, 30); x.textAlign = 'left'; x.fillText('সর্বমোট', 90, y + 46);
-  x.textAlign = 'right'; x.fillText(tk(d.total), W - 90, y + 46);
-  /* স্বাক্ষর */
-  y += 110;
-  if (sig) x.drawImage(sig, W - 330, y, 240, 128);
-  x.strokeStyle = '#94A3B8'; x.lineWidth = 2; x.beginPath(); x.moveTo(W - 350, y + 134); x.lineTo(W - 70, y + 134); x.stroke();
-  x.fillStyle = SOFT; x.font = F(500, 21); x.textAlign = 'center'; x.fillText('শিক্ষকের স্বাক্ষর', W - 210, y + 166);
-  x.textAlign = 'left'; x.fillStyle = G; x.font = F(700, 28); x.fillText('ধন্যবাদ!', 60, y + 70);
-  x.fillStyle = SOFT; x.font = F(500, 21); x.fillText('নিয়মিত ক্লাসে আসো, ভালো ফল করো।', 60, y + 108);
-  /* ফুটার */
-  x.fillStyle = '#94A3B8'; x.font = F(400, 18); x.textAlign = 'center';
-  x.fillText('এই রশিদটি অ্যাপে তৈরি · রশিদ নং ' + d.code + ' · যাচাইয়ের জন্য শিক্ষককে জানান', W / 2, H - 52);
-  return c;
+    y += 2 * 78 + 4;
+    x.fillStyle = SOFT; x.font = F(400, 18); x.textAlign = 'left'; x.fillText('গাঢ় সবুজ: এই রশিদে পরিশোধ · হালকা সবুজ: আগে পরিশোধিত · লাল: বাকি', 64, y + 20);
+    y += 40;
+    x.fillStyle = due.length ? '#FEF2F2' : GL; rrect(x, 60, y, W - 120, 70, 18); x.fill();
+    x.fillStyle = due.length ? '#B91C1C' : G; x.font = F(700, 26); x.textAlign = 'center';
+    x.fillText(fitText(x, due.length ? '⚠️ বকেয়া: ' + due.map(k => MS[ymP(k).m]).join(', ') + ' · ' + tk(due.length * Number(B(d.s.batch).fee))
+      : paid(d.s.id, CUR_YM) ? '✅ ' + MONTHS[TODAY.getMonth()] + ' পর্যন্ত সব বেতন পরিশোধিত। ধন্যবাদ!' : '✅ এই মুহূর্তে কোনো বকেয়া নেই। ধন্যবাদ!', W - 180), W / 2, y + 46);
+    y += 100;
+    /* মাসিক অগ্রগতি: হাজিরা ও পরীক্ষা */
+    if (P.att || P.ex.length) y = cSec(x, W, y, '📊 মাসিক অগ্রগতি');
+    if (P.att) {
+      const a = P.att, col = scoreColor(a.pct);
+      x.fillStyle = BOX; rrect(x, 60, y, W - 120, 226, 22); x.fill();
+      cRing(x, 170, y + 113, 76, 20, a.pct, col, 'উপস্থিতি');
+      x.textAlign = 'left'; x.fillStyle = INK; x.font = F(700, 28); x.fillText(a.label + '-এর হাজিরা', 290, y + 52);
+      x.fillStyle = SOFT; x.font = F(500, 23);
+      x.fillText(toBn(a.total) + ' দিন ক্লাসের মধ্যে এসেছে ' + toBn(a.pres) + ' দিন' + (a.late ? ' (দেরিতে ' + toBn(a.late) + ')' : ''), 290, y + 92);
+      const n = a.marks.length, gap = 6, bw = Math.min(34, (W - 120 - 230 - 30 - gap * (n - 1)) / n);
+      a.marks.forEach((c, i) => { x.fillStyle = markCol(c); rrect(x, 290 + i * (bw + gap), y + 116, bw, 34, Math.min(17, bw / 2)); x.fill(); });
+      x.fillStyle = col; x.font = F(700, 25); x.fillText('● ' + attWord(a.pct), 290, y + 196);
+      x.fillStyle = SOFT; x.font = F(400, 18); x.textAlign = 'right'; x.fillText('সবুজ: উপস্থিত · হলুদ: দেরি · লাল: অনুপস্থিত', W - 84, y + 196);
+      y += 250;
+    }
+    P.ex.forEach(e => {
+      x.fillStyle = BOX; rrect(x, 60, y, W - 120, 116, 22); x.fill();
+      x.textAlign = 'left'; x.fillStyle = INK; x.font = F(700, 26); x.fillText(fitText(x, '📝 ' + e.title, 540), 88, y + 44);
+      x.fillStyle = SOFT; x.font = F(500, 20); x.fillText(bnDate(e.date), 88, y + 76);
+      if (e.absent) {
+        x.textAlign = 'right'; x.fillStyle = '#B91C1C'; x.font = F(700, 28); x.fillText('অনুপস্থিত ছিল', W - 88, y + 66);
+      } else {
+        const col = scoreColor(e.pct);
+        x.textAlign = 'right'; x.fillStyle = col; x.font = F(700, 38); x.fillText(toBn(e.got) + '/' + toBn(e.tot), W - 88, y + 50);
+        x.font = F(600, 21); x.fillText(exWord(e.pct) + ' · ' + toBn(e.pct) + '%' + (e.n > 1 ? ' · ' + toBn(e.n) + ' জনে ' + bnOrd(e.rank) : ''), W - 88, y + 82);
+        x.fillStyle = LINE; rrect(x, 88, y + 92, W - 176, 10, 5); x.fill();
+        x.fillStyle = col; rrect(x, 88, y + 92, Math.max(10, (W - 176) * Math.min(e.pct, 100) / 100), 10, 5); x.fill();
+      }
+      y += 132;
+    });
+    if (P.att || P.ex.length) y += 14;
+    /* বিবরণ টেবিল */
+    x.fillStyle = grad(x, 60, y, W - 60, y, G, G2); rrect(x, 60, y, W - 120, 56, 14); x.fill();
+    x.fillStyle = '#fff'; x.font = F(700, 23); x.textAlign = 'left'; x.fillText('বিবরণ', 90, y + 37);
+    x.textAlign = 'right'; x.fillText('টাকা', W - 90, y + 37);
+    y += 56;
+    d.rows.forEach((r, i) => {
+      if (i % 2) { x.fillStyle = '#F4F9F6'; x.fillRect(60, y, W - 120, 62); }
+      x.fillStyle = INK; x.font = F(500, 25); x.textAlign = 'left'; x.fillText(r[0], 90, y + 40);
+      x.textAlign = 'right'; x.font = F(600, 25); x.fillText(tk(r[1]), W - 90, y + 40);
+      y += 62;
+    });
+    x.strokeStyle = '#D5E7DA'; x.lineWidth = 2; x.beginPath(); x.moveTo(60, y); x.lineTo(W - 60, y); x.stroke();
+    y += 18;
+    x.fillStyle = GL; rrect(x, 60, y, W - 120, 74, 18); x.fill();
+    x.strokeStyle = G2; x.lineWidth = 2; rrect(x, 60, y, W - 120, 74, 18); x.stroke();
+    x.fillStyle = G; x.font = F(700, 30); x.textAlign = 'left'; x.fillText('সর্বমোট', 90, y + 48);
+    x.textAlign = 'right'; x.font = F(700, 34); x.fillText(tk(d.total), W - 90, y + 50);
+    /* স্বাক্ষর */
+    y += 114;
+    cSign(x, W, y, sig, 'ধন্যবাদ!', 'নিয়মিত ক্লাসে আসো, ভালো ফল করো।');
+    y += 210;
+    x.fillStyle = '#94A3B8'; x.font = F(400, 18); x.textAlign = 'center';
+    x.fillText('এই রশিদটি অ্যাপে তৈরি · রশিদ নং ' + d.code + ' · যাচাইয়ের জন্য শিক্ষককে জানান', W / 2, y);
+    return y + 72;
+  }, G);
 }
 function saveBlob(blob, name){
   if (NATIVE) { blobB64(blob).then(b => { const m = AndroidApp.saveFile(b, name, blob.type || 'application/octet-stream'); if (m) toast(m); }); return; }
@@ -921,72 +982,89 @@ function attCardData(sid, date){
   const lateMin = st === 'L' ? Number((r.late || {})[sid]) || 0 : 0;
   const ymK = date.slice(0, 7), days = Object.keys(A).filter(k => k.startsWith(ymK) && k <= date).sort();
   const marks = days.map(k => !A[k].p.includes(sid) ? 'A' : (A[k].late || {})[sid] !== undefined ? 'L' : 'P');
-  const pres = marks.filter(c => c !== 'A').length;
+  const pres = marks.filter(c => c !== 'A').length, map = {};
+  days.forEach((k, i) => { map[k] = marks[i]; });
   let streak = 0; for (let i = marks.length - 1; i >= 0 && marks[i] === 'A'; i--) streak++;
+  let pStreak = 0; for (let i = marks.length - 1; i >= 0 && marks[i] !== 'A'; i--) pStreak++;
   const [y, m] = ymK.split('-').map(Number);
-  return {s, st, lateMin, date, monthLabel:MONTHS[m - 1] + ' ' + toBn(y), total:days.length, pres, late:marks.filter(c => c === 'L').length, abs:days.length - pres,
-    pct:days.length ? Math.round(pres * 100 / days.length) : 0, marks, streak};
+  return {s, st, lateMin, date, y, m, monthLabel:MONTHS[m - 1] + ' ' + toBn(y), total:days.length, pres, late:marks.filter(c => c === 'L').length, abs:days.length - pres,
+    pct:days.length ? Math.round(pres * 100 / days.length) : 0, marks, map, streak, pStreak};
 }
 function makeAttCard(sid, date){
-  const d = attCardData(sid, date), G = '#14532D', INK = '#0F172A', SOFT = '#64748B', F = cardFont;
-  const look = {P:['✅', 'আজ ক্লাসে উপস্থিত ছিল', '#15803D', '#ECFDF5'], L:['⏰', 'আজ দেরিতে এসেছে' + (d.lateMin ? ' (' + toBn(d.lateMin) + ' মিনিট)' : ''), '#B45309', '#FFFBEB'],
-    A:['❌', 'আজ ক্লাসে অনুপস্থিত ছিল', '#B91C1C', '#FEF2F2']}[d.st || 'A'];
+  const d = attCardData(sid, date), {G, G2, GL, INK, SOFT, BOX} = CC, F = cardFont, st = d.st || 'A';
+  const look = {P:['আজ ক্লাসে উপস্থিত ছিল', '#15803D'], L:['আজ দেরিতে এসেছে' + (d.lateMin ? ' (' + toBn(d.lateMin) + ' মিনিট)' : ''), '#B45309'], A:['আজ ক্লাসে অনুপস্থিত ছিল', '#B91C1C']}[st];
   return finishCard((x, W, logo, sig) => {
     cardHeader(x, W, logo, G);
-    x.textAlign = 'left'; x.fillStyle = INK; x.font = F(700, 36); x.fillText('দৈনিক হাজিরা', 60, 336);
-    x.textAlign = 'right'; x.fillStyle = SOFT; x.font = F(500, 24); x.fillText(wdOf(date) + ', ' + bnDate(date), W - 60, 334);
-    let y = 368;
-    x.fillStyle = '#F8FAFC'; rrect(x, 60, y, W - 120, 96, 16); x.fill();
-    x.textAlign = 'left'; x.fillStyle = INK; x.font = F(700, 32);
-    let nm = d.s.name; while (x.measureText(nm).width > 560 && nm.length > 4) nm = nm.slice(0, -2);
-    x.fillText(nm, 90, y + 60);
-    x.textAlign = 'right'; x.fillStyle = SOFT; x.font = F(500, 23); x.fillText(batchName(d.s.batch), W - 90, y + 58);
-    y += 120;
-    /* আজকের অবস্থা: বড় করে */
-    x.fillStyle = look[3]; rrect(x, 60, y, W - 120, 200, 26); x.fill();
-    x.strokeStyle = look[2]; x.lineWidth = 3; rrect(x, 60, y, W - 120, 200, 26); x.stroke();
-    x.textAlign = 'center'; x.font = F(700, 80); x.fillStyle = look[2]; x.fillText(look[0], 170, y + 128);
-    x.textAlign = 'left'; x.font = F(700, 44); x.fillText(look[1], 260, y + 95);
-    x.fillStyle = SOFT; x.font = F(500, 24); x.fillText(CENTER + ' · ' + (B(d.s.batch).classTime ? bnTime(B(d.s.batch).classTime) + 'র ক্লাস' : 'আজকের ক্লাস'), 262, y + 145);
-    y += 230;
-    if (d.st === 'A' && d.streak >= 2) {
-      x.fillStyle = '#FEE2E2'; rrect(x, 60, y, W - 120, 74, 16); x.fill();
+    cTitle(x, W, 'দৈনিক হাজিরা', wdOf(date) + ', ' + bnDate(date));
+    let y = 372;
+    /* শিক্ষার্থী */
+    x.fillStyle = BOX; rrect(x, 60, y, W - 120, 110, 22); x.fill();
+    cAvatar(x, 126, y + 55, 38, d.s.name, G2);
+    x.textAlign = 'left'; x.fillStyle = INK; x.font = F(700, 34); x.fillText(fitText(x, d.s.name, 500), 184, y + 67);
+    x.textAlign = 'right'; x.fillStyle = SOFT; x.font = F(500, 23); x.fillText(batchName(d.s.batch), W - 90, y + 65);
+    y += 134;
+    /* আজকের অবস্থা: বড় করে, রঙিন */
+    x.save(); rrect(x, 60, y, W - 120, 210, 30); x.clip();
+    x.fillStyle = grad(x, 60, y, W - 60, y + 210, shade(look[1], -.18), shade(look[1], .16)); x.fillRect(60, y, W - 120, 210);
+    x.fillStyle = '#fff'; x.globalAlpha = .08; x.beginPath(); x.arc(W - 120, y + 20, 150, 0, Math.PI * 2); x.fill(); x.beginPath(); x.arc(W - 300, y + 230, 90, 0, Math.PI * 2); x.fill();
+    x.restore();
+    const ix = 172, iy = y + 105;
+    x.fillStyle = '#fff'; x.beginPath(); x.arc(ix, iy, 68, 0, Math.PI * 2); x.fill();
+    x.strokeStyle = look[1]; x.lineCap = 'round'; x.lineJoin = 'round'; x.lineWidth = 13; x.beginPath();
+    if (st === 'P') { x.moveTo(ix - 30, iy + 2); x.lineTo(ix - 9, iy + 24); x.lineTo(ix + 31, iy - 22); }
+    else if (st === 'A') { x.moveTo(ix - 24, iy - 24); x.lineTo(ix + 24, iy + 24); x.moveTo(ix + 24, iy - 24); x.lineTo(ix - 24, iy + 24); }
+    else { x.lineWidth = 9; x.arc(ix, iy, 36, 0, Math.PI * 2); x.moveTo(ix, iy - 20); x.lineTo(ix, iy); x.lineTo(ix + 15, iy + 10); }
+    x.stroke(); x.lineCap = 'butt'; x.lineJoin = 'miter';
+    x.textAlign = 'left'; x.fillStyle = '#fff'; x.font = F(700, 46); x.fillText(fitText(x, look[0], W - 276 - 90), 276, y + 98);
+    x.fillStyle = 'rgba(255,255,255,.9)'; x.font = F(500, 24); x.fillText(B(d.s.batch).classTime ? bnTime(B(d.s.batch).classTime) + 'র ক্লাস · ' + bnDate(date) : 'আজকের ক্লাস · ' + bnDate(date), 278, y + 146);
+    y += 234;
+    if (st === 'A' && d.streak >= 2) {
+      x.fillStyle = '#FEE2E2'; rrect(x, 60, y, W - 120, 74, 18); x.fill();
       x.fillStyle = '#B91C1C'; x.font = F(700, 27); x.textAlign = 'center'; x.fillText('⚠️ পরপর ' + toBn(d.streak) + ' দিন অনুপস্থিত, অনুগ্রহ করে খোঁজ নিন', W / 2, y + 48);
+      y += 96;
+    } else if (st !== 'A' && d.pStreak >= 5) {
+      x.fillStyle = '#FEF9C3'; rrect(x, 60, y, W - 120, 74, 18); x.fill();
+      x.fillStyle = '#A16207'; x.font = F(700, 27); x.textAlign = 'center'; x.fillText('🔥 টানা ' + toBn(d.pStreak) + ' দিন ক্লাসে উপস্থিত, চমৎকার!', W / 2, y + 48);
       y += 96;
     }
     /* এই মাসের হিসাব */
-    x.textAlign = 'left'; x.fillStyle = G; x.font = F(700, 30); x.fillText('📅 ' + d.monthLabel + '-এর হাজিরা (এ পর্যন্ত)', 60, y + 34);
-    y += 64;
-    x.fillStyle = '#F8FAFC'; rrect(x, 60, y, W - 120, 300, 22); x.fill();
-    const col = scoreColor(d.pct), cx = 180, cy = y + 120;
-    x.lineCap = 'round'; x.lineWidth = 22; x.strokeStyle = '#E2E8F0'; x.beginPath(); x.arc(cx, cy, 80, 0, Math.PI * 2); x.stroke();
-    x.strokeStyle = col; x.beginPath(); x.arc(cx, cy, 80, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * d.pct / 100); x.stroke(); x.lineCap = 'butt';
-    x.textAlign = 'center'; x.fillStyle = col; x.font = F(700, 42); x.fillText(toBn(d.pct) + '%', cx, cy + 14);
-    x.fillStyle = SOFT; x.font = F(500, 19); x.fillText('উপস্থিতি', cx, cy + 46);
+    y = cSec(x, W, y, '📅 ' + d.monthLabel + '-এর হাজিরা (এ পর্যন্ত)');
+    x.fillStyle = BOX; rrect(x, 60, y, W - 120, 210, 22); x.fill();
+    const col = scoreColor(d.pct);
+    cRing(x, 170, y + 105, 72, 20, d.pct, col, 'উপস্থিতি');
     const tiles = [['মোট ক্লাস', d.total, INK], ['উপস্থিত', d.pres - d.late, '#15803D'], ['দেরি', d.late, '#B45309'], ['অনুপস্থিত', d.abs, '#B91C1C']];
-    const tw = (W - 120 - 270 - 60) / 4;
-    tiles.forEach((t, i) => { const tx = 310 + i * (tw + 14);
-      x.fillStyle = '#fff'; rrect(x, tx, y + 40, tw, 130, 16); x.fill();
-      x.textAlign = 'center'; x.fillStyle = t[2]; x.font = F(700, 48); x.fillText(toBn(t[1]), tx + tw / 2, y + 108);
-      x.fillStyle = SOFT; x.font = F(500, 20); x.fillText(t[0], tx + tw / 2, y + 148); });
-    const n = d.marks.length, per = n <= 16 ? n : Math.ceil(n / 2), gap = 6, bw = Math.min(36, (W - 120 - 270 - 40 - gap * (per - 1)) / Math.max(per, 1));
-    d.marks.forEach((c, i) => { x.fillStyle = c === 'P' ? '#22C55E' : c === 'L' ? '#F59E0B' : '#EF4444';
-      if (i === n - 1) { x.strokeStyle = INK; x.lineWidth = 3; rrect(x, 310 + (i % per) * (bw + gap) - 3, y + 196 + Math.floor(i / per) * 42 - 3, bw + 6, 36, 8); x.stroke(); x.fillStyle = c === 'P' ? '#22C55E' : c === 'L' ? '#F59E0B' : '#EF4444'; }
-      rrect(x, 310 + (i % per) * (bw + gap), y + 196 + Math.floor(i / per) * 42, bw, 30, 6); x.fill(); });
-    x.textAlign = 'center'; x.fillStyle = col; x.font = F(700, 22); x.fillText(attWord(d.pct), cx, y + 262);
-    x.textAlign = 'right'; x.fillStyle = SOFT; x.font = F(400, 17); x.fillText('সবুজ: উপস্থিত · হলুদ: দেরি · লাল: অনুপস্থিত · কালো দাগ: আজ', W - 84, y + 286);
-    y += 330;
-    const note = d.st === 'A' ? 'অনুপস্থিতির কারণ শিক্ষককে জানাবেন এবং আজকের পড়া বাসায় করিয়ে নেবেন।' : d.st === 'L' ? 'সময়মতো ক্লাসে আসার জন্য উৎসাহ দেবেন।' : 'নিয়মিত উপস্থিতির জন্য ধন্যবাদ। বাসায় আজকের পড়া রিভিশন করাবেন।';
+    const tw = (W - 84 - 290 - 3 * 14) / 4;
+    tiles.forEach((t, i) => { const tx = 290 + i * (tw + 14);
+      x.fillStyle = '#fff'; rrect(x, tx, y + 30, tw, 150, 18); x.fill();
+      x.fillStyle = t[2]; rrect(x, tx + 24, y + 30, tw - 48, 6, 3); x.fill();
+      x.textAlign = 'center'; x.font = F(700, 52); x.fillText(toBn(t[1]), tx + tw / 2, y + 112);
+      x.fillStyle = SOFT; x.font = F(500, 21); x.fillText(t[0], tx + tw / 2, y + 154); });
+    y += 234;
+    /* ক্যালেন্ডার: কোন তারিখে কী */
+    const first = new Date(d.y, d.m - 1, 1).getDay(), dim = new Date(d.y, d.m, 0).getDate(), rowsN = Math.ceil((first + dim) / 7), boxH = 74 + rowsN * 76 + 62;
+    x.fillStyle = BOX; rrect(x, 60, y, W - 120, boxH, 22); x.fill();
+    const colW = (W - 160) / 7;
+    ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহঃ', 'শুক্র', 'শনি'].forEach((t, i) => { x.textAlign = 'center'; x.fillStyle = SOFT; x.font = F(600, 21); x.fillText(t, 80 + colW * (i + .5), y + 46); });
+    for (let n = 1; n <= dim; n++) {
+      const k = d.y + '-' + pad(d.m) + '-' + pad(n), i = first + n - 1, cx = 80 + colW * (i % 7 + .5), cy = y + 74 + Math.floor(i / 7) * 76 + 36, mk = d.map[k];
+      x.textAlign = 'center';
+      if (mk) { x.fillStyle = markCol(mk); x.beginPath(); x.arc(cx, cy, 30, 0, Math.PI * 2); x.fill(); x.fillStyle = '#fff'; x.font = F(700, 26); x.fillText(toBn(n), cx, cy + 9); }
+      else { x.fillStyle = k > date ? '#CBD5E1' : '#94A3B8'; x.font = F(500, 24); x.fillText(toBn(n), cx, cy + 8); }
+      if (k === date) { x.strokeStyle = INK; x.lineWidth = 4; x.beginPath(); x.arc(cx, cy, 36, 0, Math.PI * 2); x.stroke(); }
+    }
+    let lx = 90; const ly = y + boxH - 26;
+    x.textAlign = 'left'; x.font = F(700, 23); x.fillStyle = col; x.fillText('● ' + attWord(d.pct), lx, ly);
+    x.textAlign = 'right'; x.fillStyle = SOFT; x.font = F(400, 18); x.fillText('সবুজ: উপস্থিত · হলুদ: দেরি · লাল: অনুপস্থিত · কালো বৃত্ত: আজ', W - 84, ly);
+    y += boxH + 24;
+    const note = st === 'A' ? 'অনুপস্থিতির কারণ শিক্ষককে জানাবেন এবং আজকের পড়া বাসায় করিয়ে নেবেন।' : st === 'L' ? 'সময়মতো ক্লাসে আসার জন্য উৎসাহ দেবেন।' : 'নিয়মিত উপস্থিতির জন্য ধন্যবাদ। বাসায় আজকের পড়া রিভিশন করাবেন।';
     x.font = F(500, 25); const lines = wrapLines(x, note, W - 200);
-    x.fillStyle = '#ECF7EF'; rrect(x, 60, y, W - 120, 36 + lines.length * 38, 18); x.fill();
-    x.fillStyle = INK; x.textAlign = 'left'; lines.forEach((l, i) => x.fillText(l, 92, y + 48 + i * 38));
+    x.fillStyle = GL; rrect(x, 60, y, W - 120, 36 + lines.length * 38, 18); x.fill();
+    x.fillStyle = G2; rrect(x, 60, y + 14, 6, 8 + lines.length * 38, 3); x.fill();
+    x.fillStyle = INK; x.font = F(500, 25); x.textAlign = 'left'; lines.forEach((l, i) => x.fillText(l, 92, y + 48 + i * 38));
     y += 60 + lines.length * 38;
-    if (sig) x.drawImage(sig, W - 330, y, 240, 128);
-    x.strokeStyle = '#94A3B8'; x.lineWidth = 2; x.beginPath(); x.moveTo(W - 350, y + 134); x.lineTo(W - 70, y + 134); x.stroke();
-    x.fillStyle = SOFT; x.font = F(500, 21); x.textAlign = 'center'; x.fillText('শিক্ষকের স্বাক্ষর', W - 210, y + 166);
-    x.textAlign = 'left'; x.fillStyle = SOFT; x.font = F(500, 21); x.fillText('যেকোনো প্রয়োজনে: ' + toBn(S.settings.phone), 60, y + 100);
+    cSign(x, W, y, sig, '', 'যেকোনো প্রয়োজনে: ' + toBn(S.settings.phone));
     return y + 230;
-  }, d.st === 'A' ? '#B91C1C' : d.st === 'L' ? '#B45309' : G);
+  }, st === 'A' ? '#B91C1C' : st === 'L' ? '#B45309' : G);
 }
 /* ছবির সারি: একজন একজন করে অভিভাবকের WhatsApp-এ */
 let IQ = null;
@@ -1267,6 +1345,9 @@ function openMsg(){
 function openMore(){
   sheet(`<div class="sh-head"><div class="sh-name">☰ আরও</div></div>
     <div class="menu">
+      <button data-act="dash"><span>📈</span>ব্যাচ ড্যাশবোর্ড (হাজিরা, সেরা, দুর্বল অধ্যায়)</button>
+      <button data-act="honor"><span>🏆</span>সেরা শিক্ষার্থীর অভিনন্দন কার্ড</button>
+      <button data-act="picker"><span>🎲</span>কে উত্তর দেবে? (ক্লাসে লটারি)</button>
       <button data-act="summary"><span>📊</span>সব ব্যাচের সারাংশ</button>
       <button data-act="events"><span>📅</span>নোটিশ ও রিমাইন্ডার</button>
       <button data-act="rpAll"><span>📄</span>সবার রিপোর্ট কার্ড</button>
@@ -1449,7 +1530,7 @@ function reportData(sid, from, to){
     att = {total:days.length, pres, late:marks.filter(c => c === 'L').length, abs:days.length - pres, pct:Math.round(pres * 100 / days.length), marks};
   }
   const avg = my === null ? null : Math.round(my);
-  return {s, rows, taken, avg, g:avg === null ? null : gradeOf(avg), gp, rank, n:means.length,
+  return {s, rows, taken, avg, g:avg === null ? null : gradeOf(avg), gp, rank, n:means.length, chAvg,
     strong:chAvg.filter(c => c[1] >= 75).map(c => c[0]), weak:chAvg.filter(c => c[1] < 50).map(c => c[0]),
     att, absentN:rows.length - taken.length, trend:taken.length >= 2 ? taken[taken.length - 1].pct - taken[0].pct : 0};
 }
@@ -1477,7 +1558,68 @@ function wrapLines(x, text, maxW){
   });
   return out;
 }
-const cardFont = (w, s) => w >= 600 ? `${w} ${s}px "Baloo Da 2", "Noto Sans Bengali", sans-serif` : `${w} ${s}px "Hind Siliguri", "Noto Sans Bengali", sans-serif`;
+const cardFont = (w, s) => w >= 600 ? `${w} ${s}px "Baloo Da 2", "Noto Sans Bengali", sans-serif` : `${w} ${s}px "BSCnum", "Hind Siliguri", "Noto Sans Bengali", sans-serif`;
+/* ---- সব কার্ডের সাধারণ রং ও আঁকার সহায়ক ---- */
+const CC = {G:'#0B5D3B', G2:'#178A5B', GL:'#E8F6EE', GOLD:'#D4A437', INK:'#0F172A', SOFT:'#64748B', BOX:'#F5F7FA', LINE:'#E2E8F0', BG:'#E6F0EA'};
+const markCol = c => c === 'P' ? '#22C55E' : c === 'L' ? '#F59E0B' : '#EF4444';
+/* k < 0: গাঢ়, k > 0: হালকা (শুধু #RRGGBB) */
+function shade(hex, k){ const n = parseInt(hex.slice(1), 16), f = v => Math.round(k < 0 ? v * (1 + k) : v + (255 - v) * k); return 'rgb(' + f(n >> 16) + ',' + f(n >> 8 & 255) + ',' + f(n & 255) + ')'; }
+function grad(x, x0, y0, x1, y1, a, b){ const g = x.createLinearGradient(x0, y0, x1, y1); g.addColorStop(0, a); g.addColorStop(1, b); return g; }
+function fitText(x, t, maxW){ t = String(t); if (x.measureText(t).width <= maxW) return t; while (t.length > 3 && x.measureText(t + '…').width > maxW) t = t.slice(0, -1); return t + '…'; }
+/* নামের প্রথম অক্ষর (কার-চিহ্ন ও যুক্তাক্ষরসহ) */
+const initial = n => { const m = String(n || '').trim().match(/^.(?:্.)?[ঁ-ঃ়-ৌৗ]*/u); return m ? m[0] : '?'; };
+const hueOf = s => [...String(s)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 360, 7);
+function cAvatar(x, cx, cy, r, name, col){
+  x.fillStyle = grad(x, cx - r, cy - r, cx + r, cy + r, shade(col, .25), shade(col, -.15)); x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.fill();
+  x.fillStyle = '#fff'; x.textAlign = 'center'; x.font = cardFont(700, Math.round(r * .95)); x.fillText(initial(name), cx, cy + r * .33);
+}
+function cRing(x, cx, cy, r, lw, pct, col, sub){
+  x.lineCap = 'round'; x.lineWidth = lw; x.strokeStyle = '#E2E8F0'; x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.stroke();
+  if (pct > 0) { x.strokeStyle = col; x.beginPath(); x.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(pct, 100) / 100); x.stroke(); }
+  x.lineCap = 'butt';
+  x.textAlign = 'center'; x.fillStyle = col; x.font = cardFont(700, Math.round(r * .54)); x.fillText(toBn(pct) + '%', cx, cy + (sub ? r * .12 : r * .18));
+  if (sub) { x.fillStyle = CC.SOFT; x.font = cardFont(500, Math.round(r * .25)); x.fillText(sub, cx, cy + r * .5); }
+}
+function cStar(x, cx, cy, R, on){
+  x.beginPath();
+  for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? R * .45 : R; x.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a)); }
+  x.closePath(); x.fillStyle = on ? '#F5B301' : '#E2E8F0'; x.fill();
+}
+/* শিরোনাম (বামে) + ছোট তথ্যের পিল (ডানে) */
+function cTitle(x, W, title, pill){
+  x.fillStyle = CC.GOLD; rrect(x, 60, 308, 8, 40, 4); x.fill();
+  x.textAlign = 'left'; x.fillStyle = CC.INK; x.font = cardFont(700, 38); x.fillText(title, 82, 342);
+  if (!pill) return;
+  const left = 82 + x.measureText(title).width + 24;
+  x.font = cardFont(600, 22); const t = fitText(x, pill, W - 60 - left - 44), pw = x.measureText(t).width + 44;
+  x.fillStyle = CC.GL; rrect(x, W - 60 - pw, 306, pw, 46, 23); x.fill();
+  x.fillStyle = CC.G2; x.textAlign = 'center'; x.fillText(t, W - 60 - pw / 2, 337);
+}
+function cSec(x, W, y, t){
+  x.textAlign = 'left'; x.fillStyle = CC.G; x.font = cardFont(700, 30); x.fillText(t, 60, y + 34);
+  const w = x.measureText(t).width; x.strokeStyle = CC.LINE; x.lineWidth = 2; x.beginPath(); x.moveTo(80 + w, y + 24); x.lineTo(W - 60, y + 24); x.stroke();
+  return y + 66;
+}
+/* ২ কলামে তথ্যের ঘর */
+function cInfo(x, W, y, rows){
+  const cw = (W - 120) / 2 - 10;
+  rows.forEach((r, i) => {
+    const cx = 60 + (i % 2) * (cw + 20), cy = y + Math.floor(i / 2) * 104;
+    x.fillStyle = CC.BOX; rrect(x, cx, cy, cw, 90, 18); x.fill();
+    x.fillStyle = CC.G2; rrect(x, cx, cy + 20, 6, 50, 3); x.fill();
+    x.textAlign = 'left'; x.fillStyle = CC.SOFT; x.font = cardFont(500, 21); x.fillText(r[0], cx + 26, cy + 34);
+    x.fillStyle = CC.INK; x.font = cardFont(700, 27); x.fillText(fitText(x, r[1], cw - 50), cx + 26, cy + 72);
+  });
+  return y + Math.ceil(rows.length / 2) * 104;
+}
+function cSign(x, W, y, sig, big, small, label){
+  if (sig) x.drawImage(sig, W - 330, y, 240, 128);
+  x.strokeStyle = '#94A3B8'; x.lineWidth = 2; x.beginPath(); x.moveTo(W - 350, y + 134); x.lineTo(W - 70, y + 134); x.stroke();
+  x.fillStyle = CC.SOFT; x.font = cardFont(500, 21); x.textAlign = 'center'; x.fillText(label || 'শিক্ষকের স্বাক্ষর', W - 210, y + 166);
+  x.textAlign = 'left';
+  if (big) { x.fillStyle = CC.G; x.font = cardFont(700, 30); x.fillText(big, 60, y + 70); }
+  if (small) { x.fillStyle = CC.SOFT; x.font = cardFont(500, 22); x.fillText(small, 60, y + (big ? 108 : 100)); }
+}
 /* লম্বা খসড়া ক্যানভাসে আঁকা, তারপর মাপমতো কেটে সাদা কার্ডে বসানো */
 async function finishCard(draw, accent){
   await fontsReady();
@@ -1487,55 +1629,75 @@ async function finishCard(draw, accent){
   const H = Math.min(6000, Math.ceil(draw(x, W, logo, sig)));
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const y = c.getContext('2d');
-  y.fillStyle = '#EEF5F0'; y.fillRect(0, 0, W, H);
-  y.fillStyle = '#fff'; rrect(y, 28, 28, W - 56, H - 56, 28); y.fill();
-  y.strokeStyle = '#D5E7DA'; y.lineWidth = 2; y.stroke();
-  y.save(); rrect(y, 28, 28, W - 56, H - 56, 28); y.clip(); y.fillStyle = accent; y.fillRect(28, 28, W - 56, 14); y.restore();
-  if (logo) { y.globalAlpha = .05; y.drawImage(logo, W / 2 - 300, H / 2 - 300, 600, 600); y.globalAlpha = 1; }
+  y.fillStyle = CC.BG; y.fillRect(0, 0, W, H);
+  y.save(); y.shadowColor = 'rgba(11,60,40,.2)'; y.shadowBlur = 26; y.shadowOffsetY = 6;
+  y.fillStyle = '#fff'; rrect(y, 28, 28, W - 56, H - 56, 36); y.fill(); y.restore();
+  y.save(); rrect(y, 28, 28, W - 56, H - 56, 36); y.clip();
+  y.fillStyle = accent; y.fillRect(28, H - 42, W - 56, 14);
+  if (logo) { y.globalAlpha = .045; y.drawImage(logo, W / 2 - 300, Math.max(300, H / 2 - 300), 600, 600); }
+  y.restore();
   y.drawImage(tmp, 0, 0, W, H, 0, 0, W, H);
   return c;
 }
+/* উপরের রঙিন ব্যান্ড: লোগো, সেন্টারের নাম, শিক্ষক (y = ২৭৬ পর্যন্ত) */
 function cardHeader(x, W, logo, G){
-  if (logo) x.drawImage(logo, 60, 62, 190, 190);
-  x.textAlign = 'left'; x.fillStyle = G; x.font = cardFont(700, 44); x.fillText(CENTER, 270, 128);
-  x.fillStyle = '#64748B'; x.font = cardFont(500, 24); x.fillText('পরিচালনায়: ' + S.settings.teacher, 272, 172);
-  x.fillText('মোবাইল: ' + toBn(S.settings.phone), 272, 208);
-  x.strokeStyle = '#C79A3E'; x.lineWidth = 3; x.beginPath(); x.moveTo(60, 278); x.lineTo(W - 60, 278); x.stroke();
+  x.save(); rrect(x, 28, 28, W - 56, 700, 36); x.clip();
+  x.fillStyle = grad(x, 28, 28, W - 28, 270, shade(G, -.3), shade(G, .14)); x.fillRect(28, 28, W - 56, 242);
+  x.fillStyle = '#fff'; x.globalAlpha = .07;
+  [[W - 120, 50, 160], [W - 290, 262, 96], [W - 20, 250, 80]].forEach(([cx, cy, r]) => { x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.fill(); });
+  x.globalAlpha = 1;
+  x.fillStyle = CC.GOLD; x.fillRect(28, 270, W - 56, 6);
+  x.restore();
+  x.fillStyle = '#fff'; rrect(x, 62, 62, 176, 176, 32); x.fill();
+  if (logo) x.drawImage(logo, 68, 68, 164, 164);
+  x.textAlign = 'left'; x.fillStyle = '#fff'; x.font = cardFont(700, 46); x.fillText(CENTER, 266, 128);
+  x.fillStyle = 'rgba(255,255,255,.9)'; x.font = cardFont(500, 24); x.fillText('পরিচালনায়: ' + S.settings.teacher, 268, 172);
+  x.font = cardFont(600, 24); x.fillText('মোবাইল: ' + toBn(S.settings.phone), 268, 208);
 }
+const starsOf = v => v === null ? 0 : v >= 80 ? 5 : v >= 70 ? 4 : v >= 55 ? 3 : v >= 40 ? 2 : 1;
+const STAR_WORD = ['', 'আরও চেষ্টা দরকার', 'মোটামুটি', 'ভালো', 'খুব ভালো', 'অসাধারণ'];
 function makeReportCanvas(sid, from, to, label, remark){
   const d = reportData(sid, from, to);
-  const G = '#14532D', G2 = '#1F7A45', GL = '#ECF7EF', INK = '#0F172A', SOFT = '#64748B', BOX = '#F8FAFC', F = cardFont;
+  const {G, G2, GL, INK, SOFT, BOX, LINE} = CC, F = cardFont;
   return finishCard((x, W, logo, sig) => {
     cardHeader(x, W, logo, G);
-    x.fillStyle = INK; x.font = F(700, 36); x.textAlign = 'left'; x.fillText('অগ্রগতি প্রতিবেদন (রিপোর্ট কার্ড)', 60, 336);
-    let y = 368;
-    /* তথ্য ২×২ */
-    [['শিক্ষার্থী', d.s.name], ['ব্যাচ', batchName(d.s.batch)], ['সময়কাল', label], ['প্রকাশের তারিখ', bnDate(todayKey())]].forEach((r, i) => {
-      const cw = (W - 120) / 2 - 10, cx = 60 + (i % 2) * (cw + 20), cy = y + Math.floor(i / 2) * 104;
-      x.fillStyle = BOX; rrect(x, cx, cy, cw, 90, 16); x.fill();
-      x.textAlign = 'left'; x.fillStyle = SOFT; x.font = F(500, 21); x.fillText(r[0], cx + 22, cy + 34);
-      x.fillStyle = INK; x.font = F(700, 27);
-      let v = String(r[1]); while (x.measureText(v).width > cw - 44 && v.length > 4) v = v.slice(0, -2);
-      if (v !== String(r[1])) v += '…';
-      x.fillText(v, cx + 22, cy + 72);
-    });
-    y += 228;
+    cTitle(x, W, 'অগ্রগতি প্রতিবেদন', label);
+    let y = 372;
+    /* শিক্ষার্থী + গ্রেডের পদক */
+    x.fillStyle = BOX; rrect(x, 60, y, W - 120, 220, 26); x.fill();
+    cAvatar(x, 140, y + 92, 54, d.s.name, G2);
+    x.textAlign = 'left'; x.fillStyle = INK; x.font = F(700, 38); x.fillText(fitText(x, d.s.name, 560), 216, y + 76);
+    x.fillStyle = SOFT; x.font = F(500, 24); x.fillText(batchName(d.s.batch), 218, y + 116);
+    x.font = F(500, 21); x.fillText('প্রকাশ: ' + bnDate(todayKey()), 218, y + 150);
+    const overall = d.avg !== null ? (d.att ? d.avg * .75 + d.att.pct * .25 : d.avg) : d.att ? d.att.pct : null, st = starsOf(overall);
+    if (st) {
+      for (let i = 0; i < 5; i++) cStar(x, 100 + i * 40, y + 188, 17, i < st);
+      x.textAlign = 'left'; x.fillStyle = scoreColor(overall); x.font = F(700, 24); x.fillText('সামগ্রিক: ' + STAR_WORD[st], 296, y + 197);
+    }
+    const mx = W - 172, my = y + 110, mc = d.avg === null ? '#94A3B8' : scoreColor(d.avg);
+    x.fillStyle = grad(x, mx - 90, my - 90, mx + 90, my + 90, '#F6D365', '#C8922A'); x.beginPath(); x.arc(mx, my, 90, 0, Math.PI * 2); x.fill();
+    x.fillStyle = '#fff'; x.beginPath(); x.arc(mx, my, 80, 0, Math.PI * 2); x.fill();
+    x.fillStyle = grad(x, mx - 72, my - 72, mx + 72, my + 72, shade(mc, .18), shade(mc, -.2)); x.beginPath(); x.arc(mx, my, 72, 0, Math.PI * 2); x.fill();
+    x.fillStyle = '#fff'; x.textAlign = 'center';
+    if (d.g) { x.font = '700 60px "Baloo Da 2", sans-serif'; x.fillText(d.g[1], mx, my + 8); x.font = F(600, 21); x.fillText('জিপিএ ' + toBn(d.gp.toFixed(2)), mx, my + 42); }
+    else { x.font = F(700, 26); x.fillText('পরীক্ষা', mx, my - 2); x.fillText('নেই', mx, my + 30); }
+    y += 244;
     /* এক নজরে: গড়, উপস্থিতি, অবস্থান */
-    const tw = (W - 120 - 40) / 3;
+    const tw = (W - 120 - 40) / 3, medal = d.rank && d.rank <= 3 ? ['🥇 ', '🥈 ', '🥉 '][d.rank - 1] : '';
     const tiles = [
-      ['গড় নম্বর', d.avg === null ? '—' : toBn(d.avg) + '%', d.g ? 'গ্রেড ' + d.g[1] + ' · জিপি ' + toBn(d.gp.toFixed(2)) : 'পরীক্ষা নেই', d.avg === null ? SOFT : scoreColor(d.avg)],
-      ['উপস্থিতি', d.att ? toBn(d.att.pct) + '%' : '—', d.att ? toBn(d.att.pres) + '/' + toBn(d.att.total) + ' দিন' : 'হাজিরা নেই', d.att ? scoreColor(d.att.pct) : SOFT],
-      ['ব্যাচে অবস্থান', d.rank ? bnOrd(d.rank) : '—', d.rank ? toBn(d.n) + ' জনের মধ্যে' : '', d.rank ? (d.rank <= 3 ? '#B7791F' : G) : SOFT]];
+      ['গড় নম্বর', d.avg === null ? '—' : toBn(d.avg) + '%', d.g ? 'গ্রেড ' + d.g[1] : 'পরীক্ষা নেই', d.avg === null ? SOFT : scoreColor(d.avg), d.avg],
+      ['উপস্থিতি', d.att ? toBn(d.att.pct) + '%' : '—', d.att ? toBn(d.att.pres) + '/' + toBn(d.att.total) + ' দিন' : 'হাজিরা নেই', d.att ? scoreColor(d.att.pct) : SOFT, d.att ? d.att.pct : null],
+      [medal + 'ব্যাচে অবস্থান', d.rank ? bnOrd(d.rank) : '—', d.rank ? toBn(d.n) + ' জনের মধ্যে' : '', d.rank ? (d.rank <= 3 ? '#B7791F' : G) : SOFT, null]];
     tiles.forEach((t, i) => {
       const tx = 60 + i * (tw + 20);
-      x.fillStyle = GL; rrect(x, tx, y, tw, 180, 22); x.fill();
-      x.textAlign = 'center'; x.fillStyle = G2; x.font = F(600, 24); x.fillText(t[0], tx + tw / 2, y + 44);
-      x.fillStyle = t[3]; x.font = F(700, 62); x.fillText(t[1], tx + tw / 2, y + 116);
-      x.fillStyle = SOFT; x.font = F(500, 21); x.fillText(t[2], tx + tw / 2, y + 156);
+      x.fillStyle = shade(t[3], .9); rrect(x, tx, y, tw, 190, 24); x.fill();
+      x.textAlign = 'center'; x.fillStyle = SOFT; x.font = F(600, 23); x.fillText(t[0], tx + tw / 2, y + 42);
+      x.fillStyle = t[3]; x.font = F(700, 62); x.fillText(t[1], tx + tw / 2, y + 112);
+      x.fillStyle = SOFT; x.font = F(500, 21); x.fillText(t[2], tx + tw / 2, y + 148);
+      if (t[4] !== null) { x.fillStyle = '#fff'; rrect(x, tx + 30, y + 162, tw - 60, 10, 5); x.fill(); x.fillStyle = t[3]; rrect(x, tx + 30, y + 162, Math.max(10, (tw - 60) * Math.min(t[4], 100) / 100), 10, 5); x.fill(); }
     });
-    y += 210;
-    const sec = t => { x.textAlign = 'left'; x.fillStyle = G; x.font = F(700, 30); x.fillText(t, 60, y + 34);
-      const w = x.measureText(t).width; x.strokeStyle = '#E2E8F0'; x.lineWidth = 2; x.beginPath(); x.moveTo(80 + w, y + 24); x.lineTo(W - 60, y + 24); x.stroke(); y += 66; };
+    y += 220;
+    const sec = t => { y = cSec(x, W, y, t); };
     /* পরীক্ষার ফল: টেবিল */
     sec('📝 পরীক্ষার ফলাফল');
     const shown = d.rows.slice(-14);
@@ -1543,18 +1705,16 @@ function makeReportCanvas(sid, from, to, label, remark){
       x.fillStyle = BOX; rrect(x, 60, y, W - 120, 90, 16); x.fill();
       x.fillStyle = SOFT; x.font = F(500, 24); x.textAlign = 'center'; x.fillText('এই সময়ে কোনো পরীক্ষা হয়নি', W / 2, y + 55); y += 120;
     } else {
-      x.fillStyle = G; rrect(x, 60, y, W - 120, 54, 14); x.fill();
+      x.fillStyle = grad(x, 60, y, W - 60, y, G, G2); rrect(x, 60, y, W - 120, 54, 14); x.fill();
       x.fillStyle = '#fff'; x.font = F(600, 21);
       x.textAlign = 'left'; x.fillText('পরীক্ষা', 90, y + 35);
       x.textAlign = 'center'; x.fillText('নম্বর', 640, y + 35); x.fillText('%', 760, y + 35); x.fillText('গ্রেড', 860, y + 35);
       x.textAlign = 'right'; x.fillText('অবস্থান', W - 84, y + 35);
       y += 54;
       shown.forEach((r, i) => {
-        if (i % 2) { x.fillStyle = '#F6FAF7'; x.fillRect(60, y, W - 120, 78); }
+        if (i % 2) { x.fillStyle = '#F4F9F6'; x.fillRect(60, y, W - 120, 78); }
         x.textAlign = 'left'; x.fillStyle = INK; x.font = F(600, 24);
-        let t = toBn(i + 1) + '. ' + r.title; while (x.measureText(t).width > 470 && t.length > 6) t = t.slice(0, -2);
-        if (t !== toBn(i + 1) + '. ' + r.title) t += '…';
-        x.fillText(t, 84, y + 35);
+        x.fillText(fitText(x, toBn(i + 1) + '. ' + r.title, 470), 84, y + 35);
         x.fillStyle = SOFT; x.font = F(400, 19); x.fillText(bnDate(r.date) + (r.chapter ? ' · অধ্যায় ' + toBn(r.chapter) : '') + (r.avg !== null ? ' · ব্যাচের গড় ' + toBn(r.avg) + '%' : ''), 84, y + 64);
         if (r.absent) { x.textAlign = 'center'; x.fillStyle = '#B91C1C'; x.font = F(700, 25); x.fillText('অনুপস্থিত', 760, y + 48); }
         else {
@@ -1562,8 +1722,8 @@ function makeReportCanvas(sid, from, to, label, remark){
           x.textAlign = 'center'; x.fillStyle = INK; x.font = F(700, 25); x.fillText(toBn(r.got) + '/' + toBn(r.tot), 640, y + 48);
           x.fillStyle = col; x.fillText(toBn(r.pct) + '%', 760, y + 48);
           x.fillStyle = col; rrect(x, 826, y + 20, 68, 38, 19); x.fill();
-          x.fillStyle = '#fff'; x.font = F(700, 22); x.fillText(r.g[1], 860, y + 47);
-          x.textAlign = 'right'; x.fillStyle = INK; x.font = F(600, 23); x.fillText(bnOrd(r.rank) + '/' + toBn(r.n), W - 84, y + 48);
+          x.fillStyle = '#fff'; x.font = '700 22px "Baloo Da 2", sans-serif'; x.fillText(r.g[1], 860, y + 47);
+          x.textAlign = 'right'; x.fillStyle = r.rank <= 3 ? '#B7791F' : INK; x.font = F(600, 23); x.fillText(bnOrd(r.rank) + '/' + toBn(r.n), W - 84, y + 48);
         }
         y += 78;
       });
@@ -1573,17 +1733,18 @@ function makeReportCanvas(sid, from, to, label, remark){
     }
     /* অগ্রগতির চার্ট */
     if (shown.filter(r => !r.absent).length >= 2) {
-      sec('📈 অগ্রগতি');
+      sec('📈 অগ্রগতির রেখাচিত্র');
       const L0 = 140, R0 = W - 90, T0 = y + 40, B0 = y + 260, n = shown.length, slot = (R0 - L0) / n, bw = Math.min(56, slot * .5);
       x.fillStyle = BOX; rrect(x, 60, y, W - 120, 330, 20); x.fill();
       x.font = F(400, 18); x.textAlign = 'right';
       [0, 25, 50, 75, 100].forEach(v => { const yy = B0 - (B0 - T0) * v / 100;
-        x.strokeStyle = v === 0 ? '#94A3B8' : '#E2E8F0'; x.lineWidth = v === 0 ? 2 : 1; x.beginPath(); x.moveTo(L0, yy); x.lineTo(R0, yy); x.stroke();
+        x.strokeStyle = v === 0 ? '#94A3B8' : LINE; x.lineWidth = v === 0 ? 2 : 1; x.beginPath(); x.moveTo(L0, yy); x.lineTo(R0, yy); x.stroke();
         x.fillStyle = SOFT; x.fillText(toBn(v), L0 - 12, yy + 6); });
       const pts = [];
       shown.forEach((r, i) => {
         const cx = L0 + slot * (i + .5);
-        if (!r.absent) { const h = (B0 - T0) * r.pct / 100; x.fillStyle = scoreColor(r.pct); rrect(x, cx - bw / 2, B0 - h, bw, Math.max(h, 4), 8); x.fill();
+        if (!r.absent) { const h = (B0 - T0) * r.pct / 100, col = scoreColor(r.pct);
+          x.fillStyle = grad(x, 0, B0 - h, 0, B0, shade(col, .25), col); rrect(x, cx - bw / 2, B0 - Math.max(h, 4), bw, Math.max(h, 4), Math.min(8, Math.max(h, 4) / 2)); x.fill();
           x.font = F(700, 19); x.textAlign = 'center';
           if (h > 40) { x.fillStyle = '#fff'; x.fillText(toBn(r.pct), cx, B0 - 14); } else { x.fillStyle = INK; x.fillText(toBn(r.pct), cx, B0 - h - 10); } }
         else { x.fillStyle = '#B91C1C'; x.font = F(600, 18); x.textAlign = 'center'; x.fillText('অনু.', cx, B0 - 10); }
@@ -1594,42 +1755,40 @@ function makeReportCanvas(sid, from, to, label, remark){
         x.strokeStyle = '#334155'; x.lineWidth = 2; x.setLineDash([8, 6]); x.beginPath(); pts.forEach((p, i) => i ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1])); x.stroke(); x.setLineDash([]);
         pts.forEach(p => { x.fillStyle = '#fff'; x.beginPath(); x.arc(p[0], p[1], 7, 0, Math.PI * 2); x.fill(); x.strokeStyle = '#334155'; x.lineWidth = 3; x.stroke(); });
       }
-      x.textAlign = 'left'; x.font = F(500, 19); x.fillStyle = G2; rrect(x, 90, y + 300, 22, 16, 4); x.fill();
+      x.textAlign = 'left'; x.font = F(500, 19); x.fillStyle = d.avg === null ? G2 : scoreColor(d.avg); rrect(x, 90, y + 300, 22, 16, 4); x.fill();
       x.fillStyle = SOFT; x.fillText('নিজের নম্বর (%)', 120, y + 314);
       x.strokeStyle = '#334155'; x.lineWidth = 3; x.beginPath(); x.arc(330, y + 308, 7, 0, Math.PI * 2); x.stroke();
       x.fillText('ব্যাচের গড় (%) · নিচের সংখ্যা = টেবিলের ক্রম', 346, y + 314);
       y += 360;
     }
-    /* অধ্যায়ভিত্তিক */
-    if (d.strong.length || d.weak.length) {
-      sec('📚 অধ্যায়ভিত্তিক মূল্যায়ন');
-      [[d.strong, '💪 ভালো দখল:', '#15803D', '#ECFDF5'], [d.weak, '📌 আরও অনুশীলন দরকার:', '#B91C1C', '#FEF2F2']].forEach(([arr, t, col, bg]) => {
-        if (!arr.length) return;
-        x.font = F(500, 23); const lines = wrapLines(x, arr.map(c => chName(c, d.s.batch)).join(', '), W - 200);
-        const h = 58 + lines.length * 34;
-        x.fillStyle = bg; rrect(x, 60, y, W - 120, h, 16); x.fill();
-        x.textAlign = 'left'; x.fillStyle = col; x.font = F(700, 24); x.fillText(t, 90, y + 40);
-        x.fillStyle = INK; x.font = F(500, 23); lines.forEach((l, i) => x.fillText(l, 90, y + 76 + i * 34));
-        y += h + 14;
+    /* অধ্যায়ভিত্তিক দক্ষতা: প্রতিটি অধ্যায়ের বার */
+    const chs = (d.chAvg || []).slice(-12);
+    if (chs.length) {
+      sec('📚 অধ্যায়ভিত্তিক দক্ষতা');
+      const h = 30 + chs.length * 56 + (d.weak.length ? 50 : 10);
+      x.fillStyle = BOX; rrect(x, 60, y, W - 120, h, 20); x.fill();
+      chs.forEach(([c, v], i) => {
+        const p = Math.round(v), col = scoreColor(p), ry = y + 30 + i * 56;
+        x.textAlign = 'left'; x.fillStyle = INK; x.font = F(600, 23); x.fillText(fitText(x, chName(c, d.s.batch), 400), 90, ry + 26);
+        x.fillStyle = LINE; rrect(x, 510, ry + 8, 380, 20, 10); x.fill();
+        x.fillStyle = grad(x, 510, 0, 890, 0, shade(col, .3), col); rrect(x, 510, ry + 8, Math.max(20, 380 * Math.min(p, 100) / 100), 20, 10); x.fill();
+        x.textAlign = 'right'; x.fillStyle = col; x.font = F(700, 25); x.fillText(toBn(p) + '%', W - 88, ry + 28);
       });
-      y += 16;
+      if (d.weak.length) { x.textAlign = 'left'; x.fillStyle = '#B91C1C'; x.font = F(600, 22); x.fillText('📌 লাল দাগের অধ্যায়গুলো বাসায় আবার পড়াতে হবে।', 90, y + h - 24); }
+      y += h + 30;
     }
     /* হাজিরা */
     if (d.att) {
       sec('✅ ক্লাসে উপস্থিতি');
       const a = d.att, col = scoreColor(a.pct), boxH = a.marks.length <= 40 ? 230 : 190;
       x.fillStyle = BOX; rrect(x, 60, y, W - 120, boxH, 20); x.fill();
-      const cx = 170, cy = y + 105;
-      x.lineCap = 'round'; x.lineWidth = 20; x.strokeStyle = '#E2E8F0'; x.beginPath(); x.arc(cx, cy, 72, 0, Math.PI * 2); x.stroke();
-      x.strokeStyle = col; x.beginPath(); x.arc(cx, cy, 72, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * a.pct / 100); x.stroke(); x.lineCap = 'butt';
-      x.textAlign = 'center'; x.fillStyle = col; x.font = F(700, 38); x.fillText(toBn(a.pct) + '%', cx, cy + 12);
+      cRing(x, 170, y + 105, 72, 20, a.pct, col);
       x.textAlign = 'left'; x.fillStyle = INK; x.font = F(700, 27);
       x.fillText('মোট ক্লাস ' + toBn(a.total) + ' · উপস্থিত ' + toBn(a.pres) + ' · অনুপস্থিত ' + toBn(a.abs), 290, y + 54);
       x.fillStyle = col; x.font = F(700, 24); x.fillText('● ' + attWord(a.pct) + (a.late ? '  (দেরিতে ' + toBn(a.late) + ' দিন)' : ''), 290, y + 96);
       if (a.marks.length <= 40) {
         const gap = 5, per = a.marks.length <= 20 ? a.marks.length : Math.ceil(a.marks.length / 2), bw = Math.min(30, (W - 120 - 260 - gap * (per - 1)) / per);
-        a.marks.forEach((c, i) => { x.fillStyle = c === 'P' ? '#22C55E' : c === 'L' ? '#F59E0B' : '#EF4444';
-          rrect(x, 290 + (i % per) * (bw + gap), y + 120 + Math.floor(i / per) * 40, bw, 30, 6); x.fill(); });
+        a.marks.forEach((c, i) => { x.fillStyle = markCol(c); rrect(x, 290 + (i % per) * (bw + gap), y + 120 + Math.floor(i / per) * 40, bw, 30, Math.min(15, bw / 2)); x.fill(); });
         x.fillStyle = SOFT; x.font = F(400, 17); x.textAlign = 'right'; x.fillText('সবুজ: উপস্থিত · হলুদ: দেরি · লাল: অনুপস্থিত', W - 84, y + boxH - 14);
       }
       y += boxH + 30;
@@ -1637,23 +1796,19 @@ function makeReportCanvas(sid, from, to, label, remark){
     /* মন্তব্য */
     if (remark && remark.trim()) {
       sec('✍️ শিক্ষকের মন্তব্য');
-      x.font = F(500, 25); const lines = wrapLines(x, remark.trim(), W - 200), h = 40 + lines.length * 40;
-      x.fillStyle = GL; rrect(x, 60, y, W - 120, h, 18); x.fill();
-      x.fillStyle = G2; x.fillRect(60, y + 14, 6, h - 28);
-      x.fillStyle = INK; x.textAlign = 'left'; lines.forEach((l, i) => x.fillText(l, 92, y + 48 + i * 40));
+      x.font = F(500, 26); const lines = wrapLines(x, remark.trim(), W - 250), h = 48 + lines.length * 42;
+      x.fillStyle = GL; rrect(x, 60, y, W - 120, h, 22); x.fill();
+      x.fillStyle = G2; x.globalAlpha = .28; x.font = '700 120px Georgia, serif'; x.textAlign = 'left'; x.fillText('“', 76, y + 104); x.globalAlpha = 1;
+      x.fillStyle = INK; x.font = F(500, 26); lines.forEach((l, i) => x.fillText(l, 140, y + 56 + i * 42));
       y += h + 20;
     }
     /* স্বাক্ষর */
     y += 20;
-    if (sig) x.drawImage(sig, W - 330, y, 240, 128);
-    x.strokeStyle = '#94A3B8'; x.lineWidth = 2; x.beginPath(); x.moveTo(W - 350, y + 134); x.lineTo(W - 70, y + 134); x.stroke();
-    x.fillStyle = SOFT; x.font = F(500, 21); x.textAlign = 'center'; x.fillText('শিক্ষকের স্বাক্ষর', W - 210, y + 166);
-    x.textAlign = 'left'; x.fillStyle = G; x.font = F(700, 28); x.fillText('শুভকামনা!', 60, y + 70);
-    x.fillStyle = SOFT; x.font = F(500, 21); x.fillText('নিয়মিত পড়ো, প্রশ্ন করো, ভালো ফল করো।', 60, y + 108);
+    cSign(x, W, y, sig, 'শুভকামনা!', 'নিয়মিত পড়ো, প্রশ্ন করো, ভালো ফল করো।');
     y += 210;
     x.fillStyle = '#94A3B8'; x.font = F(400, 18); x.textAlign = 'center';
     x.fillText('এই রিপোর্ট কার্ড অ্যাপে তৈরি · কোড ' + hash(sid + '|' + from + '|' + to) + ' · প্রশ্ন থাকলে শিক্ষককে জানান', W / 2, y);
-    return y + 52;
+    return y + 72;
   }, G);
 }
 
@@ -2188,6 +2343,167 @@ const ACT = {
   evExam: d => { const e = S.events[d.id], ex = (e.examIds || {})[d.b]; ACTIVE = d.b; switchBatch();
     if (ex && exams()[ex]) openExam(ex); else openExam(null, {title:evTitle(e), total:e.total || '', chapter:e.chapter || 0, date:e.date, evId:d.id}); }
 };
+
+/* ========== নতুন: ড্যাশবোর্ড, সেরা শিক্ষার্থী, লটারি, আনন্দের কাগজ ========== */
+function celebrate(){
+  try { if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch(e){}
+  const c = document.createElement('canvas'), W = c.width = innerWidth, H = c.height = innerHeight, x = c.getContext('2d');
+  c.style.cssText = 'position:fixed;inset:0;z-index:200;pointer-events:none';
+  document.body.appendChild(c);
+  const cols = ['#22C55E', '#F59E0B', '#3B82F6', '#EC4899', '#EAB308', '#14B8A6'];
+  const P = Array.from({length:80}, (_, i) => ({x:W / 2 + (Math.random() - .5) * W * .4, y:H * .32, vx:(Math.random() - .5) * 11, vy:-Math.random() * 12 - 3, s:6 + Math.random() * 7, c:cols[i % cols.length], r:Math.random() * 6}));
+  let t = 0;
+  (function step(){
+    x.clearRect(0, 0, W, H);
+    P.forEach(p => { p.vy += .34; p.x += p.vx; p.y += p.vy; p.r += .22; x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.globalAlpha = Math.max(0, 1 - t / 95); x.fillStyle = p.c; x.fillRect(-p.s / 2, -p.s / 3, p.s, p.s * .62); x.restore(); });
+    if (++t < 95) requestAnimationFrame(step); else c.remove();
+  })();
+}
+/* কার্ডের ছবিতে চাপলে বড় করে দেখা */
+document.addEventListener('click', e => {
+  const im = e.target.closest && e.target.closest('.rcimg'); if (!im || !im.getAttribute('src')) return;
+  const v = document.createElement('div'); v.className = 'zoom';
+  v.innerHTML = '<img alt=""><button aria-label="বন্ধ">✕</button>'; v.firstChild.src = im.src;
+  v.addEventListener('click', () => v.remove());
+  document.body.appendChild(v);
+});
+window.addEventListener('popstate', () => { const z = $('.zoom'); if (z) z.remove(); });
+
+/* ব্যাচের হিসাব: গত ৩ মাসের পরীক্ষা ও হাজিরা থেকে */
+function batchInsight(per){
+  const L = list(), r = periodRange(per || 'q3'), R = L.map(s => reportData(s.id, r.from, r.to));
+  const top = R.filter(d => d.avg !== null).sort((p, q) => p.rank - q.rank || q.avg - p.avg).slice(0, 3);
+  const full = R.filter(d => d.att && d.att.total >= 3 && d.att.abs === 0).map(d => d.s);
+  return {L, r, R, top, full};
+}
+function openDash(){
+  const {L, r, R, top} = batchInsight();
+  if (!L.length) { toast('এই ব্যাচে এখনো কেউ নেই'); return; }
+  const paidN = L.filter(s => paid(s.id, CUR_YM)).length, payPct = Math.round(paidN * 100 / L.length), fee = Number(B(ACTIVE).fee) || 0;
+  const A = S.attendance[ACTIVE] || {}, ids = new Set(L.map(s => s.id)), days = Object.keys(A).sort().slice(-10);
+  const bars = days.map(k => { const p = Math.round(A[k].p.filter(id => ids.has(id)).length * 100 / L.length);
+    return `<div class="db-bar" title="${bnDate(k)}"><small>${toBn(p)}</small><i style="height:${Math.max(p, 6) * .56}px;background:${scoreColor(p)}"></i><small>${toBn(Number(k.slice(8)))}/${toBn(Number(k.slice(5, 7)))}</small></div>`; }).join('');
+  const ch = {};
+  Object.values(S.exams[ACTIVE] || {}).filter(e => e.date >= r.from && e.date <= r.to && Number(e.total) > 0 && Number(e.chapter)).forEach(e => {
+    const v = L.map(s => e.marks[s.id]).filter(m => m !== undefined && m !== '' && !isNaN(Number(m))).map(Number);
+    if (v.length) (ch[e.chapter] = ch[e.chapter] || []).push(v.reduce((a, c) => a + c, 0) * 100 / v.length / Number(e.total)); });
+  const chs = Object.entries(ch).map(([c, v]) => [Number(c), Math.round(v.reduce((a, c) => a + c, 0) / v.length)]).sort((p, q) => p[1] - q[1]).slice(0, 6);
+  const care = R.map(d => { const why = [], m = d.att ? d.att.marks : []; let st = 0; for (let i = m.length - 1; i >= 0 && m[i] === 'A'; i--) st++;
+    if (st >= 2) why.push('টানা ' + toBn(st) + ' দিন অনুপস্থিত');
+    if (d.avg !== null && d.avg < 50) why.push('গড় নম্বর ' + toBn(d.avg) + '%');
+    if (d.att && d.att.pct < 75) why.push('হাজিরা ' + toBn(d.att.pct) + '%');
+    return why.length ? {s:d.s, why} : null; }).filter(Boolean);
+  const who = s => `<span class="av" style="--h:${hueOf(s.id)};width:36px;height:36px;font-size:17px" data-act="profile" data-sid="${s.id}">${esc(initial(s.name))}</span>`;
+  sheet(`<div class="sh-head"><div class="sh-name">📊 ব্যাচ ড্যাশবোর্ড</div><div class="sh-sub">${batchName(ACTIVE)} · ${toBn(L.length)} জন · ${r.label}</div></div>
+    <div class="db"><h4>💰 ${MONTHS[TODAY.getMonth()]}-এর বেতন আদায়: ${toBn(paidN)}/${toBn(L.length)} জন (${toBn(payPct)}%)</h4>
+      <div class="db-prog"><i style="width:${payPct}%"></i></div>
+      <div class="hint">পাওয়া গেছে প্রায় ৳${toBn(paidN * fee)} · এ মাসে বাকি ${toBn(L.length - paidN)} জন</div></div>
+    <div class="db"><h4>✅ শেষ ${toBn(days.length)} দিনের উপস্থিতি (%)</h4>${days.length ? `<div class="db-bars">${bars}</div>` : '<div class="hint">এখনো হাজিরা নেওয়া হয়নি</div>'}</div>
+    <div class="db"><h4>🏆 সেরা তিন (পরীক্ষার গড়)</h4>${top.length ? top.map((d, i) => `<div class="db-row"><span class="md">${['🥇', '🥈', '🥉'][i]}</span>${who(d.s)}<span class="nm" data-act="profile" data-sid="${d.s.id}">${esc(d.s.name)}<small>হাজিরা ${d.att ? toBn(d.att.pct) + '%' : 'নেই'}</small></span><b style="color:${scoreColor(d.avg)}">${toBn(d.avg)}%</b></div>`).join('')
+      + '<button class="btn big gold" data-act="honor" style="margin-top:10px">🏆 সেরাদের অভিনন্দন কার্ড বানান</button>' : '<div class="hint">এই সময়ে পরীক্ষার নম্বর নেই</div>'}</div>
+    ${chs.length ? `<div class="db"><h4>📚 অধ্যায়ভিত্তিক ব্যাচের গড় (কম থেকে বেশি)</h4>${chs.map(([c, p]) => `<div class="db-ch"><span>${esc(chName(c, ACTIVE))}</span><div class="db-prog"><i style="width:${p}%;background:${scoreColor(p)}"></i></div><b style="color:${scoreColor(p)}">${toBn(p)}%</b></div>`).join('')}</div>` : ''}
+    <div class="db"><h4>🔔 যাদের দিকে নজর দরকার${care.length ? ' (' + toBn(care.length) + ' জন)' : ''}</h4>${care.length ? care.map(c => `<div class="db-row">${who(c.s)}<span class="nm" data-act="profile" data-sid="${c.s.id}">${esc(c.s.name)}<small style="color:var(--bad)">${c.why.join(' · ')}</small></span><button class="mini" data-act="rpOpen" data-sid="${c.s.id}">📄 রিপোর্ট</button></div>`).join('') : '<div class="hint">👏 সবাই ভালো করছে, কারও জন্য আলাদা সতর্কতা নেই</div>'}</div>
+    <button class="btn ghost" data-act="close">বন্ধ করুন</button>`, 'dash');
+}
+
+/* সেরা শিক্ষার্থীদের অভিনন্দন কার্ড (গ্রুপে দেওয়ার জন্য) */
+let HONOR = null;
+function honorData(){
+  let I = batchInsight('month');
+  if (!I.top.length) I = batchInsight('q3');
+  return I;
+}
+function makeHonorCanvas(){
+  const I = honorData(), {G, GL, INK, SOFT, BOX} = CC, F = cardFont, GD = '#B7791F';
+  return finishCard((x, W, logo, sig) => {
+    cardHeader(x, W, logo, G);
+    let y = 316;
+    x.font = F(700, 36); const pill = '🏆 সেরা শিক্ষার্থী', pw = x.measureText(pill).width + 70;
+    x.fillStyle = grad(x, 0, y, 0, y + 68, '#EAB308', GD); rrect(x, (W - pw) / 2, y, pw, 68, 34); x.fill();
+    x.fillStyle = '#fff'; x.textAlign = 'center'; x.fillText(pill, W / 2, y + 47);
+    y += 108;
+    x.fillStyle = INK; x.font = F(700, 30); x.fillText(batchName(ACTIVE), W / 2, y);
+    x.fillStyle = SOFT; x.font = F(500, 24); x.fillText(I.r.label + ' · পরীক্ষার গড় নম্বর অনুযায়ী', W / 2, y + 40);
+    y += 80;
+    /* মঞ্চ: ২য় - ১ম - ৩য় */
+    const base = y + 520, slots = [[1, W / 2 - 300, 190, '#94A3B8', '🥈'], [0, W / 2, 250, '#EAB308', '🥇'], [2, W / 2 + 300, 150, '#C2773D', '🥉']];
+    slots.forEach(([i, cx, h, col, md]) => {
+      const d = I.top[i]; if (!d) return;
+      const top = base - h;
+      x.fillStyle = grad(x, 0, top, 0, base, shade(col, .2), shade(col, -.18)); rrect(x, cx - 130, top, 260, h, 20); x.fill();
+      x.fillStyle = '#fff'; x.textAlign = 'center'; x.font = F(700, i === 0 ? 76 : 60); x.fillText(bnOrd(i + 1), cx, top + h / 2 + 22);
+      cAvatar(x, cx, top - 150, i === 0 ? 62 : 52, d.s.name, G);
+      x.font = F(700, 54); x.fillText(md, cx + (i === 0 ? 58 : 48), top - 176);
+      x.fillStyle = INK; x.font = F(700, 28); x.fillText(fitText(x, d.s.name, 280), cx, top - 52);
+      x.fillStyle = scoreColor(d.avg); x.font = F(700, 26); x.fillText('গড় ' + toBn(d.avg) + '%', cx, top - 16);
+    });
+    x.fillStyle = '#E2E8F0'; rrect(x, 90, base, W - 180, 12, 6); x.fill();
+    y = base + 50;
+    if (I.full.length) {
+      x.font = F(600, 26); const lines = wrapLines(x, I.full.map(s => s.name).join(', '), W - 200), h = 78 + lines.length * 38;
+      x.fillStyle = GL; rrect(x, 60, y, W - 120, h, 22); x.fill();
+      x.textAlign = 'left'; x.fillStyle = G; x.font = F(700, 28); x.fillText('💯 শতভাগ উপস্থিতি (' + toBn(I.full.length) + ' জন)', 92, y + 48);
+      x.fillStyle = INK; x.font = F(600, 26); lines.forEach((l, i) => x.fillText(l, 92, y + 92 + i * 38));
+      y += h + 24;
+    }
+    x.font = F(600, 27); const msg = wrapLines(x, 'অভিনন্দন! বাকিরাও চেষ্টা চালিয়ে যাও, পরের বার এই জায়গায় তোমার নামও থাকতে পারে।', W - 220);
+    x.fillStyle = '#FEF9C3'; rrect(x, 60, y, W - 120, 40 + msg.length * 40, 22); x.fill();
+    x.fillStyle = '#854D0E'; x.textAlign = 'center'; msg.forEach((l, i) => x.fillText(l, W / 2, y + 52 + i * 40));
+    y += 70 + msg.length * 40;
+    cSign(x, W, y, sig, '', 'প্রকাশ: ' + bnDate(todayKey()), S.settings.teacher);
+    return y + 230;
+  }, GD);
+}
+function openHonor(){
+  const I = honorData();
+  if (!I.top.length) { toast('পরীক্ষার নম্বর না থাকায় কার্ড বানানো গেল না'); return; }
+  sheet(`<div class="sh-head"><div class="sh-name">🏆 সেরা শিক্ষার্থী</div><div class="sh-sub">${batchName(ACTIVE)} · ${I.r.label} · ছবিতে চাপলে বড় হবে</div></div>
+    <img id="hnImg" class="rcimg" alt="কার্ড তৈরি হচ্ছে…">
+    <button class="btn big green" data-act="honorGroup">👥 ব্যাচের WhatsApp গ্রুপে পাঠান</button>
+    <div class="two" style="margin-top:8px"><button class="btn" data-act="honorShare">🔗 শেয়ার</button><button class="btn" data-act="honorSave">💾 ছবি সেভ</button></div>
+    <button class="btn ghost" data-act="dash">← ড্যাশবোর্ড</button>`, 'honor');
+  HONOR = makeHonorCanvas().catch(e => { console.error(e); return null; });
+  HONOR.then(c => { const im = $('#hnImg'); if (c && im) c.toBlob(b => { if (b) im.src = URL.createObjectURL(b); }, 'image/png'); });
+  celebrate();
+}
+
+/* ক্লাসে লটারি: কে উত্তর দেবে? */
+const PICK = {b:null, seen:new Set(), only:true, t:null};
+function openPicker(){
+  if (!list().length) { toast('এই ব্যাচে এখনো কেউ নেই'); return; }
+  if (PICK.b !== ACTIVE) { PICK.b = ACTIVE; PICK.seen.clear(); }
+  const rec = (S.attendance[ACTIVE] || {})[todayKey()];
+  sheet(`<div class="sh-head"><div class="sh-name">🎲 কে উত্তর দেবে?</div><div class="sh-sub">${batchName(ACTIVE)} · ক্লাসে প্রশ্ন করার জন্য লটারিতে একজন</div></div>
+    <div class="pick" id="pickBox"><div class="pick-av" id="pickAv">?</div><div class="pick-nm" id="pickNm">নিচের বোতাম চাপুন</div><div class="hint" id="pickSub">সবাই একবার করে সুযোগ পাবে, তারপর আবার নতুন করে শুরু</div></div>
+    ${rec ? `<label class="tile"><input type="checkbox" id="pickOnly" ${PICK.only ? 'checked' : ''}> শুধু আজ যারা উপস্থিত তাদের মধ্য থেকে</label>` : '<div class="hint">আজকের হাজিরা নিলে শুধু উপস্থিতদের মধ্য থেকে বাছা যাবে।</div>'}
+    <button class="btn big primary" data-act="pickGo">🎲 একজনকে বাছুন</button>
+    <button class="btn ghost" data-act="close">বন্ধ করুন</button>`, 'pick');
+}
+function pickGo(){
+  const rec = (S.attendance[ACTIVE] || {})[todayKey()], only = $('#pickOnly'); if (only) PICK.only = only.checked;
+  let pool = list(); if (rec && PICK.only) pool = pool.filter(s => rec.p.includes(s.id));
+  if (!pool.length) { toast('বাছার মতো কেউ নেই'); return; }
+  let left = pool.filter(s => !PICK.seen.has(s.id)); if (!left.length) { PICK.seen.clear(); left = pool; }
+  const win = left[Math.floor(Math.random() * left.length)], box = $('#pickBox');
+  clearInterval(PICK.t); box.classList.remove('done'); let n = 0;
+  PICK.t = setInterval(() => {
+    const nm = $('#pickNm'); if (!nm) { clearInterval(PICK.t); return; }
+    const last = n++ >= 18, s = last ? win : pool[Math.floor(Math.random() * pool.length)];
+    nm.textContent = s.name; $('#pickAv').textContent = initial(s.name);
+    if (last) { clearInterval(PICK.t); PICK.seen.add(win.id); box.classList.add('done');
+      $('#pickSub').textContent = left.length > 1 ? 'এই দফায় বাকি আরও ' + toBn(left.length - 1) + ' জন' : 'সবাই একবার করে সুযোগ পেয়েছে ✓';
+      try { if (navigator.vibrate) navigator.vibrate(60); } catch(e){} }
+  }, 75);
+}
+Object.assign(ACT, {
+  dash: () => openDash(),
+  picker: () => openPicker(),
+  pickGo: () => pickGo(),
+  honor: () => openHonor(),
+  honorGroup: () => openGroupSend({title:'🏆 সেরা শিক্ষার্থী · ' + batchName(ACTIVE), items:[{sid:'honor'}], key:'honor-' + ACTIVE + '-' + todayKey(), prefix:'honor', make: () => makeHonorCanvas(), back: () => openHonor()}),
+  honorShare: async () => { const c = HONOR && await HONOR; if (c) shareCanvas(c, 'honor-' + ACTIVE + '-' + todayKey() + '.png', 'সেরা শিক্ষার্থী'); },
+  honorSave: async () => { const c = HONOR && await HONOR; if (c) c.toBlob(b => { if (b) { saveBlob(b, 'honor-' + ACTIVE + '-' + todayKey() + '.png'); if (!NATIVE) toast('ছবি সেভ হয়েছে'); } }, 'image/png'); }
+});
 function switchBatch(){
   try { localStorage.setItem(ACTIVE_KEY, ACTIVE); } catch(e){}
   FILTER.q = ''; $('#search').value = ''; EXP.clear(); renderAll(); window.scrollTo({top:0});
