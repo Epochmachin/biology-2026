@@ -1,5 +1,6 @@
 package com.epochmaking.biologycentre;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
@@ -104,8 +105,19 @@ public class MainActivity extends Activity {
             }
         });
 
-        if (saved != null) web.restoreState(saved);
+        String go = getIntent() == null ? null : getIntent().getStringExtra("go");
+        if (go != null) web.loadUrl(HOME + "?go=" + Uri.encode(go));
+        else if (saved != null) web.restoreState(saved);
         else web.loadUrl(HOME);
+    }
+
+    /** নোটিফিকেশনে চাপলে: অ্যাপ খোলা থাকলেও নোটিশের পাতায় যাবে */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        String go = intent == null ? null : intent.getStringExtra("go");
+        if (go != null && web != null) web.loadUrl(HOME + "?go=" + Uri.encode(go));
     }
 
     /** নিজের সাইটের লিঙ্ক অ্যাপের ভেতরে, বাকি সব (WhatsApp, SMS, ফোন) বাইরের অ্যাপে */
@@ -189,6 +201,26 @@ public class MainActivity extends Activity {
                 return "ok";
             } catch (Exception e) {
                 return "error: " + e.getMessage();
+            }
+        }
+
+        /** নোটিশের রিমাইন্ডার: নির্দিষ্ট সময়ে ফোনে নোটিফিকেশন */
+        @JavascriptInterface
+        public void scheduleReminder(String id, double when, String title, String body) {
+            ReminderReceiver.schedule(MainActivity.this, id, (long) when, title, body);
+        }
+
+        @JavascriptInterface
+        public void cancelReminder(String id) {
+            ReminderReceiver.cancel(MainActivity.this, id);
+        }
+
+        /** Android 13+ এ প্রথমবার নোটিফিকেশনের অনুমতি চাওয়া */
+        @JavascriptInterface
+        public void askNotify() {
+            if (Build.VERSION.SDK_INT >= 33
+                    && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                runOnUiThread(() -> requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 42));
             }
         }
 

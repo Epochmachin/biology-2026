@@ -180,7 +180,12 @@ table.t th{color:var(--soft);font-weight:600}
   .bar{padding-top:calc(8px + env(safe-area-inset-top))}
 }
 .mk{width:80px;border:1px solid #CBD5E1;border-radius:8px;padding:8px;font-size:16px;text-align:center}
+.mk.err{border-color:var(--bad);background:#FFF5F5}
 details summary{cursor:pointer;color:var(--soft);margin-top:12px;font-size:14px}
+.alert.ev{background:#EFF6FF;border-color:#93C5FD;color:#1E3A8A}
+.alert.ev small{font-weight:500;opacity:.85}
+.nav button{min-width:0}
+.evtype{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
 @media (max-width:380px){.stat b{font-size:16px}.stat span{font-size:11px}.btn.icon{width:42px}}
 </style>
 </head>
@@ -211,6 +216,7 @@ details summary{cursor:pointer;color:var(--soft);margin-top:12px;font-size:14px}
   <button data-act="attendance"><span>✅</span>হাজিরা</button>
   <button data-act="dueTab" id="navDue"><span>💰</span>বকেয়া</button>
   <button data-act="exams"><span>📝</span>পরীক্ষা</button>
+  <button data-act="events"><span>📅</span>নোটিশ</button>
   <button data-act="messages"><span>💬</span>মেসেজ</button>
   <button data-act="more"><span>☰</span>আরও</button>
 </nav>
@@ -229,7 +235,7 @@ details summary{cursor:pointer;color:var(--soft);margin-top:12px;font-size:14px}
 /* ========== স্থির তথ্য ========== */
 const CENTER = 'জীববিজ্ঞান স্টাডি সেন্টার';
 const APP_YEAR = 2027;
-const APP_VERSION = '2027.10 (১৪ নভে ২০২৬)';
+const APP_VERSION = '2027.11 (১৫ নভে ২০২৬)';
 const TEACHER_DEFAULT = 'মোঃ খাজা জহুরুল ইসলাম';
 const TEACHER_PHONE_DEFAULT = '01722647270';
 const SIG_IMG = 'data:image/png;base64,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';
@@ -253,9 +259,9 @@ const MONTHS = ['জানুয়ারি','ফেব্রুয়ারি
 const MS = ['জানু','ফেব্রু','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টে','অক্টো','নভে','ডিসে'];
 const BN = '০১২৩৪৫৬৭৮৯';
 const DEFAULT_BATCHES = {
-  up9:  {id:'up9',  branch:'উপশহর',      cls:9,  clsLabel:'নবম', color:'#2563EB', group:'https://chat.whatsapp.com/He6jbrqhv4m0Ew7RoNMku5'},
-  up10: {id:'up10', branch:'উপশহর',      cls:10, clsLabel:'দশম', color:'#7C3AED', group:'https://chat.whatsapp.com/EK7QCezD4NyA5rQmuJy4f2'},
-  jal9: {id:'jal9', branch:'জলেশ্বরীতলা', cls:9,  clsLabel:'নবম', color:'#059669', group:'https://chat.whatsapp.com/KPLwRPsW8ar2xO13MMhJRc'}
+  up9:  {id:'up9',  branch:'উপশহর',      cls:9,  clsLabel:'নবম', color:'#2563EB', classTime:'16:00', group:'https://chat.whatsapp.com/He6jbrqhv4m0Ew7RoNMku5'},
+  up10: {id:'up10', branch:'উপশহর',      cls:10, clsLabel:'দশম', color:'#7C3AED', classTime:'17:00', group:'https://chat.whatsapp.com/EK7QCezD4NyA5rQmuJy4f2'},
+  jal9: {id:'jal9', branch:'জলেশ্বরীতলা', cls:9,  clsLabel:'নবম', color:'#059669', classTime:'17:00', group:'https://chat.whatsapp.com/KPLwRPsW8ar2xO13MMhJRc'}
 };
 const BRANCHES = [{name:'উপশহর', batches:['up9','up10']}, {name:'জলেশ্বরীতলা', batches:['jal9']}];
 const KEY = 'bsc-app-2027', ARCH_KEY = 'bsc-archive-2026', ACTIVE_KEY = 'bsc-active-batch';
@@ -298,16 +304,17 @@ function freshStore(){
   const b = {};
   for (const k in DEFAULT_BATCHES) b[k] = {...DEFAULT_BATCHES[k], fee:1000, dueDay:10, noteFee:1000, start: APP_YEAR + '-01'};
   return {version:2, year:APP_YEAR,
-    settings:{teacher:TEACHER_DEFAULT, phone:TEACHER_PHONE_DEFAULT, channel:'wa', sms:{enabled:false, url:'', pin:''}},
-    batches:b, students:[], payments:{}, noteFees:{}, attendance:{}, exams:{}, templates:{}, sent:{}};
+    settings:{teacher:TEACHER_DEFAULT, phone:TEACHER_PHONE_DEFAULT, channel:'wa', sms:{enabled:false, url:'', pin:''}, cal:{url:'', prepDays:2}},
+    batches:b, students:[], payments:{}, noteFees:{}, attendance:{}, exams:{}, templates:{}, sent:{}, events:{}, reports:{}};
 }
 function migrate(s){
   const f = freshStore();
   s.settings = {...f.settings, ...(s.settings || {})};
   s.settings.sms = {...f.settings.sms, ...((s.settings || {}).sms || {})};
+  s.settings.cal = {...f.settings.cal, ...((s.settings || {}).cal || {})};
   s.batches = s.batches || {};
   for (const k in f.batches) s.batches[k] = {...f.batches[k], ...(s.batches[k] || {})};
-  for (const x of ['payments','noteFees','attendance','exams','templates','sent']) s[x] = s[x] || {};
+  for (const x of ['payments','noteFees','attendance','exams','templates','sent','events','reports']) s[x] = s[x] || {};
   s.students = s.students || [];
   s.year = s.year || APP_YEAR;
   s.version = 2;
@@ -318,7 +325,7 @@ let S = load();
 function save(){
   try {
     const keys = Object.keys(S.sent).sort();
-    if (keys.length > 80) keys.slice(0, keys.length - 80).forEach(k => delete S.sent[k]);
+    if (keys.length > 400) keys.slice(0, keys.length - 400).forEach(k => delete S.sent[k]);
     localStorage.setItem(KEY, JSON.stringify(S)); return true;
   } catch(e){ toast('সেভ হয়নি! ফোনের জায়গা দেখুন'); return false; }
 }
@@ -410,7 +417,7 @@ function renderStats(){
     <div class="stat bad" data-act="filter" data-m="due"><b>৳${toBn(dueAmt)}</b><span>বকেয়া ${toBn(dueS.length)} জন</span></div>
     <div class="stat warn"><b>${toBn(noteDue)}</b><span>নোট ফি বাকি</span></div>`;
   const wp = L.filter(waPending).length;
-  $('#alerts').innerHTML = wp ? `<button class="alert" data-act="filter" data-m="wa">⚠️ ${toBn(wp)} জনের WhatsApp নম্বর নিশ্চিত হয়নি, এখানে চাপুন</button>` : '';
+  $('#alerts').innerHTML = (wp ? `<button class="alert" data-act="filter" data-m="wa">⚠️ ${toBn(wp)} জনের WhatsApp নম্বর নিশ্চিত হয়নি, এখানে চাপুন</button>` : '') + soonEventsHTML();
 }
 function renderList(){
   let L = list();
@@ -822,24 +829,29 @@ async function receiptShare(){
 }
 async function receiptToChat(){
   const {blob, d, name} = await receiptBlob();
+  await imageToGuardian(blob, d.s.guardianPhone, name);
+}
+/* যেকোনো ছবি (রশিদ, রিপোর্ট কার্ড) অভিভাবকের WhatsApp-এ: শুধু ছবি, কোনো লেখা নয় */
+async function imageToGuardian(blob, phone, name){
   const file = new File([blob], name, {type:'image/png'});
-  const ph = String(d.s.guardianPhone || '').trim();
-  if (NATIVE) {   /* নিজস্ব অ্যাপ: অভিভাবকের চ্যাট সরাসরি খুলবে, রশিদের ছবি সংযুক্ত থাকবে */
-    if (!validPhone(ph)) { toast('অভিভাবকের নম্বর ঠিক নেই'); return; }
+  const ph = String(phone || '').trim();
+  if (NATIVE) {   /* নিজস্ব অ্যাপ: অভিভাবকের চ্যাট সরাসরি খুলবে, ছবি সংযুক্ত থাকবে */
+    if (!validPhone(ph)) { toast('অভিভাবকের নম্বর ঠিক নেই'); return false; }
     const r = AndroidApp.sendImageToWhatsApp(await blobB64(blob), waNum(ph), name);
-    if (r && r.indexOf('error') === 0) toast('পাঠানো গেল না: ' + r);
-    return;
+    if (r && r.indexOf('error') === 0) { toast('পাঠানো গেল না: ' + r); return false; }
+    return true;
   }
   /* অভিভাবকের নম্বর কপি: WhatsApp-এর সার্চে Paste করলেই চ্যাট পাওয়া যাবে */
   try { if (ph && navigator.clipboard) navigator.clipboard.writeText(ph).catch(() => {}); } catch(e){}
   if (navigator.canShare && navigator.canShare({files:[file]})) {
-    try { await navigator.share({files:[file]}); return; }   /* শুধু রশিদের ছবি, কোনো লেখা নয় */
-    catch(e){ if (e.name === 'AbortError') return; }
+    try { await navigator.share({files:[file]}); return true; }
+    catch(e){ if (e.name === 'AbortError') return false; }
   }
   /* শেয়ার না চললে: ছবি সেভ + অভিভাবকের চ্যাট খোলা (কোনো লেখা ছাড়া) */
   saveBlob(blob, name);
-  toast('রশিদ সেভ হয়েছে: চ্যাটে 📎 → গ্যালারি থেকে দিন');
+  toast('ছবি সেভ হয়েছে: চ্যাটে 📎 → গ্যালারি থেকে দিন');
   if (validPhone(ph)) setTimeout(() => { const url = 'https://wa.me/' + waNum(ph); const w = window.open(url, '_blank'); if (!w) location.href = url; }, 700);
+  return true;
 }
 
 /* ========== হাজিরা ========== */
@@ -902,12 +914,13 @@ function openExams(){
   const E = Object.entries(exams()).sort((a, b) => b[1].date.localeCompare(a[1].date));
   sheet(`<div class="sh-head"><div class="sh-name">📝 পরীক্ষা · ${batchName(ACTIVE)}</div></div>
     <button class="btn big primary" data-act="examNew">+ নতুন পরীক্ষার নম্বর দিন</button>
+    <div class="two" style="margin-top:8px"><button class="btn" data-act="evNew" data-t="exam">📅 পরীক্ষার নোটিশ দিন</button><button class="btn" data-act="rpAll">📄 সবার রিপোর্ট কার্ড</button></div>
     <div class="plist">${E.length ? E.map(([id, e]) => `<div class="pl-row"><span><b>${esc(e.title)}</b><br><small>${bnDate(e.date)} · পূর্ণমান ${toBn(e.total)}</small></span>
       <button class="mini" data-act="examOpen" data-id="${id}">খুলুন</button></div>`).join('') : '<div class="hint">এখনো কোনো পরীক্ষা নেই</div>'}</div>
     <button class="btn ghost" data-act="close">বন্ধ করুন</button>`);
 }
-function openExam(id){
-  const e = id ? exams()[id] : {title:'', total:'', chapter:0, date:todayKey(), marks:{}};
+function openExam(id, pre){
+  const e = id ? exams()[id] : {title:'', total:'', chapter:0, date:todayKey(), marks:{}, ...(pre || {})};
   EX = {id: id || null, ...JSON.parse(JSON.stringify(e))};
   let ch = '<option value="0">অধ্যায় (ঐচ্ছিক)</option>';
   for (let i = 1; i <= 14; i++) ch += `<option value="${i}" ${Number(EX.chapter) === i ? 'selected' : ''}>অধ্যায় ${toBn(i)}</option>`;
@@ -926,14 +939,22 @@ function openExam(id){
 function examSave(){
   const t = $('#exTitle').value.trim(); if (!t) { toast('পরীক্ষার নাম লিখুন'); return false; }
   const e = {title:t, total:fromBn($('#exTotal').value.trim()) || '0', date:$('#exDate').value || todayKey(), chapter:Number($('#exChap').value), marks:{}};
-  document.querySelectorAll('[data-mk]').forEach(i => { const v = fromBn(i.value.trim()); if (v !== '') e.marks[i.dataset.mk] = v; });
+  let bad = 0; const tot = Number(e.total) || 0;
+  document.querySelectorAll('[data-mk]').forEach(i => {
+    const v = fromBn(i.value.trim()), n = Number(v), wrong = v !== '' && (isNaN(n) || n < 0 || (tot && n > tot));
+    i.classList.toggle('err', wrong); if (wrong) bad++;
+    if (v !== '') e.marks[i.dataset.mk] = v;
+  });
+  if (!tot) { toast('পূর্ণমান দিন'); return false; }
+  if (bad) { toast('⚠️ ' + toBn(bad) + 'টি নম্বর ভুল (পূর্ণমানের বেশি বা অসংখ্যা): লাল ঘর ঠিক করুন'); return false; }
   const id = EX.id || makeId('exam'); exams()[id] = e;
+  if (EX.evId && S.events[EX.evId]) { const ev = S.events[EX.evId]; ev.examIds = {...(ev.examIds || {}), [ACTIVE]: id}; }
   if (!save()) return false;
   toast('সেভ হয়েছে ✓'); openExam(id); return true;
 }
 async function examImage(){
   const e = exams()[EX.id], b = B(ACTIVE);
-  const rows = list().map(s => ({n:s.name, m:e.marks[s.id]})).sort((a, c) => (Number(c.m) || -1) - (Number(a.m) || -1));
+  const rows = list().map(s => ({n:s.name, m:e.marks[s.id]})).sort((a, c) => (c.m === undefined ? -1 : Number(c.m)) - (a.m === undefined ? -1 : Number(a.m)));
   await fontsReady();
   const W = 640, H = 230 + rows.length * 42 + 70, c = document.createElement('canvas'); c.width = W; c.height = H;
   const x = c.getContext('2d'), F = (w, s) => w >= 600 ? `${w} ${s}px "Baloo Da 2", "Noto Sans Bengali", sans-serif` : `${w} ${s}px "Hind Siliguri", "Noto Sans Bengali", sans-serif`;
@@ -975,7 +996,8 @@ function openProfile(sid){
       <tr><th>হাজিরা</th><td>${days.length ? toBn(pres) + ' / ' + toBn(days.length) + ' দিন (' + toBn(pct) + '%)' : 'এখনো নেই'}</td></tr>
       <tr><th>বকেয়া</th><td>${dueList(s).length ? '<span class="bad-t">' + dueList(s).map(ymLabel).join(', ') + '</span>' : '<span class="ok-t">নেই</span>'}</td></tr>
     </table>
-    <div class="plist"><h4>পরীক্ষার নম্বর</h4>${E.length ? E.map(e => `<div class="pl-row"><span>${esc(e.title)} <small>(${bnDate(e.date)})</small></span><b>${e.marks[sid] === undefined ? 'অনুপস্থিত' : toBn(e.marks[sid]) + '/' + toBn(e.total)}</b></div>`).join('') : '<div class="hint">নেই</div>'}</div>
+    <div class="plist"><h4>পরীক্ষার নম্বর</h4>${E.length ? E.map(e => `<div class="pl-row"><span>${esc(e.title)} <small>(${bnDate(e.date)})</small></span><b>${e.marks[sid] === undefined ? 'অনুপস্থিত' : toBn(e.marks[sid]) + '/' + toBn(e.total) + (Number(e.total) ? ' <small style="color:' + scoreColor(e.marks[sid] * 100 / e.total) + '">(' + toBn(Math.round(e.marks[sid] * 100 / e.total)) + '%)</small>' : '')}</b></div>`).join('') : '<div class="hint">নেই</div>'}</div>
+    <button class="btn big green" data-act="rpOpen" data-sid="${sid}">📄 রিপোর্ট কার্ড তৈরি ও পাঠান</button>
     <div class="two" style="margin-top:12px"><button class="btn" data-act="edit" data-sid="${sid}">✏️ তথ্য বদলান</button><button class="btn" data-act="pay" data-sid="${sid}">💰 বেতন</button></div>
     <button class="btn ghost" data-act="close">বন্ধ করুন</button>`);
 }
@@ -1074,6 +1096,8 @@ function openMore(){
   sheet(`<div class="sh-head"><div class="sh-name">☰ আরও</div></div>
     <div class="menu">
       <button data-act="summary"><span>📊</span>সব ব্যাচের সারাংশ</button>
+      <button data-act="events"><span>📅</span>নোটিশ ও রিমাইন্ডার</button>
+      <button data-act="rpAll"><span>📄</span>সবার রিপোর্ট কার্ড</button>
       <button data-act="addStudent"><span>➕</span>নতুন শিক্ষার্থী</button>
       <button data-act="group"><span>👥</span>${batchName(ACTIVE)} WhatsApp গ্রুপ</button>
       <button data-act="backup"><span>💾</span>ব্যাকআপ ডাউনলোড</button>
@@ -1105,12 +1129,18 @@ function openSettings(){
       <div class="two"><label class="f">মাসিক বেতন ৳<input data-set="${id}.fee" inputmode="numeric" value="${b.fee}"></label>
       <label class="f">অগ্রিমের শেষ তারিখ<input data-set="${id}.dueDay" inputmode="numeric" value="${b.dueDay}"></label>
       <label class="f">নোট ফি (বছরে) ৳<input data-set="${id}.noteFee" inputmode="numeric" value="${b.noteFee}"></label>
-      <label class="f">সেশন শুরুর মাস<input type="month" data-set="${id}.start" value="${b.start}"></label></div>
+      <label class="f">সেশন শুরুর মাস<input type="month" data-set="${id}.start" value="${b.start}"></label>
+      <label class="f">ক্লাসের সময় (নোটিশে বসবে)<input type="time" data-set="${id}.classTime" value="${b.classTime || ''}"></label></div>
       <label class="f">WhatsApp গ্রুপ লিংক<input data-set="${id}.group" value="${esc(b.group)}"></label></div>`; }).join('')}
     <div class="plist"><h4>শিক্ষক</h4>
       <label class="f">নাম<input data-set="settings.teacher" value="${esc(st.teacher)}"></label>
       <label class="f">মোবাইল<input data-set="settings.phone" value="${esc(st.phone)}"></label>
       <label class="f">মেসেজ পাঠানোর মূল মাধ্যম<select data-set="settings.channel"><option value="wa" ${st.channel === 'wa' ? 'selected' : ''}>WhatsApp</option><option value="sms" ${st.channel === 'sms' ? 'selected' : ''}>SMS</option></select></label></div>
+    <div class="plist"><h4>📅 Google Calendar সংযোগ</h4>
+      <div class="hint">নোটিশ (পরীক্ষা, নোট, এক্সট্রা ক্লাস…) সেভ করলে নিজে থেকে আপনার Google Calendar-এ যাবে, সাথে প্রশ্নপত্র/নোট তৈরির রিমাইন্ডার। Apps Script-এর লিংকটা এখানে পেস্ট করুন।</div>
+      <label class="f">Calendar লিংক<input data-set="cal.url" value="${esc(st.cal.url)}" placeholder="https://script.google.com/macros/s/.../exec?k=..."></label>
+      <label class="f">প্রশ্নপত্র/নোট তৈরির রিমাইন্ডার (সাধারণত)<select data-set="cal.prepDays">${[1, 2, 3, 5, 7].map(n => `<option value="${n}" ${Number(st.cal.prepDays) === n ? 'selected' : ''}>${toBn(n)} দিন আগে</option>`).join('')}</select></label>
+      <div class="two" style="margin-top:8px"><button class="btn" data-act="calTest">🔌 সংযোগ পরীক্ষা</button><button class="btn" data-act="calAll">🔄 সব নোটিশ পাঠান</button></div></div>
     <div class="plist"><h4>অটো SMS গেটওয়ে (ঐচ্ছিক)</h4>
       <div class="hint">SMS কোম্পানির অ্যাকাউন্ট আর Google Apps Script চালু হলে এখানে লিংক ও PIN বসান। API key এখানে নয়, Apps Script-এ থাকবে।</div>
       <label class="tile"><input type="checkbox" data-set="sms.enabled" ${st.sms.enabled ? 'checked' : ''}> অটো SMS চালু</label>
@@ -1119,15 +1149,16 @@ function openSettings(){
     <button class="btn big primary" data-act="settingsSave">💾 সেভ করুন</button>
     <button class="btn ghost" data-act="close">বন্ধ করুন</button>`);
 }
-function settingsSave(){
+function settingsSave(stay){
   document.querySelectorAll('[data-set]').forEach(el => {
     const [a, f] = el.dataset.set.split('.');
     let v = el.type === 'checkbox' ? el.checked : el.value.trim();
     if (['fee','dueDay','noteFee'].includes(f)) v = Math.max(0, Number(fromBn(v)) || 0);
     if (f === 'dueDay') v = Math.min(31, Math.max(1, v || 10));
-    if (a === 'settings') S.settings[f] = v; else if (a === 'sms') S.settings.sms[f] = v; else S.batches[a][f] = v || S.batches[a][f];
+    if (a === 'cal' && f === 'prepDays') v = Number(v) || 2;
+    if (a === 'settings') S.settings[f] = v; else if (a === 'sms') S.settings.sms[f] = v; else if (a === 'cal') S.settings.cal[f] = v; else S.batches[a][f] = v || S.batches[a][f];
   });
-  if (save()) { closeSheet(); renderAll(); toast('সেভ হয়েছে ✓'); }
+  if (save() && !stay) { closeSheet(); renderAll(); toast('সেভ হয়েছে ✓'); }
 }
 
 /* ========== ব্যাকআপ / রিস্টোর / পুরনো ডেটা ========== */
@@ -1198,6 +1229,589 @@ function openArchive(cls){
     <button class="btn ghost" data-act="close">বন্ধ করুন</button>`);
 }
 
+/* ========== রিপোর্ট কার্ড ========== */
+/* বাংলাদেশ বোর্ডের গ্রেড: [ন্যূনতম %, গ্রেড, জিপি] */
+const GRADES = [[80,'A+',5],[70,'A',4],[60,'A-',3.5],[50,'B',3],[40,'C',2],[33,'D',1],[0,'F',0]];
+const gradeOf = p => GRADES.find(g => p >= g[0]);
+const chName = c => { const m = (CHAPTER_SUMMARIES[c] || '').match(/\(([^)]+)\)/); return 'অধ্যায় ' + toBn(c) + (m ? ' (' + m[1] + ')' : ''); };
+const PERIODS = [['month','এই মাস'],['q3','৩ মাস'],['year','এই বছর'],['custom','নিজে বাছুন']];
+function periodRange(k, f, t){
+  const y = TODAY.getFullYear(), m = TODAY.getMonth(), today = todayKey();
+  const first = (yy, mm) => { const d = new Date(yy, mm, 1); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-01'; };
+  const lbl = (a, b) => { const [ay, am] = a.split('-').map(Number), [by, bm] = b.split('-').map(Number);
+    return ay === by && am === bm ? MONTHS[am - 1] + ' ' + toBn(ay) : MONTHS[am - 1] + (ay !== by ? ' ' + toBn(ay) : '') + ' – ' + MONTHS[bm - 1] + ' ' + toBn(by); };
+  if (k === 'custom' && f && t) { if (f > t) [f, t] = [t, f]; return {per:'custom', from:f, to:t, label:bnDate(f) + ' – ' + bnDate(t)}; }
+  if (k === 'month') return {per:k, from:first(y, m), to:today, label:lbl(first(y, m), today)};
+  if (k === 'year') return {per:k, from:y + '-01-01', to:today, label:toBn(y) + ' সাল'};
+  return {per:'q3', from:first(y, m - 2), to:today, label:lbl(first(y, m - 2), today)};
+}
+function reportData(sid, from, to){
+  const s = stu(sid), b = s.batch, L = S.students.filter(x => x.batch === b);
+  const num = v => (v === undefined || v === null || v === '' || isNaN(Number(v))) ? null : Number(v);
+  const E = Object.entries(S.exams[b] || {}).filter(([, e]) => e.date >= from && e.date <= to && Number(e.total) > 0)
+    .sort((p, q) => p[1].date.localeCompare(q[1].date));
+  const rows = E.map(([id, e]) => {
+    const tot = Number(e.total), all = L.map(x => num(e.marks[x.id])).filter(v => v !== null).sort((p, q) => q - p);
+    const avg = all.length ? Math.round(all.reduce((a, v) => a + v, 0) * 100 / all.length / tot) : null;
+    const got = num(e.marks[sid]), base = {id, title:e.title, date:e.date, chapter:Number(e.chapter) || 0, tot, n:all.length, avg, top:all[0]};
+    if (got === null) return {...base, absent:true};
+    const pct = Math.round(got * 100 / tot);
+    return {...base, got, pct, g:gradeOf(pct), rank:all.indexOf(got) + 1};
+  });
+  const taken = rows.filter(r => !r.absent);
+  const mean = id => { const v = E.map(([, e]) => num(e.marks[id]) === null ? null : num(e.marks[id]) * 100 / Number(e.total)).filter(v => v !== null);
+    return v.length ? v.reduce((a, x) => a + x, 0) / v.length : null; };
+  const my = mean(sid), means = L.map(x => mean(x.id)).filter(v => v !== null);
+  const rank = my === null ? null : means.filter(v => v > my + 1e-9).length + 1;
+  const gp = taken.length ? taken.reduce((a, r) => a + r.g[2], 0) / taken.length : null;
+  const ch = {};
+  taken.forEach(r => { if (r.chapter) (ch[r.chapter] = ch[r.chapter] || []).push(r.pct); });
+  const chAvg = Object.entries(ch).map(([c, v]) => [Number(c), v.reduce((a, x) => a + x, 0) / v.length]).sort((p, q) => p[0] - q[0]);
+  const A = S.attendance[b] || {}, days = Object.keys(A).filter(k => k >= from && k <= to).sort();
+  let att = null;
+  if (days.length) {
+    const marks = days.map(k => A[k].p.includes(sid) ? ((A[k].late || {})[sid] !== undefined ? 'L' : 'P') : 'A');
+    const pres = marks.filter(c => c !== 'A').length;
+    att = {total:days.length, pres, late:marks.filter(c => c === 'L').length, abs:days.length - pres, pct:Math.round(pres * 100 / days.length), marks};
+  }
+  const avg = my === null ? null : Math.round(my);
+  return {s, rows, taken, avg, g:avg === null ? null : gradeOf(avg), gp, rank, n:means.length,
+    strong:chAvg.filter(c => c[1] >= 75).map(c => c[0]), weak:chAvg.filter(c => c[1] < 50).map(c => c[0]),
+    att, absentN:rows.length - taken.length, trend:taken.length >= 2 ? taken[taken.length - 1].pct - taken[0].pct : 0};
+}
+function autoRemark(d){
+  const p = [], nm = d.s.shortName || d.s.name;
+  if (d.avg === null) p.push(nm + ' এই সময়ে কোনো পরীক্ষায় অংশ নেয়নি।');
+  else p.push(d.avg >= 80 ? nm + ' পড়াশোনায় খুব ভালো করছে, এই ধারা ধরে রাখতে হবে।'
+    : d.avg >= 65 ? nm + ' ভালো করছে; নিয়মিত অনুশীলন করলে আরও ভালো করবে।'
+    : d.avg >= 50 ? nm + ' মোটামুটি করছে; বাসায় নিয়মিত রিভিশন দরকার।'
+    : nm + '-এর ফলাফল আশানুরূপ নয়; বাসায় নিয়মিত পড়ার দিকে বিশেষ নজর দিন।');
+  if (d.trend >= 10) p.push('সাম্প্রতিক পরীক্ষাগুলোতে উন্নতি হয়েছে।');
+  else if (d.trend <= -10) p.push('সাম্প্রতিক পরীক্ষায় নম্বর কমেছে, কারণটা খেয়াল করা দরকার।');
+  if (d.weak.length) p.push('অধ্যায় ' + d.weak.map(toBn).join(', ') + ' আরও অনুশীলন করতে হবে।');
+  if (d.absentN) p.push(toBn(d.absentN) + 'টি পরীক্ষায় অনুপস্থিত ছিল।');
+  if (d.att) p.push(d.att.pct >= 90 ? 'ক্লাসে উপস্থিতি চমৎকার।' : d.att.pct < 75 ? 'ক্লাসে আরও নিয়মিত আসতে হবে।' : '');
+  return p.filter(Boolean).join(' ');
+}
+function wrapLines(x, text, maxW){
+  const out = [];
+  String(text || '').split('\n').forEach(par => {
+    let line = '';
+    par.split(/\s+/).forEach(w => { if (!w) return; const t = line ? line + ' ' + w : w;
+      if (x.measureText(t).width > maxW && line) { out.push(line); line = w; } else line = t; });
+    if (line) out.push(line);
+  });
+  return out;
+}
+const cardFont = (w, s) => w >= 600 ? `${w} ${s}px "Baloo Da 2", "Noto Sans Bengali", sans-serif` : `${w} ${s}px "Hind Siliguri", "Noto Sans Bengali", sans-serif`;
+/* লম্বা খসড়া ক্যানভাসে আঁকা, তারপর মাপমতো কেটে সাদা কার্ডে বসানো */
+async function finishCard(draw, accent){
+  await fontsReady();
+  const W = 1080, tmp = document.createElement('canvas'); tmp.width = W; tmp.height = 6000;
+  const x = tmp.getContext('2d');
+  const [logo, sig] = await Promise.all([loadImg('logo.png'), loadImg(SIG_IMG)]);
+  const H = Math.min(6000, Math.ceil(draw(x, W, logo, sig)));
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const y = c.getContext('2d');
+  y.fillStyle = '#EEF5F0'; y.fillRect(0, 0, W, H);
+  y.fillStyle = '#fff'; rrect(y, 28, 28, W - 56, H - 56, 28); y.fill();
+  y.strokeStyle = '#D5E7DA'; y.lineWidth = 2; y.stroke();
+  y.save(); rrect(y, 28, 28, W - 56, H - 56, 28); y.clip(); y.fillStyle = accent; y.fillRect(28, 28, W - 56, 14); y.restore();
+  if (logo) { y.globalAlpha = .05; y.drawImage(logo, W / 2 - 300, H / 2 - 300, 600, 600); y.globalAlpha = 1; }
+  y.drawImage(tmp, 0, 0, W, H, 0, 0, W, H);
+  return c;
+}
+function cardHeader(x, W, logo, G){
+  if (logo) x.drawImage(logo, 60, 62, 190, 190);
+  x.textAlign = 'left'; x.fillStyle = G; x.font = cardFont(700, 44); x.fillText(CENTER, 270, 128);
+  x.fillStyle = '#64748B'; x.font = cardFont(500, 24); x.fillText('পরিচালনায়: ' + S.settings.teacher, 272, 172);
+  x.fillText('মোবাইল: ' + toBn(S.settings.phone), 272, 208);
+  x.strokeStyle = '#C79A3E'; x.lineWidth = 3; x.beginPath(); x.moveTo(60, 278); x.lineTo(W - 60, 278); x.stroke();
+}
+function makeReportCanvas(sid, from, to, label, remark){
+  const d = reportData(sid, from, to);
+  const G = '#14532D', G2 = '#1F7A45', GL = '#ECF7EF', INK = '#0F172A', SOFT = '#64748B', BOX = '#F8FAFC', F = cardFont;
+  return finishCard((x, W, logo, sig) => {
+    cardHeader(x, W, logo, G);
+    x.fillStyle = INK; x.font = F(700, 36); x.textAlign = 'left'; x.fillText('অগ্রগতি প্রতিবেদন (রিপোর্ট কার্ড)', 60, 336);
+    let y = 368;
+    /* তথ্য ২×২ */
+    [['শিক্ষার্থী', d.s.name], ['ব্যাচ', batchName(d.s.batch)], ['সময়কাল', label], ['প্রকাশের তারিখ', bnDate(todayKey())]].forEach((r, i) => {
+      const cw = (W - 120) / 2 - 10, cx = 60 + (i % 2) * (cw + 20), cy = y + Math.floor(i / 2) * 104;
+      x.fillStyle = BOX; rrect(x, cx, cy, cw, 90, 16); x.fill();
+      x.textAlign = 'left'; x.fillStyle = SOFT; x.font = F(500, 21); x.fillText(r[0], cx + 22, cy + 34);
+      x.fillStyle = INK; x.font = F(700, 27);
+      let v = String(r[1]); while (x.measureText(v).width > cw - 44 && v.length > 4) v = v.slice(0, -2);
+      if (v !== String(r[1])) v += '…';
+      x.fillText(v, cx + 22, cy + 72);
+    });
+    y += 228;
+    /* এক নজরে: গড়, উপস্থিতি, অবস্থান */
+    const tw = (W - 120 - 40) / 3;
+    const tiles = [
+      ['গড় নম্বর', d.avg === null ? '—' : toBn(d.avg) + '%', d.g ? 'গ্রেড ' + d.g[1] + ' · জিপি ' + toBn(d.gp.toFixed(2)) : 'পরীক্ষা নেই', d.avg === null ? SOFT : scoreColor(d.avg)],
+      ['উপস্থিতি', d.att ? toBn(d.att.pct) + '%' : '—', d.att ? toBn(d.att.pres) + '/' + toBn(d.att.total) + ' দিন' : 'হাজিরা নেই', d.att ? scoreColor(d.att.pct) : SOFT],
+      ['ব্যাচে অবস্থান', d.rank ? bnOrd(d.rank) : '—', d.rank ? toBn(d.n) + ' জনের মধ্যে' : '', d.rank ? (d.rank <= 3 ? '#B7791F' : G) : SOFT]];
+    tiles.forEach((t, i) => {
+      const tx = 60 + i * (tw + 20);
+      x.fillStyle = GL; rrect(x, tx, y, tw, 180, 22); x.fill();
+      x.textAlign = 'center'; x.fillStyle = G2; x.font = F(600, 24); x.fillText(t[0], tx + tw / 2, y + 44);
+      x.fillStyle = t[3]; x.font = F(700, 62); x.fillText(t[1], tx + tw / 2, y + 116);
+      x.fillStyle = SOFT; x.font = F(500, 21); x.fillText(t[2], tx + tw / 2, y + 156);
+    });
+    y += 210;
+    const sec = t => { x.textAlign = 'left'; x.fillStyle = G; x.font = F(700, 30); x.fillText(t, 60, y + 34);
+      const w = x.measureText(t).width; x.strokeStyle = '#E2E8F0'; x.lineWidth = 2; x.beginPath(); x.moveTo(80 + w, y + 24); x.lineTo(W - 60, y + 24); x.stroke(); y += 66; };
+    /* পরীক্ষার ফল: টেবিল */
+    sec('📝 পরীক্ষার ফলাফল');
+    const shown = d.rows.slice(-14);
+    if (!shown.length) {
+      x.fillStyle = BOX; rrect(x, 60, y, W - 120, 90, 16); x.fill();
+      x.fillStyle = SOFT; x.font = F(500, 24); x.textAlign = 'center'; x.fillText('এই সময়ে কোনো পরীক্ষা হয়নি', W / 2, y + 55); y += 120;
+    } else {
+      x.fillStyle = G; rrect(x, 60, y, W - 120, 54, 14); x.fill();
+      x.fillStyle = '#fff'; x.font = F(600, 21);
+      x.textAlign = 'left'; x.fillText('পরীক্ষা', 90, y + 35);
+      x.textAlign = 'center'; x.fillText('নম্বর', 640, y + 35); x.fillText('%', 760, y + 35); x.fillText('গ্রেড', 860, y + 35);
+      x.textAlign = 'right'; x.fillText('অবস্থান', W - 84, y + 35);
+      y += 54;
+      shown.forEach((r, i) => {
+        if (i % 2) { x.fillStyle = '#F6FAF7'; x.fillRect(60, y, W - 120, 78); }
+        x.textAlign = 'left'; x.fillStyle = INK; x.font = F(600, 24);
+        let t = toBn(i + 1) + '. ' + r.title; while (x.measureText(t).width > 470 && t.length > 6) t = t.slice(0, -2);
+        if (t !== toBn(i + 1) + '. ' + r.title) t += '…';
+        x.fillText(t, 84, y + 35);
+        x.fillStyle = SOFT; x.font = F(400, 19); x.fillText(bnDate(r.date) + (r.chapter ? ' · অধ্যায় ' + toBn(r.chapter) : '') + (r.avg !== null ? ' · ব্যাচের গড় ' + toBn(r.avg) + '%' : ''), 84, y + 64);
+        if (r.absent) { x.textAlign = 'center'; x.fillStyle = '#B91C1C'; x.font = F(700, 25); x.fillText('অনুপস্থিত', 760, y + 48); }
+        else {
+          const col = scoreColor(r.pct);
+          x.textAlign = 'center'; x.fillStyle = INK; x.font = F(700, 25); x.fillText(toBn(r.got) + '/' + toBn(r.tot), 640, y + 48);
+          x.fillStyle = col; x.fillText(toBn(r.pct) + '%', 760, y + 48);
+          x.fillStyle = col; rrect(x, 826, y + 20, 68, 38, 19); x.fill();
+          x.fillStyle = '#fff'; x.font = F(700, 22); x.fillText(r.g[1], 860, y + 47);
+          x.textAlign = 'right'; x.fillStyle = INK; x.font = F(600, 23); x.fillText(bnOrd(r.rank) + '/' + toBn(r.n), W - 84, y + 48);
+        }
+        y += 78;
+      });
+      x.strokeStyle = '#D5E7DA'; x.lineWidth = 2; x.beginPath(); x.moveTo(60, y); x.lineTo(W - 60, y); x.stroke();
+      if (d.rows.length > shown.length) { x.fillStyle = SOFT; x.font = F(400, 19); x.textAlign = 'left'; x.fillText('(শেষ ' + toBn(shown.length) + 'টি পরীক্ষা দেখানো হয়েছে, মোট ' + toBn(d.rows.length) + 'টি)', 84, y + 30); y += 20; }
+      y += 30;
+    }
+    /* অগ্রগতির চার্ট */
+    if (shown.filter(r => !r.absent).length >= 2) {
+      sec('📈 অগ্রগতি');
+      const L0 = 140, R0 = W - 90, T0 = y + 40, B0 = y + 260, n = shown.length, slot = (R0 - L0) / n, bw = Math.min(56, slot * .5);
+      x.fillStyle = BOX; rrect(x, 60, y, W - 120, 330, 20); x.fill();
+      x.font = F(400, 18); x.textAlign = 'right';
+      [0, 25, 50, 75, 100].forEach(v => { const yy = B0 - (B0 - T0) * v / 100;
+        x.strokeStyle = v === 0 ? '#94A3B8' : '#E2E8F0'; x.lineWidth = v === 0 ? 2 : 1; x.beginPath(); x.moveTo(L0, yy); x.lineTo(R0, yy); x.stroke();
+        x.fillStyle = SOFT; x.fillText(toBn(v), L0 - 12, yy + 6); });
+      const pts = [];
+      shown.forEach((r, i) => {
+        const cx = L0 + slot * (i + .5);
+        if (!r.absent) { const h = (B0 - T0) * r.pct / 100; x.fillStyle = scoreColor(r.pct); rrect(x, cx - bw / 2, B0 - h, bw, Math.max(h, 4), 8); x.fill();
+          x.font = F(700, 19); x.textAlign = 'center';
+          if (h > 40) { x.fillStyle = '#fff'; x.fillText(toBn(r.pct), cx, B0 - 14); } else { x.fillStyle = INK; x.fillText(toBn(r.pct), cx, B0 - h - 10); } }
+        else { x.fillStyle = '#B91C1C'; x.font = F(600, 18); x.textAlign = 'center'; x.fillText('অনু.', cx, B0 - 10); }
+        if (r.avg !== null) pts.push([cx, B0 - (B0 - T0) * r.avg / 100]);
+        x.fillStyle = SOFT; x.font = F(500, 19); x.textAlign = 'center'; x.fillText(toBn(i + 1), cx, B0 + 28);
+      });
+      if (pts.length) {
+        x.strokeStyle = '#334155'; x.lineWidth = 2; x.setLineDash([8, 6]); x.beginPath(); pts.forEach((p, i) => i ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1])); x.stroke(); x.setLineDash([]);
+        pts.forEach(p => { x.fillStyle = '#fff'; x.beginPath(); x.arc(p[0], p[1], 7, 0, Math.PI * 2); x.fill(); x.strokeStyle = '#334155'; x.lineWidth = 3; x.stroke(); });
+      }
+      x.textAlign = 'left'; x.font = F(500, 19); x.fillStyle = G2; rrect(x, 90, y + 300, 22, 16, 4); x.fill();
+      x.fillStyle = SOFT; x.fillText('নিজের নম্বর (%)', 120, y + 314);
+      x.strokeStyle = '#334155'; x.lineWidth = 3; x.beginPath(); x.arc(330, y + 308, 7, 0, Math.PI * 2); x.stroke();
+      x.fillText('ব্যাচের গড় (%) · নিচের সংখ্যা = টেবিলের ক্রম', 346, y + 314);
+      y += 360;
+    }
+    /* অধ্যায়ভিত্তিক */
+    if (d.strong.length || d.weak.length) {
+      sec('📚 অধ্যায়ভিত্তিক মূল্যায়ন');
+      [[d.strong, '💪 ভালো দখল:', '#15803D', '#ECFDF5'], [d.weak, '📌 আরও অনুশীলন দরকার:', '#B91C1C', '#FEF2F2']].forEach(([arr, t, col, bg]) => {
+        if (!arr.length) return;
+        x.font = F(500, 23); const lines = wrapLines(x, arr.map(chName).join(', '), W - 200);
+        const h = 58 + lines.length * 34;
+        x.fillStyle = bg; rrect(x, 60, y, W - 120, h, 16); x.fill();
+        x.textAlign = 'left'; x.fillStyle = col; x.font = F(700, 24); x.fillText(t, 90, y + 40);
+        x.fillStyle = INK; x.font = F(500, 23); lines.forEach((l, i) => x.fillText(l, 90, y + 76 + i * 34));
+        y += h + 14;
+      });
+      y += 16;
+    }
+    /* হাজিরা */
+    if (d.att) {
+      sec('✅ ক্লাসে উপস্থিতি');
+      const a = d.att, col = scoreColor(a.pct), boxH = a.marks.length <= 40 ? 230 : 190;
+      x.fillStyle = BOX; rrect(x, 60, y, W - 120, boxH, 20); x.fill();
+      const cx = 170, cy = y + 105;
+      x.lineCap = 'round'; x.lineWidth = 20; x.strokeStyle = '#E2E8F0'; x.beginPath(); x.arc(cx, cy, 72, 0, Math.PI * 2); x.stroke();
+      x.strokeStyle = col; x.beginPath(); x.arc(cx, cy, 72, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * a.pct / 100); x.stroke(); x.lineCap = 'butt';
+      x.textAlign = 'center'; x.fillStyle = col; x.font = F(700, 38); x.fillText(toBn(a.pct) + '%', cx, cy + 12);
+      x.textAlign = 'left'; x.fillStyle = INK; x.font = F(700, 27);
+      x.fillText('মোট ক্লাস ' + toBn(a.total) + ' · উপস্থিত ' + toBn(a.pres) + ' · অনুপস্থিত ' + toBn(a.abs), 290, y + 54);
+      x.fillStyle = col; x.font = F(700, 24); x.fillText('● ' + attWord(a.pct) + (a.late ? '  (দেরিতে ' + toBn(a.late) + ' দিন)' : ''), 290, y + 96);
+      if (a.marks.length <= 40) {
+        const gap = 5, per = a.marks.length <= 20 ? a.marks.length : Math.ceil(a.marks.length / 2), bw = Math.min(30, (W - 120 - 260 - gap * (per - 1)) / per);
+        a.marks.forEach((c, i) => { x.fillStyle = c === 'P' ? '#22C55E' : c === 'L' ? '#F59E0B' : '#EF4444';
+          rrect(x, 290 + (i % per) * (bw + gap), y + 120 + Math.floor(i / per) * 40, bw, 30, 6); x.fill(); });
+        x.fillStyle = SOFT; x.font = F(400, 17); x.textAlign = 'right'; x.fillText('সবুজ: উপস্থিত · হলুদ: দেরি · লাল: অনুপস্থিত', W - 84, y + boxH - 14);
+      }
+      y += boxH + 30;
+    }
+    /* মন্তব্য */
+    if (remark && remark.trim()) {
+      sec('✍️ শিক্ষকের মন্তব্য');
+      x.font = F(500, 25); const lines = wrapLines(x, remark.trim(), W - 200), h = 40 + lines.length * 40;
+      x.fillStyle = GL; rrect(x, 60, y, W - 120, h, 18); x.fill();
+      x.fillStyle = G2; x.fillRect(60, y + 14, 6, h - 28);
+      x.fillStyle = INK; x.textAlign = 'left'; lines.forEach((l, i) => x.fillText(l, 92, y + 48 + i * 40));
+      y += h + 20;
+    }
+    /* স্বাক্ষর */
+    y += 20;
+    if (sig) x.drawImage(sig, W - 330, y, 240, 128);
+    x.strokeStyle = '#94A3B8'; x.lineWidth = 2; x.beginPath(); x.moveTo(W - 350, y + 134); x.lineTo(W - 70, y + 134); x.stroke();
+    x.fillStyle = SOFT; x.font = F(500, 21); x.textAlign = 'center'; x.fillText('শিক্ষকের স্বাক্ষর', W - 210, y + 166);
+    x.textAlign = 'left'; x.fillStyle = G; x.font = F(700, 28); x.fillText('শুভকামনা!', 60, y + 70);
+    x.fillStyle = SOFT; x.font = F(500, 21); x.fillText('নিয়মিত পড়ো, প্রশ্ন করো, ভালো ফল করো।', 60, y + 108);
+    y += 210;
+    x.fillStyle = '#94A3B8'; x.font = F(400, 18); x.textAlign = 'center';
+    x.fillText('এই রিপোর্ট কার্ড অ্যাপে তৈরি · কোড ' + hash(sid + '|' + from + '|' + to) + ' · প্রশ্ন থাকলে শিক্ষককে জানান', W / 2, y);
+    return y + 52;
+  }, G);
+}
+
+let RPT = null;
+const rptKey = (sid, f, t) => (sid || RPT.sid) + '|' + (f || RPT.from) + '|' + (t || RPT.to);
+function openReport(sid, per, back){
+  const r = periodRange(per || (RPT && RPT.sid === sid ? RPT.per : 'q3'), RPT && RPT.from, RPT && RPT.to);
+  RPT = {sid, ...r, back: back !== undefined ? back : (RPT && RPT.sid === sid ? RPT.back : '')};
+  renderReport();
+}
+function renderReport(){
+  const s = stu(RPT.sid), d = reportData(RPT.sid, RPT.from, RPT.to), saved = S.reports[rptKey()];
+  if (RPT.remark === undefined) RPT.remark = saved !== undefined ? saved : autoRemark(d);
+  sheet(`<div class="sh-head"><div class="sh-name">📄 রিপোর্ট কার্ড · ${esc(s.name)}</div><div class="sh-sub">${batchName(s.batch)}</div></div>
+    <div class="light"><div class="seg">${PERIODS.map(([k, t]) => `<button class="seg-btn ${RPT.per === k ? 'on' : ''}" data-act="rpPer" data-p="${k}">${t}</button>`).join('')}</div></div>
+    ${RPT.per === 'custom' ? `<div class="two"><label class="f">শুরু<input type="date" id="rpFrom" value="${RPT.from}" data-chg="rpRange"></label><label class="f">শেষ<input type="date" id="rpTo" value="${RPT.to}" data-chg="rpRange"></label></div>` : ''}
+    <div class="hint" style="margin-top:8px">${RPT.label} · পরীক্ষা ${toBn(d.rows.length)}টি · ${d.avg === null ? 'গড় নেই' : 'গড় ' + toBn(d.avg) + '% (' + d.g[1] + ')'} · হাজিরা ${d.att ? toBn(d.att.pct) + '%' : 'নেই'}</div>
+    <label class="f">শিক্ষকের মন্তব্য (নিজে বদলাতে পারেন)<textarea id="rpRemark" rows="4" data-chg="rpRemark">${esc(RPT.remark)}</textarea></label>
+    <div class="row"><button class="mini" data-act="rpAuto">🔄 আবার স্বয়ংক্রিয় মন্তব্য</button></div>
+    <img id="rpImg" class="rcimg" alt="কার্ড তৈরি হচ্ছে…">
+    <button class="btn big green" data-act="rpSend">📤 অভিভাবকের WhatsApp-এ পাঠান</button>
+    <div class="two" style="margin-top:8px"><button class="btn" data-act="rpShare">🔗 শেয়ার</button><button class="btn" data-act="rpSave">💾 ছবি সেভ</button></div>
+    <button class="btn ghost" ${RPT.back === 'all' ? 'data-act="rpAll"' : `data-act="profile" data-sid="${s.id}"`}>← ফিরে যান</button>`, 'report');
+  rpBuild();
+}
+function rpBuild(){
+  const r = {...RPT};
+  const p = RPT.blob = makeReportCanvas(r.sid, r.from, r.to, r.label, r.remark).then(c => new Promise(res => c.toBlob(res, 'image/png'))).catch(e => { console.error(e); return null; });
+  p.then(b => { const im = $('#rpImg'); if (b && im && RPT.blob === p) im.src = URL.createObjectURL(b); });
+}
+async function rpBlob(){
+  const ta = $('#rpRemark');
+  if (ta && ta.value !== RPT.remark) { RPT.remark = ta.value; S.reports[rptKey()] = ta.value; save(); rpBuild(); }
+  const b = await RPT.blob; if (!b) toast('কার্ড তৈরি হয়নি, আবার চেষ্টা করুন');
+  return b;
+}
+const rpName = () => 'report-' + hash(rptKey()) + '.png';
+/* পুরো ব্যাচ: একজন একজন করে রিপোর্ট কার্ড পাঠানো */
+let RPA = null;
+function openReportAll(per){
+  const r = periodRange(per || (RPA ? RPA.per : 'q3'));
+  RPA = {...r, key:'rc-' + ACTIVE + '-' + r.from + '-' + r.to};
+  renderReportAll();
+}
+function renderReportAll(){
+  const L = list(), sent = new Set(S.sent[RPA.key] || []);
+  const next = L.find(s => !sent.has(s.id) && validPhone(s.guardianPhone));
+  sheet(`<div class="sh-head"><div class="sh-name">📄 সবার রিপোর্ট কার্ড · ${batchName(ACTIVE)}</div>
+      <div class="sh-sub">${RPA.label} · ${toBn(L.filter(s => sent.has(s.id)).length)} / ${toBn(L.length)} জনকে পাঠানো হয়েছে</div></div>
+    <div class="light"><div class="seg">${PERIODS.slice(0, 3).map(([k, t]) => `<button class="seg-btn ${RPA.per === k ? 'on' : ''}" data-act="rpaPer" data-p="${k}">${t}</button>`).join('')}</div></div>
+    ${next ? `<button class="btn big primary" data-act="rpaSend" data-sid="${next.id}">▶ পাঠান: ${esc(next.name)}</button>` : L.length ? '<div class="donebox">✓ সবাইকে পাঠানো শেষ</div>' : ''}
+    <div class="hint">"পাঠান" চাপলে কার্ড তৈরি হয়ে অভিভাবকের WhatsApp খুলবে। মন্তব্য বদলাতে বা কার্ড দেখতে নামের পাশে "দেখুন" চাপুন।</div>
+    <div style="margin-top:8px">${L.map(s => { const d = reportData(s.id, RPA.from, RPA.to);
+      return `<div class="q-row ${sent.has(s.id) ? 'sent' : ''}"><span>${sent.has(s.id) ? '✅' : validPhone(s.guardianPhone) ? '⏳' : '⚠️'} ${esc(s.name)}
+        <small style="color:var(--soft)">· ${d.avg === null ? 'পরীক্ষা নেই' : toBn(d.avg) + '% ' + d.g[1]}${d.rank ? ' · ' + bnOrd(d.rank) : ''}</small></span>
+        <button class="mini" data-act="rpOpen" data-sid="${s.id}" data-from="all">দেখুন</button>
+        ${validPhone(s.guardianPhone) ? `<button class="mini wa" data-act="rpaSend" data-sid="${s.id}">${sent.has(s.id) ? 'আবার' : 'পাঠান'}</button>` : ''}</div>`; }).join('')}</div>
+    <button class="btn ghost" data-act="close">বন্ধ করুন</button>`, 'rpall');
+}
+async function rpaSend(sid){
+  const s = stu(sid);
+  if (!validPhone(s.guardianPhone)) { toast('অভিভাবকের নম্বর ঠিক নেই'); return; }
+  const key = rptKey(sid, RPA.from, RPA.to);
+  const remark = S.reports[key] !== undefined ? S.reports[key] : autoRemark(reportData(sid, RPA.from, RPA.to));
+  const c = await makeReportCanvas(sid, RPA.from, RPA.to, RPA.label, remark);
+  const b = await new Promise(r => c.toBlob(r, 'image/png'));
+  if (await imageToGuardian(b, s.guardianPhone, 'report-' + hash(key) + '.png')) { markSent(RPA.key, [sid]); setTimeout(renderReportAll, 300); }
+}
+
+/* ========== নোটিশ ও রিমাইন্ডার ========== */
+const EV_TYPES = {exam:['📝','পরীক্ষা','#B91C1C'], extra:['📚','এক্সট্রা ক্লাস','#1D4ED8'], note:['📒','নোট দেওয়া','#047857'], off:['🚫','ক্লাস বন্ধ','#B45309'], change:['⏰','সময় পরিবর্তন','#7C3AED'], other:['📢','অন্যান্য নোটিশ','#0F766E']};
+const WD = ['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার'];
+const dOf = k => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d); };
+const dayDiff = k => Math.round((dOf(k) - new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate())) / 864e5);
+const addDays = (k, n) => { const d = dOf(k); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+const wdOf = k => WD[dOf(k).getDay()];
+function bnTime(t){
+  if (!t) return '';
+  const [h, m] = t.split(':').map(Number);
+  const p = h < 5 ? 'রাত' : h < 12 ? 'সকাল' : h < 15 ? 'দুপুর' : h < 18 ? 'বিকাল' : h < 20 ? 'সন্ধ্যা' : 'রাত';
+  return p + ' ' + toBn(h % 12 || 12) + ':' + toBn(pad(m)) + 'টা';
+}
+const relDay = k => { const n = dayDiff(k); return n === 0 ? 'আজ' : n === 1 ? 'আগামীকাল' : n === 2 ? 'পরশু' : n === -1 ? 'গতকাল' : n > 0 ? toBn(n) + ' দিন পর' : toBn(-n) + ' দিন আগে'; };
+const whenText = (e, noTime) => { const n = dayDiff(e.date);
+  return (n === 0 ? 'আজ ' : n === 1 ? 'আগামীকাল ' : n > 1 ? 'আগামী ' : '') + wdOf(e.date) + ', ' + bnDate(e.date) + (e.time && !noTime ? ' ' + bnTime(e.time) + 'য়' : ''); };
+const evTitle = e => e.title || EV_TYPES[e.type][1];
+const evSyl = e => e.syllabus || (e.chapter ? chName(e.chapter) : '');
+const evStudents = e => S.students.filter(s => e.batches.includes(s.batch));
+const evSort = (p, q) => (p[1].date + (p[1].time || '')).localeCompare(q[1].date + (q[1].time || ''));
+function noticeText(e, s, kind){
+  const bn = s ? batchName(s.batch) : e.batches.map(batchName).join(' ও ');
+  const who = s ? s.name : '', W = whenText(e), syl = evSyl(e), T = evTitle(e), rem = kind === 'remind';
+  const head = s ? 'প্রিয় অভিভাবক, আসসালামু আলাইকুম।\n' : `${EV_TYPES[e.type][0]} ${rem ? 'রিমাইন্ডার' : 'নোটিশ'} · ${CENTER}\n${bn}\n\n`;
+  let body = '';
+  if (e.type === 'exam') body = (rem ? `🔔 মনে করিয়ে দিচ্ছি: ${W} ${s ? who + '-এর ' : ''}পরীক্ষা।` : `জানানো যাচ্ছে যে, ${W} ${CENTER}-এর ${bn} ব্যাচে একটি পরীক্ষা নেওয়া হবে।`)
+    + `\n\n📝 পরীক্ষা: ${T}` + (syl ? `\n📚 সিলেবাস: ${syl}` : '') + (e.total ? `\n🎯 পূর্ণমান: ${toBn(e.total)}` : '')
+    + (s ? `\n\n${who}-কে ভালোভাবে প্রস্তুতি নিয়ে সময়মতো আসতে বলবেন।` : '\n\nসবাই ভালোভাবে প্রস্তুতি নিয়ে সময়মতো আসবে।');
+  else if (e.type === 'extra') body = (rem ? `🔔 মনে করিয়ে দিচ্ছি: ${W} ${s ? who + '-এর ' : ''}এক্সট্রা ক্লাস আছে।` : `জানানো যাচ্ছে যে, ${W} ${CENTER}-এর ${bn} ব্যাচে একটি এক্সট্রা ক্লাস নেওয়া হবে।`)
+    + ((e.title || syl) ? `\n\n📚 বিষয়: ${[e.title, syl].filter(Boolean).join(' · ')}` : '') + (s ? `\n\n${who}-কে অবশ্যই উপস্থিত থাকতে বলবেন।` : '\n\nসবার উপস্থিতি জরুরি।');
+  else if (e.type === 'note') body = (rem ? `🔔 মনে করিয়ে দিচ্ছি: ${W} ${s ? who + '-কে ' : ''}নতুন নোট দেওয়া হবে।` : `জানানো যাচ্ছে যে, ${W} ${CENTER}-এর ${bn} ব্যাচে নতুন হ্যান্ডনোট দেওয়া হবে।`)
+    + ((e.title || syl) ? `\n\n📒 নোট: ${[e.title, syl].filter(Boolean).join(' · ')}` : '') + (s ? `\n\n${who}-কে অবশ্যই উপস্থিত থেকে নোট সংগ্রহ করতে বলবেন।` : '\n\nসবাই উপস্থিত থেকে নোট সংগ্রহ করবে।');
+  else if (e.type === 'off') body = (rem ? '🔔 মনে করিয়ে দিচ্ছি: ' : 'জানানো যাচ্ছে যে, ') + `${whenText(e, true)} ${CENTER}-এর ${bn} ক্লাস বন্ধ থাকবে।` + (e.title ? `\nকারণ: ${e.title}` : '') + '\nপরের ক্লাস যথারীতি নির্ধারিত সময়ে হবে।';
+  else if (e.type === 'change') body = (rem ? '🔔 মনে করিয়ে দিচ্ছি: ' : 'জানানো যাচ্ছে যে, ') + `${whenText(e, true)} ${CENTER}-এর ${bn} ক্লাসের সময় পরিবর্তন করে ${bnTime(e.time) || '—'} করা হয়েছে।` + (e.title ? `\n${e.title}` : '');
+  else body = (rem ? '🔔 মনে করিয়ে দিচ্ছি:\n' : '') + `${T}\n📅 ${W}`;
+  if (e.note) body += '\n\n' + e.note;
+  return head + body + sign();
+}
+function soonEventsHTML(){
+  return Object.entries(S.events).filter(([, e]) => e.batches.includes(ACTIVE) && dayDiff(e.date) >= 0 && dayDiff(e.date) <= 2).sort(evSort)
+    .map(([id, e]) => `<button class="alert ev" data-act="evView" data-id="${id}">${EV_TYPES[e.type][0]} ${relDay(e.date)}${e.time && e.type !== 'off' ? ' ' + bnTime(e.time) : ''}: ${esc(evTitle(e))} <small>· ${dayDiff(e.date) <= 1 ? 'রিমাইন্ডার পাঠান ›' : 'দেখুন ›'}</small></button>`).join('');
+}
+function openEvents(){
+  const all = Object.entries(S.events).filter(([, e]) => e.batches.includes(ACTIVE));
+  const up = all.filter(([, e]) => dayDiff(e.date) >= 0).sort(evSort), past = all.filter(([, e]) => dayDiff(e.date) < 0).sort(evSort).reverse().slice(0, 20);
+  const row = ([id, e]) => `<div class="pl-row"><span><b>${EV_TYPES[e.type][0]} ${esc(evTitle(e))}</b><br><small>${relDay(e.date)} · ${wdOf(e.date)}, ${bnDate(e.date)}${e.time && e.type !== 'off' ? ' · ' + bnTime(e.time) : ''}${e.batches.length > 1 ? ' · ' + toBn(e.batches.length) + 'টি ব্যাচ' : ''}</small></span>
+    <button class="mini" data-act="evView" data-id="${id}">খুলুন</button></div>`;
+  sheet(`<div class="sh-head"><div class="sh-name">📅 নোটিশ ও রিমাইন্ডার</div><div class="sh-sub">${batchName(ACTIVE)}</div></div>
+    <div class="hint">কী জানাবেন বাছুন:</div>
+    <div class="evtype">${Object.entries(EV_TYPES).map(([k, t]) => `<button class="fchip" data-act="evNew" data-t="${k}">${t[0]} ${t[1]}</button>`).join('')}</div>
+    <div class="plist"><h4>আসন্ন</h4>${up.length ? up.map(row).join('') : '<div class="hint">কিছু নেই। ওপর থেকে নতুন নোটিশ দিন।</div>'}</div>
+    ${past.length ? `<details><summary>আগের নোটিশ (${toBn(past.length)})</summary>${past.map(row).join('')}</details>` : ''}
+    <div class="hint" style="margin-top:10px">${CAN_REMIND ? '🔔 নোটিশে ঠিক করা সময়ে আপনার ফোনে নিজে থেকে নোটিফিকেশন আসবে।' : '🔔 নিজের ফোনে নোটিফিকেশন: নতুন APK ইনস্টল করলে আসবে। ততদিন নোটিশ খুলে "Google Calendar-এ যোগ" চাপুন।'}</div>
+    <button class="btn ghost" data-act="close">বন্ধ করুন</button>`, 'events');
+}
+let EVF = null;
+function openEventForm(id, type){
+  const tm = (S.batches[ACTIVE] || {}).classTime || '16:00';
+  const e = id ? S.events[id] : {type:type || 'exam', batches:[ACTIVE], title:'', date:addDays(todayKey(), type === 'exam' || type === 'note' || !type ? Math.max(1, Number(S.settings.cal.prepDays) || 2) + 1 : 1), time:tm, chapter:0, total:'', syllabus:'', note:'', rmEve:true, rmPre:true, prep:Number(S.settings.cal.prepDays) || 2};
+  EVF = {id:id || null, ...JSON.parse(JSON.stringify(e))};
+  renderEventForm();
+}
+function readEvf(){
+  const g = i => document.getElementById(i);
+  if (!g('evDate') || !EVF) return;
+  EVF.title = g('evTitle').value.trim(); EVF.date = g('evDate').value; if (g('evTime')) EVF.time = g('evTime').value;
+  if (g('evChap')) EVF.chapter = Number(g('evChap').value);
+  if (g('evTotal')) EVF.total = fromBn(g('evTotal').value.trim());
+  if (g('evSyl')) EVF.syllabus = g('evSyl').value.trim();
+  EVF.note = g('evNote').value.trim();
+  EVF.batches = [...document.querySelectorAll('[data-evb]')].filter(i => i.checked).map(i => i.dataset.evb);
+  if (g('evPrep')) EVF.prep = Number(g('evPrep').value);
+  if (g('evRmEve')) EVF.rmEve = g('evRmEve').checked; if (g('evRmPre')) EVF.rmPre = g('evRmPre').checked;
+}
+function renderEventForm(){
+  const e = EVF, t = e.type;
+  const tl = {exam:['পরীক্ষার নাম', 'যেমন: কোষ বিভাজন ক্লাস টেস্ট'], extra:['ক্লাসের বিষয়', 'যেমন: সৃজনশীল লেখার কৌশল'], note:['কোন নোট', 'যেমন: কোষ বিভাজনের হ্যান্ডনোট'], off:['কারণ (ঐচ্ছিক)', 'যেমন: কলেজের পরীক্ষার জন্য'], change:['বিস্তারিত (ঐচ্ছিক)', ''], other:['নোটিশের শিরোনাম', 'যেমন: নতুন নোট বিতরণ']}[t];
+  let ch = '<option value="0">অধ্যায় (ঐচ্ছিক)</option>';
+  for (let i = 1; i <= 14; i++) ch += `<option value="${i}" ${Number(e.chapter) === i ? 'selected' : ''}>${chName(i)}</option>`;
+  sheet(`<div class="sh-head"><div class="sh-name">${e.id ? '✏️ নোটিশ বদলান' : '+ নতুন নোটিশ'}</div></div>
+    <div class="evtype">${Object.entries(EV_TYPES).map(([k, x]) => `<button class="fchip ${t === k ? 'on' : ''}" data-act="evType" data-t="${k}">${x[0]} ${x[1]}</button>`).join('')}</div>
+    <div class="hint" style="margin-top:10px">কোন ব্যাচ (একাধিক বাছাই করা যায়):</div>
+    ${Object.keys(S.batches).map(id => `<label class="tile" style="margin-top:6px"><input type="checkbox" data-evb="${id}" ${e.batches.includes(id) ? 'checked' : ''}> ${batchName(id)}</label>`).join('')}
+    <label class="f">${tl[0]}<input id="evTitle" value="${esc(e.title)}" placeholder="${tl[1]}"></label>
+    <div class="two"><label class="f">তারিখ<input type="date" id="evDate" value="${e.date}"></label>
+      ${t !== 'off' ? `<label class="f">${t === 'change' ? 'নতুন সময়' : 'সময়'}<input type="time" id="evTime" value="${e.time || ''}"></label>` : '<span></span>'}</div>
+    ${t === 'exam' ? `<div class="two"><label class="f">অধ্যায়<select id="evChap">${ch}</select></label><label class="f">পূর্ণমান<input id="evTotal" inputmode="numeric" value="${esc(e.total)}"></label></div>` : ''}
+    ${t === 'note' ? `<label class="f">অধ্যায়<select id="evChap">${ch}</select></label>` : ''}
+    ${t === 'exam' || t === 'extra' || t === 'note' ? `<label class="f">সিলেবাস / কী পড়ে আসবে (ঐচ্ছিক)<input id="evSyl" value="${esc(e.syllabus)}" placeholder="খালি রাখলে অধ্যায়ের নাম বসবে"></label>` : ''}
+    <label class="f">অতিরিক্ত কথা (ঐচ্ছিক)<textarea id="evNote" rows="2" placeholder="যেমন: কলম, পেনসিল ও স্কেল সাথে আনবে">${esc(e.note)}</textarea></label>
+    <div class="hint" style="margin-top:12px"><b>আমার ফোনে মনে করাবে:</b>${CAN_REMIND ? '' : ' (নতুন APK ইনস্টলের পর চালু হবে)'}</div>
+    <label class="tile" style="margin-top:6px"><input type="checkbox" id="evRmEve" ${e.rmEve ? 'checked' : ''}> 🌙 আগের দিন রাত ৮টায়</label>
+    ${t !== 'off' ? `<label class="tile" style="margin-top:6px"><input type="checkbox" id="evRmPre" ${e.rmPre ? 'checked' : ''}> ⏰ শুরুর ১ ঘণ্টা আগে</label>` : ''}
+    ${t === 'exam' || t === 'note' ? `<label class="f">${t === 'exam' ? '✍️ প্রশ্নপত্র তৈরির' : '✍️ নোট তৈরি/প্রিন্টের'} রিমাইন্ডার<select id="evPrep">${[0, 1, 2, 3, 5, 7].map(n => `<option value="${n}" ${Number(e.prep) === n ? 'selected' : ''}>${n ? toBn(n) + ' দিন আগে (রাত ৮টায়)' : 'দরকার নেই'}</option>`).join('')}</select></label>` : ''}
+    <div class="hint">${calOn() ? '📅 সেভ করলে নিজে থেকে আপনার Google Calendar-এ যোগ হবে।' : '📅 Google Calendar-এ নিজে থেকে যোগ করতে: ☰ আরও → সেটিংস → Google Calendar সংযোগ।'}</div>
+    <button class="btn big primary" data-act="evSave">💾 সেভ করুন</button>
+    <button class="btn ghost" data-act="${e.id ? 'evView' : 'events'}" data-id="${e.id || ''}">বাতিল</button>`, 'evform');
+}
+function evSave(){
+  readEvf();
+  if (!EVF.batches.length) { toast('অন্তত একটি ব্যাচ বাছুন'); return; }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(EVF.date || '')) { toast('তারিখ দিন'); return; }
+  if (EVF.type === 'exam' && !EVF.title) EVF.title = EVF.chapter ? chName(EVF.chapter) + ' পরীক্ষা' : 'ক্লাস টেস্ট';
+  if (EVF.type === 'note' && !EVF.title) EVF.title = EVF.chapter ? chName(EVF.chapter) + ' হ্যান্ডনোট' : 'হ্যান্ডনোট';
+  if (EVF.type === 'other' && !EVF.title) { toast('নোটিশের শিরোনাম লিখুন'); return; }
+  const id = EVF.id || makeId('ev'), data = {...EVF}; delete data.id;
+  S.events[id] = {...(S.events[id] || {}), ...data, updated:Date.now()};
+  if (!save()) return;
+  syncReminders(id, true);
+  renderStats(); toast('সেভ হয়েছে ✓'); openEventView(id);
+  calSync(id);
+}
+function gcalUrl(e){
+  const z = s => s.replace(/-/g, '');
+  let dates;
+  if (e.time && e.type !== 'off') { const [h, m] = e.time.split(':').map(Number), eh = Math.min(23, h + 1);
+    dates = z(e.date) + 'T' + pad(h) + pad(m) + '00/' + z(e.date) + 'T' + pad(eh) + pad(m) + '00'; }
+  else dates = z(e.date) + '/' + z(addDays(e.date, 1));
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&ctz=Asia/Dhaka&text=' + encodeURIComponent(EV_TYPES[e.type][0] + ' ' + evTitle(e) + ' · ' + e.batches.map(batchName).join(', '))
+    + '&dates=' + dates + '&details=' + encodeURIComponent(noticeText(e, null, 'notice'));
+}
+function openEventView(id){
+  const e = S.events[id]; if (!e) { openEvents(); return; }
+  const T = EV_TYPES[e.type], n = dayDiff(e.date), L = evStudents(e), soon = n === 0 || n === 1;
+  const sentN = k => toBn((S.sent['ev-' + id + '-' + k] || []).length) + '/' + toBn(L.length);
+  const rows = [['তারিখ', wdOf(e.date) + ', ' + bnDate(e.date) + ' <span class="chip ' + (n < 0 ? 'soft' : n <= 1 ? 'bad' : 'warn') + '">' + relDay(e.date) + '</span>'],
+    e.type !== 'off' && e.time ? [e.type === 'change' ? 'নতুন সময়' : 'সময়', bnTime(e.time)] : null,
+    ['ব্যাচ', e.batches.map(batchName).join('<br>')], evSyl(e) ? ['সিলেবাস', esc(evSyl(e))] : null,
+    e.total ? ['পূর্ণমান', toBn(e.total)] : null, e.note ? ['নোট', esc(e.note)] : null].filter(Boolean);
+  let rm = '';
+  if (CAN_REMIND) { const t = evTimes(e), now = Date.now(), on = [];
+    if (e.rmEve && t.eve > now) on.push('আগের দিন রাত ৮টায়'); if (e.rmPre && e.type !== 'off' && t.pre > now) on.push('শুরুর ১ ঘণ্টা আগে');
+    rm = on.length ? '🔔 আপনার ফোনে নোটিফিকেশন আসবে: ' + on.join(' ও ') : 'এই নোটিশের জন্য কোনো নোটিফিকেশন সেট নেই (সময় পার হয়ে গেছে বা বন্ধ)।'; }
+  else rm = calOn() ? '🔔 Google Calendar থেকে আপনার ফোনে নোটিফিকেশন আসবে (Telegram বটেও)। অ্যাপের নিজস্ব নোটিফিকেশন নতুন APK-তে।' : 'নিজের ফোনে নোটিফিকেশন পেতে নতুন APK ইনস্টল করুন। এখনই চাইলে Google Calendar-এ যোগ করুন, সেখান থেকে নোটিফিকেশন আসবে।';
+  sheet(`<div class="sh-head" style="border-color:${T[2]}"><div class="sh-name">${T[0]} ${esc(evTitle(e))}</div><div class="sh-sub">${T[1]}</div></div>
+    <table class="t">${rows.map(r => `<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join('')}</table>
+    <div class="sec" style="margin-top:12px"><h4>অভিভাবকদের জানান (${toBn(L.length)} জন)</h4>
+      <button class="btn big ${soon ? '' : 'primary'}" style="margin-top:4px" data-act="evSend" data-id="${id}" data-k="notice">📩 নোটিশ পাঠান (${sentN('notice')})</button>
+      <button class="btn big ${soon ? 'primary' : ''}" style="margin-top:8px" data-act="evSend" data-id="${id}" data-k="remind">🔔 মনে করিয়ে দিন (${sentN('remind')})</button>
+      <div class="two" style="margin-top:8px"><button class="btn" data-act="evImg" data-id="${id}">🖼️ নোটিশের ছবি</button><button class="btn" data-act="evCopy" data-id="${id}">📋 গ্রুপের লেখা কপি</button></div>
+      <div class="row">${e.batches.map(b => `<button class="mini wa" data-act="evGroup" data-b="${b}">👥 ${batchName(b)} গ্রুপ</button>`).join('')}</div></div>
+    <div class="sec" style="margin-top:14px"><h4>নিজের জন্য রিমাইন্ডার</h4><div class="hint">${rm}</div>
+      ${Number(e.prep) && (e.type === 'exam' || e.type === 'note') ? `<div class="hint">✍️ ${e.type === 'exam' ? 'প্রশ্নপত্র' : 'নোট'} তৈরির রিমাইন্ডার: ${toBn(e.prep)} দিন আগে (${wdOf(addDays(e.date, -e.prep))}, ${bnDate(addDays(e.date, -e.prep))}) রাত ৮টায়</div>` : ''}
+      ${calOn() ? `<div class="hint" style="margin-top:6px">${e.cal && e.cal.ok && e.cal.at >= (e.updated || 0) ? '<span class="ok-t">✅ Google Calendar-এ যোগ হয়েছে</span>' : e.cal && e.cal.err ? '<span class="bad-t">⚠️ Calendar-এ যায়নি: ' + esc(e.cal.err) + '</span>' : '⏳ Calendar-এ পাঠানো হচ্ছে…'}</div>
+        <button class="btn" style="width:100%;margin-top:6px" data-act="calOne" data-id="${id}">🔄 Calendar-এ আবার পাঠান</button>`
+      : `<a class="btn" style="width:100%;margin-top:6px" href="${gcalUrl(e)}" target="_blank" rel="noopener">📅 Google Calendar-এ যোগ করুন</a>
+        <div class="hint">নিজে থেকে যোগ করতে চাইলে: ☰ আরও → সেটিংস → Google Calendar সংযোগ</div>`}</div>
+    ${e.type === 'exam' ? `<div class="sec" style="margin-top:14px"><h4>পরীক্ষার পরে</h4>${e.batches.map(b => `<button class="btn" style="width:100%;margin-top:6px" data-act="evExam" data-id="${id}" data-b="${b}">📝 ${(e.examIds || {})[b] ? 'নম্বর দেখুন / বদলান' : 'নম্বর দিন'}: ${batchName(b)}</button>`).join('')}</div>` : ''}
+    <div class="two" style="margin-top:12px"><button class="btn" data-act="evEdit" data-id="${id}">✏️ বদলান</button><button class="btn" style="color:var(--bad)" data-act="evDel" data-id="${id}">🗑️ মুছুন</button></div>
+    <button class="btn ghost" data-act="events">← সব নোটিশ</button>`, 'evview');
+}
+function evSend(id, k){
+  const e = S.events[id], L = evStudents(e);
+  if (!L.length) { toast('এই ব্যাচে কেউ নেই'); return; }
+  openQueue((k === 'remind' ? '🔔 রিমাইন্ডার' : '📩 নোটিশ') + ' · ' + evTitle(e), L.map(s => ({sid:s.id, name:s.name, phone:s.guardianPhone, text:noticeText(e, s, k)})), 'ev-' + id + '-' + k);
+}
+/* নোটিশের ছবি: WhatsApp গ্রুপে দেওয়ার জন্য */
+function makeNoticeCanvas(e){
+  const T = EV_TYPES[e.type], col = T[2], INK = '#0F172A', SOFT = '#64748B', F = cardFont;
+  return finishCard((x, W, logo, sig) => {
+    cardHeader(x, W, logo, '#14532D');
+    let y = 316;
+    x.font = F(700, 34); const pill = T[0] + ' ' + {exam:'পরীক্ষার নোটিশ', note:'নোট দেওয়ার নোটিশ', extra:'এক্সট্রা ক্লাসের নোটিশ', off:'ক্লাস বন্ধের নোটিশ', change:'সময় পরিবর্তনের নোটিশ', other:'নোটিশ'}[e.type], pw = x.measureText(pill).width + 60;
+    x.fillStyle = col; rrect(x, (W - pw) / 2, y, pw, 64, 32); x.fill();
+    x.fillStyle = '#fff'; x.textAlign = 'center'; x.fillText(pill, W / 2, y + 44);
+    y += 110;
+    const big = e.type === 'off' ? 'ক্লাস বন্ধ থাকবে' : e.type === 'change' ? 'ক্লাসের সময় পরিবর্তন' : evTitle(e);
+    x.font = F(700, 54); x.fillStyle = INK; wrapLines(x, big, W - 160).forEach(l => { x.fillText(l, W / 2, y + 40); y += 66; });
+    y += 20;
+    const rows = [['📅 তারিখ', wdOf(e.date) + ', ' + bnDate(e.date)],
+      e.type !== 'off' && e.time ? ['⏰ ' + (e.type === 'change' ? 'নতুন সময়' : 'সময়'), bnTime(e.time)] : null,
+      ['👥 ব্যাচ', e.batches.map(batchName).join(', ')],
+      evSyl(e) ? ['📚 ' + (e.type === 'exam' ? 'সিলেবাস' : 'বিষয়'), ((e.type === 'extra' || e.type === 'note') && e.title ? e.title + ' · ' : '') + evSyl(e)] : null,
+      (e.type === 'extra' || e.type === 'note') && e.title && !evSyl(e) ? ['📚 বিষয়', e.title] : null,
+      e.total ? ['🎯 পূর্ণমান', toBn(e.total)] : null,
+      (e.type === 'off' || e.type === 'change') && e.title ? ['📌 ' + (e.type === 'off' ? 'কারণ' : 'বিস্তারিত'), e.title] : null,
+      e.note ? ['📝 বিশেষ দ্রষ্টব্য', e.note] : null].filter(Boolean);
+    rows.forEach(r => {
+      x.font = F(600, 30); const lines = wrapLines(x, r[1], W - 460), h = Math.max(92, 40 + lines.length * 42);
+      x.fillStyle = '#F8FAFC'; rrect(x, 60, y, W - 120, h, 18); x.fill();
+      x.fillStyle = col; x.fillRect(60, y + 16, 6, h - 32);
+      x.textAlign = 'left'; x.fillStyle = SOFT; x.font = F(600, 26); x.fillText(r[0], 92, y + 56);
+      x.fillStyle = INK; x.font = F(600, 30); lines.forEach((l, i) => x.fillText(l, 360, y + 58 + i * 42));
+      y += h + 14;
+    });
+    y += 20;
+    const msg = {exam:'ভালোভাবে প্রস্তুতি নিয়ে সময়মতো উপস্থিত হও।', note:'সবাই উপস্থিত থেকে নোট সংগ্রহ করবে।', extra:'সবার উপস্থিতি জরুরি।', off:'পরের ক্লাস যথারীতি নির্ধারিত সময়ে হবে।', change:'সবাই নতুন সময়ে উপস্থিত হবে।', other:''}[e.type];
+    if (msg) { x.fillStyle = col; x.font = F(700, 30); x.textAlign = 'center'; x.fillText(msg, W / 2, y + 30); y += 60; }
+    y += 10;
+    if (sig) x.drawImage(sig, W - 330, y, 240, 128);
+    x.strokeStyle = '#94A3B8'; x.lineWidth = 2; x.beginPath(); x.moveTo(W - 350, y + 134); x.lineTo(W - 70, y + 134); x.stroke();
+    x.fillStyle = SOFT; x.font = F(500, 21); x.textAlign = 'center'; x.fillText(S.settings.teacher, W - 210, y + 166);
+    x.textAlign = 'left'; x.fillStyle = SOFT; x.font = F(500, 22); x.fillText('প্রকাশ: ' + bnDate(todayKey()), 60, y + 100);
+    return y + 230;
+  }, col);
+}
+/* ---- Google Calendar: Apps Script-এর মাধ্যমে নিজে থেকে যোগ ---- */
+const calOn = () => /^https:\/\/script\.google(usercontent)?\.com\//.test(S.settings.cal.url || '');
+async function calPost(body){
+  if (!calOn()) return {ok:false, error:'লিংক দেওয়া নেই'};
+  try {
+    const r = await fetch(S.settings.cal.url, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(body)});
+    return await r.json().catch(() => ({ok:false, error:'উত্তর বোঝা যায়নি (' + r.status + ')'}));
+  } catch(e){ return {ok:false, error:'ইন্টারনেট/লিংক সমস্যা'}; }
+}
+const isoLocal = ms => { const d = new Date(ms); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':00'; };
+function calItems(e){
+  const T = EV_TYPES[e.type], t = evTimes(e), short = e.batches.map(b => B(b).branch + ' ' + B(b).clsLabel).join(', ');
+  const desc = noticeText(e, null, 'notice') + '\n\n(জীববিজ্ঞান অ্যাপ থেকে স্বয়ংক্রিয়ভাবে যোগ করা)';
+  const items = [];
+  if (e.type === 'off') items.push({title:T[0] + ' ক্লাস বন্ধ: ' + short + (e.title ? ' (' + e.title + ')' : ''), allDay:true, date:e.date, desc, color:'6', popups:e.rmEve ? [240] : []});
+  else {
+    const pop = []; if (e.rmPre) pop.push(60); if (e.rmEve) { const m = Math.round((t.start - t.eve) / 60000); if (m > 60) pop.push(m); }
+    items.push({title:T[0] + ' ' + T[1] + ': ' + evTitle(e) + ' · ' + short, start:isoLocal(t.start), end:isoLocal(t.start + 3600e3), desc, color:{exam:'11', note:'10', extra:'9', change:'3', other:'7'}[e.type] || '7', popups:pop});
+  }
+  if (Number(e.prep) && (e.type === 'exam' || e.type === 'note'))
+    items.push({title:'✍️ ' + (e.type === 'exam' ? 'প্রশ্নপত্র তৈরি করুন' : 'নোট তৈরি/প্রিন্ট করুন') + ': ' + evTitle(e) + ' (' + toBn(e.prep) + ' দিন পর · ' + short + ')',
+      start:isoLocal(t.prep), end:isoLocal(t.prep + 1800e3), desc:(e.type === 'exam' ? 'পরীক্ষা' : 'নোট দেওয়া') + ': ' + wdOf(e.date) + ', ' + bnDate(e.date) + (e.time ? ' ' + bnTime(e.time) : '') + '\n' + (evSyl(e) ? 'সিলেবাস: ' + evSyl(e) + '\n' : '') + (e.total ? 'পূর্ণমান: ' + toBn(e.total) + '\n' : '') + '\n' + desc, color:'5', popups:[0, 600]});
+  return items;
+}
+async function calSync(id, loud){
+  const e = S.events[id]; if (!e || !calOn()) return false;
+  const r = await calPost({action:'upsert', id, items:calItems(e)});
+  if (!S.events[id]) return false;
+  S.events[id].cal = r.ok ? {ok:true, at:Date.now()} : {ok:false, err:r.error || 'অজানা সমস্যা', at:Date.now()};
+  save();
+  if (SHEET_KIND === 'evview') openEventView(id);
+  if (loud || !r.ok) toast(r.ok ? '📅 Google Calendar-এ যোগ হয়েছে ✓' : '⚠️ Calendar-এ যায়নি: ' + (r.error || ''));
+  return !!r.ok;
+}
+async function calDelete(id){
+  if (!calOn()) return;
+  const r = await calPost({action:'delete', id});
+  if (!r.ok) { S.settings.cal.del = [...new Set([...(S.settings.cal.del || []), id])]; save(); }
+}
+/* ইন্টারনেট না থাকায় যেগুলো যায়নি, পরে অ্যাপ খুললে আবার চেষ্টা */
+async function calRetry(){
+  if (!calOn() || !navigator.onLine) return;
+  for (const id of (S.settings.cal.del || []).slice()) { const r = await calPost({action:'delete', id}); if (r.ok) { S.settings.cal.del = S.settings.cal.del.filter(x => x !== id); save(); } }
+  for (const [id, e] of Object.entries(S.events)) if (dayDiff(e.date) >= 0 && !(e.cal && e.cal.ok && e.cal.at >= (e.updated || 0))) await calSync(id);
+}
+/* নিজের ফোনে নোটিফিকেশন (নতুন APK লাগবে) */
+const CAN_REMIND = NATIVE && (() => { try { return typeof AndroidApp.scheduleReminder === 'function' || 'scheduleReminder' in AndroidApp; } catch(e){ return false; } })();
+function evTimes(e){
+  const [y, m, d] = e.date.split('-').map(Number), [hh, mm] = (e.time || '09:00').split(':').map(Number);
+  return {eve:new Date(y, m - 1, d - 1, 20, 0).getTime(), pre:new Date(y, m - 1, d, hh, mm).getTime() - 3600e3, prep:new Date(y, m - 1, d - (Number(e.prep) || 0), 20, 0).getTime(), start:new Date(y, m - 1, d, hh, mm).getTime()};
+}
+function syncReminders(id, ask){
+  if (!CAN_REMIND) return;
+  try {
+    ['eve', 'pre'].forEach(k => AndroidApp.cancelReminder(id + '-' + k));
+    const e = S.events[id]; if (!e) return;
+    const t = evTimes(e), now = Date.now(), T = EV_TYPES[e.type], bn = e.batches.map(batchName).join(', ');
+    let any = false;
+    if (e.rmEve && t.eve > now) { any = true; AndroidApp.scheduleReminder(id + '-eve', t.eve, T[0] + ' কাল ' + T[1] + ': ' + evTitle(e), bn + (e.time && e.type !== 'off' ? ' · ' + bnTime(e.time) : '') + '\nঅভিভাবকদের রিমাইন্ডার পাঠাতে এখানে চাপুন'); }
+    if (e.rmPre && e.type !== 'off' && t.pre > now) { any = true; AndroidApp.scheduleReminder(id + '-pre', t.pre, T[0] + ' ১ ঘণ্টা পর ' + T[1] + ': ' + evTitle(e), bn + (e.time ? ' · ' + bnTime(e.time) : '')); }
+    AndroidApp.cancelReminder(id + '-prep');
+    if (Number(e.prep) && (e.type === 'exam' || e.type === 'note') && t.prep > now) { any = true; AndroidApp.scheduleReminder(id + '-prep', t.prep, '✍️ ' + (e.type === 'exam' ? 'প্রশ্নপত্র তৈরি করুন' : 'নোট তৈরি/প্রিন্ট করুন') + ': ' + evTitle(e), toBn(e.prep) + ' দিন পর (' + wdOf(e.date) + ', ' + bnDate(e.date) + ') · ' + bn); }
+    if (any && ask) AndroidApp.askNotify();
+  } catch(x){ console.error(x); }
+}
+function syncAllReminders(){ if (CAN_REMIND) Object.keys(S.events).forEach(id => { if (dayDiff(S.events[id].date) >= -1) syncReminders(id, false); }); }
+
 /* ========== বোতামের কাজ ========== */
 const ACT = {
   close: () => closeSheet(),
@@ -1262,7 +1876,36 @@ const ACT = {
   backup: () => backup(),
   restore: () => $('#restoreInput').click(),
   importLocal: () => importLocal(),
-  archive: d => openArchive(d.c)
+  archive: d => openArchive(d.c),
+  /* রিপোর্ট কার্ড */
+  rpOpen: d => openReport(d.sid, d.from === 'all' ? RPA.per : undefined, d.from === 'all' ? 'all' : ''),
+  rpPer: d => { const ta = $('#rpRemark'); if (ta && ta.value !== RPT.remark) S.reports[rptKey()] = ta.value, save(); openReport(RPT.sid, d.p); },
+  rpAuto: () => { RPT.remark = autoRemark(reportData(RPT.sid, RPT.from, RPT.to)); delete S.reports[rptKey()]; save(); const ta = $('#rpRemark'); if (ta) ta.value = RPT.remark; rpBuild(); },
+  rpSend: async () => { const b = await rpBlob(); if (b && await imageToGuardian(b, stu(RPT.sid).guardianPhone, rpName()) && RPA) markSent(RPA.key, [RPT.sid]); },
+  rpShare: async () => { const b = await rpBlob(); if (!b) return; const c = document.createElement('canvas'); const im = await loadImg(URL.createObjectURL(b));
+    c.width = im.width; c.height = im.height; c.getContext('2d').drawImage(im, 0, 0); shareCanvas(c, rpName(), 'রিপোর্ট কার্ড'); },
+  rpSave: async () => { const b = await rpBlob(); if (b) { saveBlob(b, rpName()); if (!NATIVE) toast('ছবি সেভ হয়েছে'); } },
+  rpAll: () => openReportAll(),
+  rpaPer: d => openReportAll(d.p),
+  rpaSend: d => rpaSend(d.sid),
+  /* নোটিশ ও রিমাইন্ডার */
+  events: () => openEvents(),
+  evNew: d => openEventForm(null, d.t),
+  evType: d => { readEvf(); EVF.type = d.t; renderEventForm(); },
+  evSave: () => evSave(),
+  evView: d => d.id ? openEventView(d.id) : openEvents(),
+  evEdit: d => openEventForm(d.id),
+  evDel: d => { if (!confirm('নোটিশটি মুছবেন?')) return; delete S.events[d.id]; save(); syncReminders(d.id); calDelete(d.id); renderStats(); openEvents(); toast('মুছে ফেলা হয়েছে'); },
+  evSend: d => evSend(d.id, d.k),
+  calOne: async d => { await calSync(d.id, true); },
+  calTest: async () => { settingsSave(true); const r = await calPost({action:'ping'}); toast(r.ok ? '✅ Calendar সংযোগ ঠিক আছে: ' + (r.calendar || '') : '⚠️ সংযোগ হয়নি: ' + (r.error || '')); },
+  calAll: async () => { settingsSave(true); const ids = Object.keys(S.events).filter(id => dayDiff(S.events[id].date) >= 0); if (!ids.length) { toast('আসন্ন কোনো নোটিশ নেই'); return; }
+    toast('পাঠানো হচ্ছে…'); let ok = 0; for (const id of ids) if (await calSync(id)) ok++; toast('✅ ' + toBn(ok) + '/' + toBn(ids.length) + 'টি নোটিশ Calendar-এ গেছে'); },
+  evCopy: d => { const e = S.events[d.id]; copyText(noticeText(e, null, dayDiff(e.date) <= 1 && dayDiff(e.date) >= 0 ? 'remind' : 'notice')); },
+  evGroup: d => window.open(B(d.b).group, '_blank'),
+  evImg: async d => { toast('ছবি তৈরি হচ্ছে…'); const c = await makeNoticeCanvas(S.events[d.id]); shareCanvas(c, 'notice-' + hash(d.id) + '.png', evTitle(S.events[d.id])); },
+  evExam: d => { const e = S.events[d.id], ex = (e.examIds || {})[d.b]; ACTIVE = d.b; switchBatch();
+    if (ex && exams()[ex]) openExam(ex); else openExam(null, {title:evTitle(e), total:e.total || '', chapter:e.chapter || 0, date:e.date, evId:d.id}); }
 };
 function switchBatch(){
   try { localStorage.setItem(ACTIVE_KEY, ACTIVE); } catch(e){}
@@ -1278,6 +1921,9 @@ document.addEventListener('change', e => {
   const k = e.target.dataset && e.target.dataset.chg;
   if (k === 'attDate' && e.target.value) { openAtt(e.target.value); }
   if (k === 'msgChap') { MSG.chap = Number(e.target.value); openMsg(); }
+  if (k === 'rpRange') { const f = $('#rpFrom').value, t = $('#rpTo').value; if (f && t) { Object.assign(RPT, periodRange('custom', f, t)); RPT.remark = undefined; renderReport(); } }
+  if (k === 'rpRemark') { RPT.remark = e.target.value; S.reports[rptKey()] = RPT.remark; save(); rpBuild(); }
+  if (k === 'evDate') { readEvf(); }
 });
 document.addEventListener('input', e => {
   if (e.target.id === 'search') { FILTER.q = e.target.value; renderList(); }
@@ -1292,6 +1938,8 @@ $('#restoreInput').addEventListener('change', e => {
 document.addEventListener('visibilitychange', () => { if (!document.hidden && SHEET_KIND === 'queue') renderQueue(); });
 
 renderAll();
+setTimeout(syncAllReminders, 2000);
+setTimeout(calRetry, 4000);
 
 /* রশিদ দ্রুত করতে: ফন্ট, লোগো, স্বাক্ষর আগেভাগে লোড */
 setTimeout(() => { fontsReady(); loadImg('logo.png'); loadImg(SIG_IMG); }, 1500);
