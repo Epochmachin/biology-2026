@@ -1,6 +1,6 @@
 // জীববিজ্ঞান স্টাডি সেন্টার: অফলাইনে চালানোর জন্য ক্যাশ
 // নতুন ভার্সন আপলোড করলে CACHE নামের শেষের সংখ্যা বাড়িয়ে দিন।
-const CACHE = 'bsc-app-v2027-13';
+const CACHE = 'bsc-app-v2027-14';
 const CORE = ['./', './index.html', './manifest.json', './icon.png', './icon-192.png', './icon-512.png', './icon-maskable-192.png', './icon-maskable-512.png', './apple-touch-icon.png', './logo.png', './fonts/baloo-da-2-bengali-600-normal.woff2', './fonts/baloo-da-2-bengali-700-normal.woff2', './fonts/hind-siliguri-bengali-400-normal.woff2', './fonts/hind-siliguri-bengali-500-normal.woff2'];
 
 self.addEventListener('install', e => {

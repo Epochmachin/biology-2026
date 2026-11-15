@@ -3,6 +3,7 @@ package com.epochmaking.biologycentre;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,6 +28,7 @@ import androidx.core.content.FileProvider;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 /**
  * জীববিজ্ঞান স্টাডি সেন্টার: নিজস্ব Android অ্যাপ।
@@ -176,8 +178,47 @@ public class MainActivity extends Activity {
 
     /** ওয়েব অ্যাপ থেকে window.AndroidApp হিসেবে ডাকা যায় */
     class Bridge {
+        private final ArrayList<Uri> batch = new ArrayList<>();
+
         @JavascriptInterface
         public boolean isApp() { return true; }
+
+        /** অনেকগুলো কার্ড একসাথে WhatsApp-এ (গ্রুপ বেছে নিলেই সব যাবে) */
+        @JavascriptInterface
+        public synchronized void batchStart() { batch.clear(); }
+
+        @JavascriptInterface
+        public synchronized String batchAdd(String b64, String name) {
+            try { batch.add(cacheFile(b64, name)); return "ok"; }
+            catch (Exception e) { return "error: " + e.getMessage(); }
+        }
+
+        @JavascriptInterface
+        public synchronized String batchShare(String title) {
+            try {
+                if (batch.isEmpty()) return "error: কোনো কার্ড নেই";
+                ArrayList<Uri> list = new ArrayList<>(batch);
+                Intent i = new Intent(list.size() == 1 ? Intent.ACTION_SEND : Intent.ACTION_SEND_MULTIPLE);
+                i.setType("image/png");
+                if (list.size() == 1) i.putExtra(Intent.EXTRA_STREAM, list.get(0));
+                else i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, list);
+                ClipData cd = ClipData.newRawUri("cards", list.get(0));
+                for (int k = 1; k < list.size(); k++) cd.addItem(new ClipData.Item(list.get(k)));
+                i.setClipData(cd);
+                i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                String pkg = installed("com.whatsapp") ? "com.whatsapp"
+                        : installed("com.whatsapp.w4b") ? "com.whatsapp.w4b" : null;
+                if (pkg == null) {
+                    runOnUiThread(() -> startActivity(Intent.createChooser(i, title)));
+                    return "chooser";
+                }
+                i.setPackage(pkg);
+                runOnUiThread(() -> startActivity(i));
+                return "ok";
+            } catch (Exception e) {
+                return "error: " + e.getMessage();
+            }
+        }
 
         /** অভিভাবকের WhatsApp চ্যাট সরাসরি খুলবে, রশিদের ছবি সংযুক্ত অবস্থায়; শুধু "পাঠান" চাপলেই হবে */
         @JavascriptInterface
